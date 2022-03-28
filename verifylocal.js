@@ -1,5 +1,5 @@
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey('');
 
 function betweenRandomNumber(min, max) {  
     return Math.floor(
