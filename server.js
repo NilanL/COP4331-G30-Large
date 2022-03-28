@@ -1,15 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config();
+
+const sendEmail = require('/sendEmail');
 
 const path = require('path');
 const PORT = process.env.PORT || 5000;
 const app = express();
-app.set('port', (process.env.PORT || 5000));
+app.set('port', PORT);
 app.use(cors());
 app.use(bodyParser.json());
 
-require('dotenv').config();
 const url = process.env.MONGODB_URI;
 const MongoClient = require('mongodb').MongoClient;
 const client = new MongoClient(url);
@@ -23,12 +25,13 @@ if (process.env.NODE_ENV === 'production')
 {
   // Set static folder
   app.use(express.static('frontend/build'));
-  app.get('*', (req, res) => 
+  app.get('/*', (req, res) => 
   {
       res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
   });
 }
 
+// login endpoint
 app.post('/api/login', async (req, res, next) => {
     var error = '';
 
@@ -60,7 +63,7 @@ app.post('/api/login', async (req, res, next) => {
 app.post('/api/register', async (req, res, next) => {
     const { firstName, lastName, username, phone, email, password } = req.body;
 
-    const newUser = {FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password};
+    const newUser = {FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password, verified: false};
     var error = '';
 
     try
@@ -76,6 +79,49 @@ app.post('/api/register', async (req, res, next) => {
     var ret = { error: error };
     res.status(200).json(ret);
 });
+
+// send email verification endpoint
+app.post('/api/sendemail', async (req, res, next) => {
+  // have user re-enter email
+  const {email} = req.body;
+
+  function betweenRandomNumber(min, max) {  
+    return Math.floor(
+      Math.random() * (max - min + 1) + min
+    )
+  };
+
+  const code = betweenRandomNumber(10000, 99999);
+
+  const from = "dailygrind4331@gmail.com"
+  const to = email;
+  const subject = "Daily Grind Verification"
+
+  const output = `
+  <p>This is to verify your email for DailyGrind!</p>
+  <h3>Your 5 digit code is below:</h3>
+  <li>Code: ${code} </li>
+  `;
+
+  sendEmail(to, from, subject, output);
+  res.redirect('/verifycode');
+});
+
+// update account to verified
+app.put('/:id', (req, res, next) =>{
+  const input = req.body;
+
+  if(input == code) {
+    user.verified = true;
+    res.send(user.verified);
+    res.redirect('/verifysuccess');
+  } else {
+    res.redirect('/verifyfail');
+  }
+});
+
+// reset password or recovery
+
 
 app.use((req, res, next) => 
 {
