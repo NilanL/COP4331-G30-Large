@@ -31,6 +31,13 @@ if (process.env.NODE_ENV === 'production')
   });
 }
 
+function betweenRandomNumber(min, max) {  
+  return Math.floor(
+    Math.random() * (max - min + 1) + min
+  )
+};
+
+
 // login endpoint
 app.post('/api/login', async (req, res, next) => {
     var error = '';
@@ -85,12 +92,6 @@ app.post('/api/sendemail', async (req, res, next) => {
   // have user re-enter email
   const {email} = req.body;
 
-  function betweenRandomNumber(min, max) {  
-    return Math.floor(
-      Math.random() * (max - min + 1) + min
-    )
-  };
-
   const code = betweenRandomNumber(10000, 99999);
 
   const from = "dailygrind4331@gmail.com"
@@ -104,7 +105,7 @@ app.post('/api/sendemail', async (req, res, next) => {
   `;
 
   sendEmail(to, from, subject, output);
-  res.redirect('/verifycode');
+  res.redirect('/verifycode'); // this to redirect to another page
 });
 
 // update account to verified
@@ -112,11 +113,13 @@ app.put('/:id', (req, res, next) =>{
   const input = req.body;
 
   if(input == code) {
-    user.verified = true;
-    res.send(user.verified);
-    res.redirect('/verifysuccess');
+
+    const db = client.db();
+    const result = db.collection('users').updateOne({_id: req.params.id}, {$set:{verified: true}});
+
+    res.redirect('/verifysuccess'); // this to redirect to another page
   } else {
-    res.redirect('/verifyfail');
+    res.redirect('/verifyfail'); // this to redirect to another page
   }
 });
 
