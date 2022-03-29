@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const sendEmail = require('/sendEmail');
@@ -44,7 +45,8 @@ app.post('/api/login', async (req, res, next) => {
 
     const { username, password } = req.body;
 
-    const db = client.db();
+    try {
+      const db = client.db();
     const results = await db.collection('users').find({Username:username,Password:password}).toArray();
 
     var id = '';
@@ -64,6 +66,15 @@ app.post('/api/login', async (req, res, next) => {
 
     var ret = { id:id, firstName:fn, lastName:ln, error:''};
     res.status(200).json(ret);
+    }
+
+   catch(e)
+   {
+     error = e.toString();
+     
+     ret = {error: 'Unable to log in'}
+     res.status(400).json(ret);
+   }
 });
 
 // register endpoint
@@ -123,8 +134,43 @@ app.put('/:id', (req, res, next) =>{
   }
 });
 
-// reset password or recovery
+// sending reset password link endpoint
+app.post('/api/reset', async (req, res, next) => {
+  // have user re-enter email
+  const email = req.body;
 
+  try {
+    const foundUser = db.collection('users').findOne({Email: email});   // finds user with given email
+    const id = foundUser._id;   // gets id of user from database
+
+    const link = `https://cop4331-g30-large.herokuapp.com/reset/${id}/${JWT-TOKEN}`
+
+    const from = "dailygrind4331@gmail.com"
+    const to = email;
+    const subject = "Daily Grind Password Reset"
+
+    const output = `
+    <p>This is to reset your password for DailyGrind!</p>
+    <h3>Your reset link is below:</h3>
+    <li>Link: ${link} </li> 
+    `; // change last line w/ token?
+
+    sendEmail(to, from, subject, output);
+    res.redirect('/verifycode'); // this to redirect to another page
+  }
+
+  catch (e) {
+    error = e.toString();
+  }
+});
+
+// reset password endpoint
+app.put('/:id', (req, res, next) => {
+  const newPassword = req.body;
+
+  const db = client.db();
+  const result = db.collection('users').updateOne({_id: req.params.id}, {$set:{Password: newPassword}});
+});
 
 app.use((req, res, next) => 
 {
