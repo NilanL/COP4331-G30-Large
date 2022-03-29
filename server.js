@@ -4,7 +4,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const sendEmail = require('/sendEmail');
+const sendEmail = require('./sendEmail');
 
 const path = require('path');
 const PORT = process.env.PORT || 5000;
@@ -22,12 +22,10 @@ client.connect();
 ///////////////////////////////////////////////////
 // For Heroku deployment
 // Server static assets if in production
-if (process.env.NODE_ENV === 'production') 
-{
+if (process.env.NODE_ENV === 'production') {
   // Set static folder
   app.use(express.static('frontend/build'));
-  app.get('/*', (req, res) => 
-  {
+  app.get('/*', (req, res) => {
       res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
   });
 }
@@ -41,40 +39,38 @@ function betweenRandomNumber(min, max) {
 
 // login endpoint
 app.post('/api/login', async (req, res, next) => {
-    var error = '';
+  const { username, password } = req.body;
 
-    const { username, password } = req.body;
-
-    try {
-      const db = client.db();
+  try {
+    const db = client.db();
     const results = await db.collection('users').find({Username:username,Password:password}).toArray();
 
-    var id = '';
-    var fn = '';
-    var ln = '';
-    var em = '';
-    var ph = '';
+    let id = '';
+    let fn = '';
+    let ln = '';
+    let em = '';
+    let ph = '';
 
-    if( results.length > 0 )
-    {
-        id = results[0]._id.toString();
-        fn = results[0].FirstName;
-        ln = results[0].LastName;
-        em = results[0].email;
-        ph = results[0].phone;
+    if (results.length == 0) {
+      // no user, return 400 (or 404 not found) code
+      let ret = {error: 'Unrecognized credentials'}
+      res.status(400).json(ret);
+      return;
     }
 
-    var ret = { id:id, firstName:fn, lastName:ln, error:''};
+    id = results[0]._id.toString();
+    fn = results[0].FirstName;
+    ln = results[0].LastName;
+    em = results[0].email;
+    ph = results[0].phone;
+
+    let ret = { id:id, firstName:fn, lastName:ln, error:''};
     res.status(200).json(ret);
-    }
-
-   catch(e)
-   {
-     error = e.toString();
-     
-     ret = {error: 'Unable to log in'}
-     res.status(400).json(ret);
-   }
+  }
+  catch(e) {
+    let error = e.toString();
+    res.status(400).json({error: error});
+  }
 });
 
 // register endpoint
@@ -82,11 +78,12 @@ app.post('/api/register', async (req, res, next) => {
     const { firstName, lastName, username, phone, email, password } = req.body;
 
     const newUser = {FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password, verified: false};
-    var error = '';
+    let error = '';
 
     try
     {
         const db = client.db();
+        // TODO: check that there is no user with the given username already in the db
         const result = db.collection('users').insertOne(newUser);
     }
     catch(e)
@@ -94,25 +91,33 @@ app.post('/api/register', async (req, res, next) => {
         error = e.toString();
     }
 
-    var ret = { error: error };
+    let ret = { error: error };
     res.status(200).json(ret);
 });
 
 // send email verification endpoint
-app.post('/api/sendemail', async (req, res, next) => {
+app.post('/api/emailverify', async (req, res, next) => {
   // have user re-enter email
   const {email} = req.body;
 
+  const db = client.db();
+  const foundUser = await db.collection('users').findOne({Email: email});   // finds user with given email
+  const id = foundUser._id;   // gets id of user from database
+
   const code = betweenRandomNumber(10000, 99999);
 
-  const from = "dailygrind4331@gmail.com"
+  const from = "dailygrind4331@gmail.com";
   const to = email;
-  const subject = "Daily Grind Verification"
+  const subject = "Daily Grind Verification";
+
+  console.log(`email: ${email} id: ${id}, user: ${JSON.stringify(foundUser)}`);
 
   const output = `
   <p>This is to verify your email for DailyGrind!</p>
-  <h3>Your 5 digit code is below:</h3>
-  <li>Code: ${code} </li>
+  <h3>Your verification link is below:</h3>
+  <ul>
+    <li><a href="https://localhost:5000/api/verifyaccnt/${id}" target="_blank">Verify Account</a></li>
+  </ul>
   `;
 
   sendEmail(to, from, subject, output);
@@ -120,14 +125,13 @@ app.post('/api/sendemail', async (req, res, next) => {
 });
 
 // update account to verified
-app.put('/:id', (req, res, next) =>{
-  const input = req.body;
-
-  if(input == code) {
-
-    const db = client.db();
-    const result = db.collection('users').updateOne({_id: req.params.id}, {$set:{verified: true}});
-
+app.get('/api/verifyaccnt/:id', async (req, res, next) =>{
+  const db = client.db();
+  const result = await db.collection('users').updateOne({_id: req.params.id}, {$set:{verified: true}});
+  
+  // change to be if the result is size 0? 
+  // incase their user id doesnt exist or you sent the wrong one
+  if (result.length != 0) {
     res.redirect('/verifysuccess'); // this to redirect to another page
   } else {
     res.redirect('/verifyfail'); // this to redirect to another page
@@ -143,17 +147,19 @@ app.post('/api/reset', async (req, res, next) => {
     const foundUser = db.collection('users').findOne({Email: email});   // finds user with given email
     const id = foundUser._id;   // gets id of user from database
 
-    const link = `https://cop4331-g30-large.herokuapp.com/reset/${id}/${JWT-TOKEN}`
+    const link = `https://cop4331-g30-large.herokuapp.com/reset/${id}/${JWTTOKEN}`
 
-    const from = "dailygrind4331@gmail.com"
+    const from = "dailygrind4331@gmail.com";
     const to = email;
-    const subject = "Daily Grind Password Reset"
+    const subject = "Daily Grind Password Reset";
 
     const output = `
     <p>This is to reset your password for DailyGrind!</p>
     <h3>Your reset link is below:</h3>
-    <li>Link: ${link} </li> 
-    `; // change last line w/ token?
+    <ul>
+      <li>Link: ${link} </li> 
+    </ul>
+    `; 
 
     sendEmail(to, from, subject, output);
     res.redirect('/verifycode'); // this to redirect to another page
@@ -165,7 +171,7 @@ app.post('/api/reset', async (req, res, next) => {
 });
 
 // reset password endpoint
-app.put('/:id', (req, res, next) => {
+app.put('/api/resetpassword/:id', (req, res, next) => {
   const newPassword = req.body;
 
   const db = client.db();
