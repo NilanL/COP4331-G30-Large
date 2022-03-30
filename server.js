@@ -131,7 +131,7 @@ app.get('/api/verifyaccnt/:id', async (req, res, next) =>{
 });
 
 // sending reset password link endpoint
-app.post('/api/reset', async (req, res, next) => {
+app.post('/api/forgotpass', async (req, res, next) => {
   // have user re-enter email
   const email = req.body;
 
@@ -139,7 +139,7 @@ app.post('/api/reset', async (req, res, next) => {
     const foundUser = db.collection('users').findOne({Email: email});   // finds user with given email
     const id = foundUser._id;   // gets id of user from database
 
-    const link = `https://cop4331-g30-large.herokuapp.com/reset/${id}/${JWTTOKEN}`
+    const link = `https://cop4331-g30-large.herokuapp.com/api/reset/${id}/${JWTTOKEN}`
 
     const from = "dailygrind4331@gmail.com";
     const to = email;
@@ -154,7 +154,7 @@ app.post('/api/reset', async (req, res, next) => {
     `; 
 
     sendEmail(to, from, subject, output);
-    res.redirect('/verifycode'); // this to redirect to another page
+    res.redirect('/resetpass'); // this to redirect to another page
   }
 
   catch (e) {
@@ -163,7 +163,7 @@ app.post('/api/reset', async (req, res, next) => {
 });
 
 // reset password endpoint
-app.put('/api/resetpassword/:id', (req, res, next) => {
+app.put('/api/resetpass/:id', (req, res, next) => {
   const newPassword = req.body;
 
   const db = client.db();
