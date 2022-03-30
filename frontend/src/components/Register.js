@@ -36,10 +36,14 @@ const [message,setMessage] = useState('');
     const doRegister = async event => 
     {
         event.preventDefault();
-        var obj = {FirstName: firstName.value, LastName: lastName.value, Username: username.value, Phone: phone.value, Email: email.value, Password: loginPassword.value};
+        var obj = {firstName: firstName.value, lastName: lastName.value, username: username.value, phone: phone.value, email: email.value, password: loginPassword.value};
         var js = JSON.stringify(obj);
         try
         {
+
+            
+
+
             const response = await fetch(buildPath('api/register'),
             {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var txt = await response.text();
@@ -50,14 +54,50 @@ const [message,setMessage] = useState('');
             }
             else
             {
-                alert('Registered');
+                console.log('Registered');
                 console.log(js);
+                
             }
         }
         catch(e)
         {
             setMessage(e.toString());
         }
+
+       /* event.preventDefault();
+        var obj =  {Email: email.value};
+        var js = JSON.stringify(obj);
+        
+        
+        try
+        {
+
+            console.log(js);
+
+
+            const response = await fetch(buildPath('api/emailverify'),
+            {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            var txt = await response.text();
+            var res = JSON.parse(txt);
+            if( res.error.length > 0 )
+            {
+                alert( "API Error:" + res.error );
+            }
+            else
+            {
+                console.log('Registered');
+                console.log(js);
+                window.location.href = '/login';
+            }
+        }
+        catch(e)
+        {
+            setMessage(e.toString());
+        }
+
+*/
+
+
     }
 
     const doCancel = async event => 
@@ -83,7 +123,7 @@ const [message,setMessage] = useState('');
 
         </form>
         
-        <span id="loginResult"></span>
+        <span></span>
         </Card>
      </div>
     );
