@@ -30,13 +30,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-function betweenRandomNumber(min, max) {  
-  return Math.floor(
-    Math.random() * (max - min + 1) + min
-  )
-};
-
-
 // login endpoint
 app.post('/api/login', async (req, res, next) => {
   const { username, password } = req.body;
@@ -104,8 +97,6 @@ app.post('/api/emailverify', async (req, res, next) => {
   const foundUser = await db.collection('users').findOne({Email: email});   // finds user with given email
   const id = foundUser._id;   // gets id of user from database
 
-  const code = betweenRandomNumber(10000, 99999);
-
   const from = "dailygrind4331@gmail.com";
   const to = email;
   const subject = "Daily Grind Verification";
@@ -116,12 +107,12 @@ app.post('/api/emailverify', async (req, res, next) => {
   <p>This is to verify your email for DailyGrind!</p>
   <h3>Your verification link is below:</h3>
   <ul>
-    <li><a href="https://localhost:5000/api/verifyaccnt/${id}" target="_blank">Verify Account</a></li>
+    <li><a href="https://cop4331-g30-large.herokuapp.com/api/verifyaccnt/${id}" target="_blank">Verify Account</a></li>
   </ul>
   `;
 
   sendEmail(to, from, subject, output);
-  res.redirect('/verifycode'); // this to redirect to another page
+  // res.redirect('/emailsent'); // this to redirect to another page
 });
 
 // update account to verified
@@ -133,9 +124,10 @@ app.get('/api/verifyaccnt/:id', async (req, res, next) =>{
   // incase their user id doesnt exist or you sent the wrong one
   if (result.length != 0) {
     res.redirect('/verifysuccess'); // this to redirect to another page
-  } else {
+  } 
+  /*else {
     res.redirect('/verifyfail'); // this to redirect to another page
-  }
+  }*/
 });
 
 // sending reset password link endpoint
