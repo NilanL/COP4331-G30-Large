@@ -36,7 +36,7 @@ const [message,setMessage] = useState('');
     const doRegister = async event => 
     {
         event.preventDefault();
-        var obj = {FirstName: firstName.value, LastName: lastName.value, Username: username.value, Phone: phone.value, Email: email.value, Password: loginPassword.value};
+        var obj = {firstName: firstName.value, lastName: lastName.value, username: username.value, phone: phone.value, email: email.value, password: loginPassword.value};
         var js = JSON.stringify(obj);
         try
         {

@@ -30,7 +30,7 @@ function Login()
     const doLogin = async event => 
     {
         event.preventDefault();
-        var obj = {Username:loginName.value,Password:loginPassword.value};
+        var obj = {username:loginName.value,password:loginPassword.value};
         var js = JSON.stringify(obj);
         try
         {    
