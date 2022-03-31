@@ -1,19 +1,20 @@
-//leinecker's mern C copy and paste
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-exports.createToken = function ( fn, ln, id )
+exports.createToken = function ( id, fn, ln)
 {
-    return _createToken( fn, ln, id );
+    return _createToken( id, fn, ln );
 }
-_createToken = function ( fn, ln, id )
+_createToken = function ( id, fn, ln )
 {
     try
     {
       const expiration = new Date();
-      const user = {userId:id,firstName:fn,lastName:ln};
-      const accessToken =  jwt.sign( user, process.env.ACCESS_TOKEN_SECRET);
-      // In order to exoire with a value other than the default, use the 
+      const user = {id:id,firstName:fn,lastName:ln};
+      const accessToken =  jwt.sign( user, process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '1h'} );
+        var ret;
+      // In order to expire with a value other than the default, use the 
        // following
       /*
       const accessToken= jwt.sign(user,process.env.ACCESS_TOKEN_SECRET, 
@@ -21,11 +22,11 @@ _createToken = function ( fn, ln, id )
                        '24h'
                       '365d'
       */
-      let ret = {accessToken:accessToken};
+      ret = {accessToken:accessToken, id:id, fn:fn, ln:ln};
     }
     catch(e)
     {
-      let ret = {error:e.message};
+      ret = {error:e.message};
     }
     return ret;
 }
@@ -48,8 +49,8 @@ exports.isExpired = function( token )
 exports.refresh = function( token )
 {
   let ud = jwt.decode(token,{complete:true});
-  let userId = ud.payload.id;
+  let id = ud.payload.id;
   let firstName = ud.payload.firstName;
   let lastName = ud.payload.lastName;
-  return _createToken( firstName, lastName, userId );
+  return _createToken( id, firstName, lastName );
 }
