@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 
-function Login()
+function Register()
 {
 
 
@@ -129,4 +129,4 @@ const [message,setMessage] = useState('');
      </div>
     );
 };
-export default Login;
+export default Register;

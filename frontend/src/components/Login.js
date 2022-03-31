@@ -79,6 +79,13 @@ function Login()
 
     }
 
+    const doPassword = async event => 
+    {
+            window.location.href = '/ResetPassword';
+
+
+    }
+
 
     return(
 
@@ -117,6 +124,8 @@ function Login()
             ref={(c) => loginPassword = c} /><br /><br />
           <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doLogin}>Login</Button>   <span></span> 
           <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doRegister}> Register </Button> 
+          <br />
+          <a href='/ResetPassword'>Forgot Password</a>
         </form>
         <span id="loginResult">{message}</span>
         </Card>
