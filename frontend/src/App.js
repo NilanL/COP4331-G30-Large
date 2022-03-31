@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import CustomizePage from './pages/CustomizePage';
+import EmailVerification from './components/EmailVerification';
 
 
 
@@ -17,6 +18,9 @@ function App() {
         </Route>
         <Route path="/home" exact>
           <HomePage />
+          </Route>
+        <Route path='/api/verifyaccount/${id}' exact>
+          <EmailVerification />
         </Route>
         <Route path="/customize" exact>
           <CustomizePage />

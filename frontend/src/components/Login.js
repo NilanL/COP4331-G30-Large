@@ -37,10 +37,23 @@ function Login()
             const response = await fetch(buildPath('api/login'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
-            if( res.id <= 0 )
-            {
+
+            console.log(js);
+            console.log(res.id);
+            console.log(res);
+            if(res.error == 'Unrecognized credentials'){
+
                 console.log(res.id);
-                setMessage('User/Password combination incorrect');
+                setMessage('Username or Password is incorrect');
+            }
+            else if( res.error == 'Email is not verified can not access login' )
+            {
+                
+                setMessage('Email has not been verified');
+                //var user = {email:res.email}
+                //localStorage.setItem('user_data', JSON.stringify(user));
+                //setMessage('');
+                //window.location.href = '/notverified';
             }
             else
             {
