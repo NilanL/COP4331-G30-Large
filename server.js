@@ -13,13 +13,14 @@ app.set('port', PORT);
 app.use(cors());
 app.use(bodyParser.json());
 
-/*
+/* OLD WAY
 const url = process.env.MONGODB_URI;
 const MongoClient = require('mongodb').MongoClient;
 const client = new MongoClient(url);
 client.connect();
 */
 
+// NEW WAY
 const url = process.env.MONGODB_URI;
 const mongoose = require("mongoose");
 mongoose.connect(url)
