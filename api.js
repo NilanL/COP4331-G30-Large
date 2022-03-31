@@ -4,22 +4,34 @@ require('mongodb');
 const { ObjectId } = require('mongodb');
 const sendEmail = require('./sendEmail');
 
-exports.setApp = function (app, client) {
+const User = require("./models/user.js");
+
+exports.setApp = function (app, mongoose) {
     // login endpoint
     app.post('/api/login', async (req, res, next) => {
         const { username, password } = req.body;
-        const foundUser = await db.collection('users').findOne({ Username: username });
 
-        if (foundUser.verified != true){
+        /* OLD WAY
+        const foundUser = await db.collection('users').findOne({ Username: username });
+        */
+
+        // NEW WAY
+        const foundUser = await User.findOne({Username:username});
+
+        if (foundUser.Verified != true){
             ret = { error: 'Email is not verified can not access login'};
                 res.status(500).json(ret);
                 return;
         }
 
         try {
+            /* OLD WAY
             const db = client.db();
             const results = await db.collection('users').find({ Username: username, Password: password }).toArray();
+            */
 
+            // NEW WAY
+            const results = await User.find({Username:username,Password:password});
             let id = '';
             let fn = '';
             let ln = '';
@@ -62,14 +74,29 @@ exports.setApp = function (app, client) {
     app.post('/api/register', async (req, res, next) => {
         const { firstName, lastName, username, phone, email, password } = req.body;
 
+        /* OLD WAY
         const newUser = { FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password, verified: false };
+        */
+
+        // NEW WAY
+        const newUser = new User({
+            FirstName: firstName, LastName: lastName, Username: username, 
+            Phone: phone, Email: email, Password: password, Verified: false,
+            NewUser: true
+        });
+
         let error = '';
         var ret;
 
         try {
+            /* OLD WAY
             const db = client.db();
             const searchUsername = db.collection('users').findOne({Username: username});
             const searchEmail = db.collection('users').findOne({Email: email});
+            */
+            // NEW WAY
+            const searchUsername = await User.findOne({Username:username});
+            const searchEmail = await User.findOne({Email: email});
 
             // check if username already in use
             if (searchUsername)
@@ -89,7 +116,8 @@ exports.setApp = function (app, client) {
 
             // else create new user
             else {
-                const result = db.collection('users').insertOne(newUser);
+                //const result = db.collection('users').insertOne(newUser);
+                newUser.save();
             }
         }
         catch (e) {
@@ -105,8 +133,14 @@ exports.setApp = function (app, client) {
         // have user re-enter email
         const { email } = req.body;
 
+        /* OLD WAY
         const db = client.db();
         const foundUser = await db.collection('users').findOne({ Email: email });   // finds user with given email
+        */
+
+        // NEW WAY
+        const foundUser = await User.findOne({Email: email});
+
         if (!foundUser) {
             // no user, return 400 (or 404 not found) code
             ret = { error: 'User not found' }
@@ -126,12 +160,12 @@ exports.setApp = function (app, client) {
         const link = `http://localhost:5000/api/verifyaccount/${id}`;
 
         const output = `
-    <p>This is to verify your email for DailyGrind!</p>
-    <h3>Your verification link is below:</h3>
-    <ul>
-      <li> Verification Link: ${link}</li>
-    </ul>
-    `;
+        <p>This is to verify your email for DailyGrind!</p>
+        <h3>Your verification link is below:</h3>
+        <ul>
+        <li> Verification Link: ${link}</li>
+        </ul>
+        `;
 
         sendEmail(to, from, subject, output);
         res.status(200).json(ret);
@@ -140,11 +174,20 @@ exports.setApp = function (app, client) {
     // update account to verified
     app.get('/api/verifyaccount/:id', async (req, res, next) => {
         console.log("in verify account");
-        const db = client.db();
         const id = req.params.id;
-        const user = db.collection('users').findOne({_id: ObjectId(id.toString())});
         console.log(id);
+
+        /* OLD WAY
+        const db = client.db();
+        const user = db.collection('users').findOne({_id: ObjectId(id.toString())});
         db.collection('users').updateOne({ _id: id}, { $set: { verified: true}});
+        */
+        
+        // NEW WAY
+        const user = await User.findById(id);
+        user.Verified = true;
+        user.save();
+
         console.log("set verified to true?");
         //const user = db.collection('users').find(id);
         console.log("finding user?");
@@ -164,8 +207,13 @@ exports.setApp = function (app, client) {
         var ret;
 
         try {
+            /* OLD WAY
             const db = client.db();
             const foundUser = await db.collection('users').findOne({ Email: email });   // finds user with given email
+            */
+
+            // NEW WAY
+            const foundUser = await User.findOne({Email: email});
 
             if (!foundUser) {
                 // no user, return 400 (or 404 not found) code
@@ -211,9 +259,17 @@ exports.setApp = function (app, client) {
     // reset password endpoint
     app.put('/api/resetpass/:id', (req, res, next) => {
         const newPassword = req.body;
+        const id = req.params.id;
 
+        /* OLD WAY
         const db = client.db();
         const result = db.collection('users').updateOne({ _id: req.params.id }, { $set: { Password: newPassword } });
+        */
+
+        // NEW WAY
+        const result = User.findById(id);
+        result.Password = newPassword;
+        result.save();
     });
 
     // TO-DO: 

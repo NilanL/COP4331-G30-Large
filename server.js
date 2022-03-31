@@ -13,13 +13,24 @@ app.set('port', PORT);
 app.use(cors());
 app.use(bodyParser.json());
 
+/*
 const url = process.env.MONGODB_URI;
 const MongoClient = require('mongodb').MongoClient;
 const client = new MongoClient(url);
 client.connect();
+*/
+
+const url = process.env.MONGODB_URI;
+const mongoose = require("mongoose");
+mongoose.connect(url)
+  .then(() => console.log("Mongo DB connected"))
+  .catch(err => console.log(err));
 
 let api = require('./api.js');
-api.setApp( app, client );
+api.setApp( app, mongoose );
+
+const User = require("./models/user.js");
+//const Card = require("./models/card.js");
 
 ///////////////////////////////////////////////////
 // For Heroku deployment
