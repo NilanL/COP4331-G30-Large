@@ -1,7 +1,8 @@
 import React from 'react';
 import PageTitle from '../components/PageTitle';
-import Customize from '../components/Customize';
-const CustomizePage = () =>
+import RetrieveAccount from '../components/RetrieveAccount';
+
+const ForgotPassword = () =>
 {
     return(
         <div className='rowC'>
@@ -11,8 +12,8 @@ const CustomizePage = () =>
             }
         </style>
         <PageTitle />
-        <Customize />
+        <RetrieveAccount />
       </div>
     );
 };
-export default CustomizePage;
+export default ForgotPassword;

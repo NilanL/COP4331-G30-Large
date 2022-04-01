@@ -41,12 +41,12 @@ function Login()
             console.log(js);
             console.log(res.id);
             console.log(res);
-            if(res.error == 'Unrecognized credentials'){
+            if(res.error === 'Unrecognized credentials'){
 
                 console.log(res.id);
                 setMessage('Username or Password is incorrect');
             }
-            else if( res.error == 'Email is not verified can not access login' )
+            else if( res.error === 'Email is not verified can not access login' )
             {
                 
                 setMessage('Email has not been verified');
@@ -78,14 +78,6 @@ function Login()
 
 
     }
-
-    const doPassword = async event => 
-    {
-            window.location.href = '/ResetPassword';
-
-
-    }
-
 
     return(
 
@@ -125,7 +117,7 @@ function Login()
           <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doLogin}>Login</Button>   <span></span> 
           <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doRegister}> Register </Button> 
           <br />
-          <a href='/ResetPassword'>Forgot Password</a>
+          <a href='/RetrieveAccount'>Forgot Password</a>
         </form>
         <span id="loginResult">{message}</span>
         </Card>

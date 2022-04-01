@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import validator from 'validator'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -6,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 
-function ResetPassword()
+function RetrieveAccount()
 {
 
   const app_name = 'cop4331-g30-large'
@@ -22,35 +23,31 @@ function ResetPassword()
         }
     }
 
-    var loginPassword = '';
-    var duplicatePassword = '';
-    var id = '';
-
-    // need to sort out how id will be retrieved. 
+    var email = '';
 
     const [message,setMessage] = useState('');
 
-    const doResetPassword = async event => 
+    const doRetrieveAccount = async event => 
     {
       event.preventDefault();
-        var obj = {id: id, password:loginPassword.value};
+        var obj = {email: email.value};
         var js = JSON.stringify(obj);
         
         try
         { 
           setMessage('');
           
-          if((loginPassword.value === '') || (duplicatePassword.value === '')) 
+          if(email.value === '')
           {
-            setMessage('Password cannot be blank.');
+            setMessage('Please enter your email address to retrieve your account.');
           }
-          else if (loginPassword.value !== duplicatePassword.value) 
+          else if (!validator.isEmail(email.value))
           {
-            setMessage('Passwords do not match. Please try again.');
+            setMessage('Please enter a valid email address.');
           }
           else
           {
-            const response = await fetch(buildPath('api/passwordreset'),
+            const response = await fetch(buildPath('api/retrieveaccount'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
             if( res.id <= 0 )
@@ -59,7 +56,7 @@ function ResetPassword()
             }
             else
             {
-              console.log('Password Reset');
+              console.log('Retrieve request sent.');
               console.log(js);
             }
           }
@@ -84,10 +81,11 @@ function ResetPassword()
         <Card className = "text-center" style = {{width: '50rem', height : '50rem' }}>
       <form>
         <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-        <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "50px"}}>Reset Password</Card.Text> 
-        <input type="text" id="loginPassword" placeholder="Password" ref={(c) => loginPassword= c} /><br /><br />
-        <input type="text" id="duplicatePassword" placeholder="Confirm Password" ref={(c) => duplicatePassword= c} /><br /><br />
-        <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doResetPassword}>Update Password</Button> <span></span>
+        <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "50px"}}>Forgot Password</Card.Text> 
+        <br /><br />
+        <p>Please enter your email address.<br />If your account is found, you will recieve an email.</p>
+        <input type="text" id="email" placeholder="Email Address" ref={(c) => email= c} /><br /><br />
+        <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doRetrieveAccount}>Submit</Button> <span></span>
         <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doCancel}>Cancel</Button><br /><br />
       </form>
       <span id="resetResult">{message}</span>
@@ -95,4 +93,4 @@ function ResetPassword()
     </div>
   );
 };
-export default ResetPassword;
+export default RetrieveAccount;
