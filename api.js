@@ -131,24 +131,7 @@ exports.setApp = function (app, mongoose) {
     // send email verification endpoint
     app.post('/api/emailverify', async (req, res, next) => {
         // have user re-enter email
-        const { email } = req.body;
-
-        /* OLD WAY
-        const db = client.db();
-        const foundUser = await db.collection('users').findOne({ Email: email });   // finds user with given email
-        */
-
-        // NEW WAY
-        const foundUser = await User.findOne({Email: email});
-
-        if (!foundUser) {
-            // no user, return 400 (or 404 not found) code
-            ret = { error: 'User not found' }
-            res.status(400).json(ret);
-            return;
-        }
-        const id = foundUser._id;   // gets id of user from database
-        let ret = {Username: foundUser.username, Password: foundUser.password};
+        const email = req.body;
 
         const from = "dailygrind4331@gmail.com";
         const to = email;
@@ -157,7 +140,7 @@ exports.setApp = function (app, mongoose) {
         console.log(`email: ${email} id: ${id}, user: ${JSON.stringify(foundUser)}`);
 
         //const link = `https://cop4331-g30-large.herokuapp.com/api/verifyaccount/${id}`;
-        const link = `http://localhost:5000/api/verifyaccount/${id}`;
+        const link = `http://localhost:5000/api/verifyaccount/${email}`;
 
         const output = `
         <p>This is to verify your email for DailyGrind!</p>
@@ -172,10 +155,9 @@ exports.setApp = function (app, mongoose) {
     });
 
     // update account to verified
-    app.get('/api/verifyaccount/:id', async (req, res, next) => {
+    app.get('/api/verifyaccount/:email', async (req, res, next) => {
         console.log("in verify account");
-        const id = req.params.id;
-        console.log(id);
+        const userEmail = req.params.email;
 
         /* OLD WAY
         const db = client.db();
@@ -184,16 +166,23 @@ exports.setApp = function (app, mongoose) {
         */
         
         // NEW WAY
-        const user = await User.findById(id);
-        user.Verified = true;
-        user.save();
+        const foundUser = await User.findOne({Email: userEmail});
+
+        if (!foundUser) {
+            // no user, return 400 (or 404 not found) code
+            ret = { error: 'User not found' }
+            res.status(400).json(ret);
+            return;
+        }
+        foundUser.Verified = true;
+        foundUser.save();
 
         console.log("set verified to true?");
         //const user = db.collection('users').find(id);
         console.log("finding user?");
-        if (user)
+        if (foundUser)
         {
-            console.log("First Name: ", user.FirstName);
+            console.log("First Name: ", foundUser.FirstName);
             
             //console.log("set verified to true");
         }
