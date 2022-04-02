@@ -4,34 +4,22 @@ require('mongodb');
 const { ObjectId } = require('mongodb');
 const sendEmail = require('./sendEmail');
 
-const User = require("./models/user.js");
-
-exports.setApp = function (app, mongoose) {
+exports.setApp = function (app, client) {
     // login endpoint
     app.post('/api/login', async (req, res, next) => {
         const { username, password } = req.body;
-
-        /* OLD WAY
         const foundUser = await db.collection('users').findOne({ Username: username });
-        */
 
-        // NEW WAY
-        const foundUser = await User.findOne({Username:username});
-
-        if (foundUser.Verified != true){
+        if (foundUser.verified != true){
             ret = { error: 'Email is not verified can not access login'};
                 res.status(500).json(ret);
                 return;
         }
 
         try {
-            /* OLD WAY
             const db = client.db();
             const results = await db.collection('users').find({ Username: username, Password: password }).toArray();
-            */
 
-            // NEW WAY
-            const results = await User.find({Username:username,Password:password});
             let id = '';
             let fn = '';
             let ln = '';
@@ -74,29 +62,14 @@ exports.setApp = function (app, mongoose) {
     app.post('/api/register', async (req, res, next) => {
         const { firstName, lastName, username, phone, email, password } = req.body;
 
-        /* OLD WAY
-        const newUser = { FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password, verified: false };
-        */
-
-        // NEW WAY
-        const newUser = new User({
-            FirstName: firstName, LastName: lastName, Username: username, 
-            Phone: phone, Email: email, Password: password, Verified: false,
-            NewUser: true
-        });
-
+        const newUser = { FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password, Verified: false };
         let error = '';
         var ret;
 
         try {
-            /* OLD WAY
             const db = client.db();
-            const searchUsername = db.collection('users').findOne({Username: username});
-            const searchEmail = db.collection('users').findOne({Email: email});
-            */
-            // NEW WAY
-            const searchUsername = await User.findOne({Username:username});
-            const searchEmail = await User.findOne({Email: email});
+            const searchUsername = await db.collection('users').findOne({Username: username});
+            const searchEmail = await db.collection('users').findOne({Email: email});
 
             // check if username already in use
             if (searchUsername)
@@ -116,8 +89,7 @@ exports.setApp = function (app, mongoose) {
 
             // else create new user
             else {
-                //const result = db.collection('users').insertOne(newUser);
-                newUser.save();
+                const result = await db.collection('users').insertOne(newUser);
             }
         }
         catch (e) {
@@ -131,24 +103,37 @@ exports.setApp = function (app, mongoose) {
     // send email verification endpoint
     app.post('/api/emailverify', async (req, res, next) => {
         // have user re-enter email
-        const email = req.body;
+        const { email } = req.body;
+
+        const db = client.db();
+        const foundUser = await db.collection('users').findOne({ Email: email });   // finds user with given email
+        if (!foundUser) {
+            // no user, return 400 (or 404 not found) code
+            ret = { error: 'User not found' }
+            res.status(400).json(ret);
+            return;
+        }
+      
+        let ret = {Username: foundUser.username, Password: foundUser.password};
 
         const from = "dailygrind4331@gmail.com";
         const to = email;
         const subject = "Daily Grind Verification";
 
-        console.log(`email: ${email} id: ${id}, user: ${JSON.stringify(foundUser)}`);
+        console.log(`email: ${email}`);
 
         //const link = `https://cop4331-g30-large.herokuapp.com/api/verifyaccount/${id}`;
+
+        // change link to page to then link next api endpoint on that page instead
         const link = `http://localhost:5000/api/verifyaccount/${email}`;
 
         const output = `
-        <p>This is to verify your email for DailyGrind!</p>
-        <h3>Your verification link is below:</h3>
-        <ul>
-        <li> Verification Link: ${link}</li>
-        </ul>
-        `;
+    <p>This is to verify your email for DailyGrind!</p>
+    <h3>Your verification link is below:</h3>
+    <ul>
+      <li> Verification Link: ${link}</li>
+    </ul>
+    `;
 
         sendEmail(to, from, subject, output);
         res.status(200).json(ret);
@@ -157,32 +142,17 @@ exports.setApp = function (app, mongoose) {
     // update account to verified
     app.get('/api/verifyaccount/:email', async (req, res, next) => {
         console.log("in verify account");
-        const userEmail = req.params.email;
-
-        /* OLD WAY
         const db = client.db();
-        const user = db.collection('users').findOne({_id: ObjectId(id.toString())});
-        db.collection('users').updateOne({ _id: id}, { $set: { verified: true}});
-        */
-        
-        // NEW WAY
-        const foundUser = await User.findOne({Email: userEmail});
-
-        if (!foundUser) {
-            // no user, return 400 (or 404 not found) code
-            ret = { error: 'User not found' }
-            res.status(400).json(ret);
-            return;
-        }
-        foundUser.Verified = true;
-        foundUser.save();
-
+        const userEmail = req.params.email;
+        const user = await db.collection('users').findOne({Email: userEmail});
+        console.log(userEmail);
+        db.collection('users').updateOne({Email: userEmail}, { $set: { Verified: true}});
         console.log("set verified to true?");
         //const user = db.collection('users').find(id);
         console.log("finding user?");
-        if (foundUser)
+        if (user)
         {
-            console.log("First Name: ", foundUser.FirstName);
+            console.log("First Name: ", user.FirstName);
             
             //console.log("set verified to true");
         }
@@ -196,13 +166,8 @@ exports.setApp = function (app, mongoose) {
         var ret;
 
         try {
-            /* OLD WAY
             const db = client.db();
             const foundUser = await db.collection('users').findOne({ Email: email });   // finds user with given email
-            */
-
-            // NEW WAY
-            const foundUser = await User.findOne({Email: email});
 
             if (!foundUser) {
                 // no user, return 400 (or 404 not found) code
@@ -223,8 +188,8 @@ exports.setApp = function (app, mongoose) {
                 ret = { error: e.message };
             }
 
-            const link = `https://cop4331-g30-large.herokuapp.com/api/resetpass/${id}/${ret.accessToken}`;
-
+            //const link = `https://cop4331-g30-large.herokuapp.com/api/resetpass/${id}/${ret.accessToken}`;
+            const link = `http://localhost:5000/api/resetpass/${email}`;
             const from = "dailygrind4331@gmail.com";
             const to = email;
             const subject = "Daily Grind Password Reset";
@@ -238,6 +203,7 @@ exports.setApp = function (app, mongoose) {
             `;
 
             sendEmail(to, from, subject, output);
+            res.status(200).json(ret);
         }
         catch (e) {
             error = e.toString();
@@ -246,19 +212,15 @@ exports.setApp = function (app, mongoose) {
     });
 
     // reset password endpoint
-    app.put('/api/resetpass/:id', (req, res, next) => {
+    app.post('/api/resetpass/:email', async (req, res, next) => {
+        const userEmail = req.params.email;
         const newPassword = req.body;
-        const id = req.params.id;
 
-        /* OLD WAY
+        let ret = {Email: userEmail};
+
         const db = client.db();
-        const result = db.collection('users').updateOne({ _id: req.params.id }, { $set: { Password: newPassword } });
-        */
-
-        // NEW WAY
-        const result = User.findById(id);
-        result.Password = newPassword;
-        result.save();
+        db.collection('users').updateOne({Email: userEmail}, { $set: { Password: newPassword.toString() } });
+        res.status(200).json(ret);
     });
 
     // TO-DO: 
