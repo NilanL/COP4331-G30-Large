@@ -8,6 +8,7 @@ exports.setApp = function (app, client) {
     // login endpoint
     app.post('/api/login', async (req, res, next) => {
         const { username, password } = req.body;
+        const db = client.db();
         const foundUser = await db.collection('users').findOne({ Username: username });
 
         if (foundUser.verified != true){
