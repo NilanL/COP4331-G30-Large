@@ -8,18 +8,12 @@ exports.setApp = function (app, client) {
     // login endpoint
     app.post('/api/login', async (req, res, next) => {
         const { username, password } = req.body;
-        const db = client.db();
-        const foundUser = await db.collection('users').findOne({ Username: username });
-
-        if (foundUser.Verified != true){
-            ret = { error: 'Email is not verified can not access login'};
-                res.status(500).json(ret);
-                return;
-        }
+        let error = '';
 
         try {
+        
             const db = client.db();
-            const results = await db.collection('users').find({ Username: username, Password: password }).toArray();
+            const foundUser = await db.collection('users').findOne({ Username: username, Password: password });
 
             let id = '';
             let fn = '';
@@ -29,20 +23,33 @@ exports.setApp = function (app, client) {
 
             var ret;
 
-            if (results.length == 0) {
+            if (!foundUser) {
                 // no user, return 400 (or 404 not found) code
                 ret = { error: 'Unrecognized credentials' }
                 res.status(400).json(ret);
                 return;
             }
 
-            id = results[0]._id.toString();
-            fn = results[0].FirstName;
-            ln = results[0].LastName;
-            em = results[0].email;
-            ph = results[0].phone;
+            else if (foundUser.Verified != true){
+                ret = { error: 'Email is not verified can not access login'};
+                res.status(500).json(ret);
+                return;
+            }
 
-            try {
+            else if (foundUser.Customized != true){
+                // redirect to customize page
+                error = 'User has not customized their account';
+            }
+
+            id = foundUser._id.toString();
+            fn = foundUser.FirstName;
+            ln = foundUser.LastName;
+            em = foundUser.email;
+            ph = foundUser.phone;
+
+           /*
+           jwt token thing
+           try {
                 const token = require("./createJWT.js");
                 ret = token.createToken(id, fn, ln);
             }
@@ -50,7 +57,8 @@ exports.setApp = function (app, client) {
                 ret = { error: e.message };
             }
 
-            //let ret = { id: id, firstName: fn, lastName: ln, error: '' };
+            //let ret = { id: id, firstName: fn, lastName: ln, error: '' };*/
+            ret = {Username: username, error: error};
             res.status(200).json(ret);
         }
         catch (e) {
@@ -63,7 +71,7 @@ exports.setApp = function (app, client) {
     app.post('/api/register', async (req, res, next) => {
         const { firstName, lastName, username, phone, email, password } = req.body;
 
-        const newUser = { FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password, Verified: false };
+        const newUser = { FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password, Verified: false, Customized: false};
         let error = '';
         var ret;
 
@@ -105,6 +113,7 @@ exports.setApp = function (app, client) {
     app.post('/api/emailverify', async (req, res, next) => {
         // have user re-enter email
         const { email } = req.body;
+        let ret;
 
         const db = client.db();
         const foundUser = await db.collection('users').findOne({ Email: email });   // finds user with given email
@@ -115,7 +124,7 @@ exports.setApp = function (app, client) {
             return;
         }
       
-        let ret = {Username: foundUser.username, Password: foundUser.password};
+        ret = {Username: foundUser.username, Password: foundUser.password};
 
         const from = "dailygrind4331@gmail.com";
         const to = email;
@@ -142,20 +151,15 @@ exports.setApp = function (app, client) {
 
     // update account to verified
     app.get('/api/verifyaccount/:email', async (req, res, next) => {
-        console.log("in verify account");
         const db = client.db();
         const userEmail = req.params.email;
         const user = await db.collection('users').findOne({Email: userEmail});
         console.log(userEmail);
         db.collection('users').updateOne({Email: userEmail}, { $set: { Verified: true}});
-        console.log("set verified to true?");
-        //const user = db.collection('users').find(id);
-        console.log("finding user?");
+
         if (user)
         {
             console.log("First Name: ", user.FirstName);
-            
-            //console.log("set verified to true");
         }
     });
 
@@ -215,16 +219,31 @@ exports.setApp = function (app, client) {
     // reset password endpoint
     app.post('/api/resetpass/:email', async (req, res, next) => {
         const userEmail = req.params.email;
-        const newPassword = req.body;
+        const newPassword = req.body.Password;
 
         let ret = {Email: userEmail};
 
         const db = client.db();
-        db.collection('users').updateOne({Email: userEmail}, { $set: { Password: newPassword.toString() } });
+        db.collection('users').updateOne({Email: userEmail}, { $set: { Password : newPassword} });
+        res.status(200).json(ret);
+    });
+
+    // customization endpoint
+    app.post('/api/customize/:username', async (req, res, next) => {
+        const username = req.params.username;
+
+        const { exercise, meal, medication, recreation, sleep, water } = req.body;
+
+        const userHabits = {User: username, Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water};
+
+        let ret = { User: username };
+
+        const db = client.db();
+        db.collection('habits').insertOne(userHabits);
+        db.collection('users').updateOne({Username: username}, {$set: {Customized : true}}); 
         res.status(200).json(ret);
     });
 
     // TO-DO: 
-    // customize account: add productivity and/or health to user, 
     // customize #2: add per productivty and health which activity
 }
