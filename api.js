@@ -11,7 +11,7 @@ exports.setApp = function (app, client) {
         const db = client.db();
         const foundUser = await db.collection('users').findOne({ Username: username });
 
-        if (foundUser.verified != true){
+        if (foundUser.Verified != true){
             ret = { error: 'Email is not verified can not access login'};
                 res.status(500).json(ret);
                 return;
