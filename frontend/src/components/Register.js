@@ -32,6 +32,8 @@ var phone = '';
 var email = '';
 var loginPassword = '';
 
+const [message,setMessage] = useState('');
+
 
     const doRegister = async event => 
     {

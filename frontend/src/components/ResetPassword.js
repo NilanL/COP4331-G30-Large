@@ -22,11 +22,20 @@ function ResetPassword()
         }
     }
 
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var id = urlParams.get('id');
+    console.log("id: " + id);
+
+
     var loginPassword = '';
     var duplicatePassword = '';
-    var id = '';
-
-    // need to sort out how id will be retrieved. 
+  
+    // check if new password is different than old password
+    // goal, send it and password. 
+    // If id found and password new, set new password.
+    // If id not found, error.
+    // If id found and password is the same as old, error, must select new password
 
     const [message,setMessage] = useState('');
 
