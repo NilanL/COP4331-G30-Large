@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import validator from 'validator'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -31,19 +32,16 @@ var phone = '';
 var email = '';
 var loginPassword = '';
 
-const [message,setMessage] = useState('');
 
     const doRegister = async event => 
     {
         event.preventDefault();
         var obj = {firstName: firstName.value, lastName: lastName.value, username: username.value, phone: phone.value, email: email.value, password: loginPassword.value};
         var js = JSON.stringify(obj);
+        
         try
         {
-
             
-
-
             const response = await fetch(buildPath('api/register'),
             {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var txt = await response.text();
