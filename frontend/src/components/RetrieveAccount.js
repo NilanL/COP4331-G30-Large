@@ -47,7 +47,7 @@ function RetrieveAccount()
           }
           else
           {
-            const response = await fetch(buildPath('api/retrieveaccount'),
+            const response = await fetch(buildPath('api/forgotpass'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
             if( res.id <= 0 )

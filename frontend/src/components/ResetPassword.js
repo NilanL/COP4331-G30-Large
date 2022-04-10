@@ -33,9 +33,9 @@ function ResetPassword()
   
     // check if new password is different than old password
     // goal, send it and password. 
-    // If id found and password new, set new password.
-    // If id not found, error.
-    // If id found and password is the same as old, error, must select new password
+    // If id found and password new, set new password. (200)
+    // If id not found, error. (400)
+    // If id found and password is the same as old, error, must select new password (500)
 
     const [message,setMessage] = useState('');
 
@@ -59,7 +59,7 @@ function ResetPassword()
           }
           else
           {
-            const response = await fetch(buildPath('api/passwordreset'),
+            const response = await fetch(buildPath('api/resetpass'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
             if( res.id <= 0 )
