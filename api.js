@@ -14,7 +14,7 @@ exports.setApp = function (app, client) {
         
             const db = client.db();
             const foundUser = await db.collection('users').findOne({ Username: username, Password: password });
-            console.log(foundUser.FirstName);
+            // console.log(foundUser.FirstName);
 
             let id = '';
             let fn = '';
@@ -219,9 +219,9 @@ exports.setApp = function (app, client) {
     });
 
     // reset password endpoint
-    app.post('/api/resetpass/:id', async (req, res, next) => {
-        const userId = req.query.id;
-        const newPassword = req.body.Password;
+    app.post('/api/resetpass', async (req, res, next) => {
+        const userId = req.body.id;
+        const newPassword = req.body.password;
 
         // no user found 
         // password already taken
