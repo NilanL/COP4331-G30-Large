@@ -22,7 +22,7 @@ client.connect();
 // client2.connect();
 
 let api = require('./api.js');
-let api2 = require('./habitsApi.js');
+// let api2 = require('./habitsApi.js');
 const { MONGO_CLIENT_EVENTS } = require('mongodb');
 api.setApp( app, client);
 // api2.setApp(app, client2);

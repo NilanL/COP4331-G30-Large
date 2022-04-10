@@ -38,15 +38,18 @@ function Login()
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
 
-            console.log(js);
-            console.log(res.id);
-            console.log(res);
+            setMessage('');
+
+            //console.log(js);
+            //console.log(res.id);
+            //console.log(res);
+            //console.log(res.error);
             console.log(res.error);
 
-            if(res.error === 'Unrecognized credentials'){
-            //if(res.status === '400'){
+            if( res.error === 'Unrecognized credentials' ){
+            //if(res.code === 400){
 
-                console.log(res.id);
+                //console.log(res.id);
                 setMessage('Username or Password is incorrect');
             }
             else if( res.error === 'Email is not verified can not access login' )
@@ -58,17 +61,14 @@ function Login()
                 //setMessage('');
                 //window.location.href = '/notverified';
             }
-
-            /*
-            else
+            /*else
             {
                 var user =  
                 {firstName:res.firstName,lastName:res.lastName,id:res.id}
                 localStorage.setItem('user_data', JSON.stringify(user));
                 setMessage('');
                 window.location.href = '/home';
-            }
-            */
+            }*/
         }
         catch(e)
         {

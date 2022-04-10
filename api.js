@@ -2,7 +2,7 @@ require('express');
 require('mongodb');
 
 const { ObjectId } = require('mongodb');
-const sendEmail = require('./sendEmail');
+// const sendEmail = require('./sendEmail');
 
 exports.setApp = function (app, client) {
     // login endpoint
@@ -14,7 +14,7 @@ exports.setApp = function (app, client) {
         
             const db = client.db();
             const foundUser = await db.collection('users').findOne({ Username: username, Password: password });
-            console.log(foundUser.FirstName);
+            //console.log(foundUser.FirstName);
 
             let id = '';
             let fn = '';
@@ -26,8 +26,8 @@ exports.setApp = function (app, client) {
 
             if (!foundUser) {
                 // no user, return 400 (or 404 not found) code
-                ret = { error: 'Unrecognized credentials' }
-                res.status(400).json(ret);
+                ret = { error: 'Unrecognized credentials'};
+                res.status(400).json(ret)
                 return;
             }
 
@@ -219,9 +219,9 @@ exports.setApp = function (app, client) {
     });
 
     // reset password endpoint
-    app.post('/api/resetpass/:id', async (req, res, next) => {
-        const userId = req.query.id;
-        const newPassword = req.body.Password;
+    app.post('/api/resetpass', async (req, res, next) => {
+        const userId = req.body.id;
+        const newPassword = req.body.password;
 
         let ret = {_id: userId};
 
@@ -229,7 +229,7 @@ exports.setApp = function (app, client) {
         db.collection('users').updateOne({_id: userId}, { $set: { Password : newPassword} });
         res.status(200).json(ret);
     });
-
+/*
     // customization endpoint
     app.post('/api/customize/:username', async (req, res, next) => {
         const username = req.params.username;
@@ -257,7 +257,8 @@ exports.setApp = function (app, client) {
         const db = client.db();
         db.collection('habits').insertOne(userHabits);
     });
-
+*/
     // TO-DO:
     // hash passwords in db?
+    
 }

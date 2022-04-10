@@ -42,9 +42,9 @@ function ResetPassword()
     const doResetPassword = async event => 
     {
       event.preventDefault();
-        var obj = {id: id, password:loginPassword.value};
+        var obj = {id:id, password:loginPassword.value};
         var js = JSON.stringify(obj);
-        
+        console.log(obj);
         try
         { 
           setMessage('');
@@ -62,6 +62,7 @@ function ResetPassword()
             const response = await fetch(buildPath('api/resetpass'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
+            console.log(res);
             if( res.id <= 0 )
             {
               alert( "API Error:" + res.error );
