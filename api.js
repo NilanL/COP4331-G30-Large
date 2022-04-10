@@ -2,7 +2,7 @@ require('express');
 require('mongodb');
 
 const { ObjectId } = require('mongodb');
-//const sendEmail = require('./sendEmail');
+const sendEmail = require('./sendEmail');
 
 exports.setApp = function (app, client) {
     // login endpoint
