@@ -195,8 +195,8 @@ exports.setApp = function (app, client) {
                 ret = { error: e.message };
             }
 
-            //const link = `https://cop4331-g30-large.herokuapp.com/resetpass/?id=${id}`;
-            const link = `http://localhost:5000/resetpass/?id=${id}`;
+            //const link = `https://cop4331-g30-large.herokuapp.com/ResetPassword/?id=${id}`;
+            const link = `http://localhost:5000/ResetPassword/?id=${id}`;
             const from = "dailygrind4331@gmail.com";
             const to = email;
             const subject = "Daily Grind Password Reset";
@@ -223,6 +223,9 @@ exports.setApp = function (app, client) {
         const userId = req.query.id;
         const newPassword = req.body.Password;
 
+        // no user found 
+        // password already taken
+        
         let ret = {_id: userId};
 
         const db = client.db();
@@ -246,6 +249,7 @@ exports.setApp = function (app, client) {
         res.status(200).json(ret);
     });
 
+    // update customization endpoint
     app.post('/api/updatecustomization/:username', async (req, res, next) => {
         const username = req.params.username;
         const { exercise, meal, medication, recreation, sleep, water } = req.body;
