@@ -34,14 +34,17 @@ function Login()
         var js = JSON.stringify(obj);
         try
         {    
-            const response = await fetch(buildPath('/api/login'),
+            const response = await fetch(buildPath('api/login'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
 
             console.log(js);
             console.log(res.id);
             console.log(res);
+            console.log(res.error);
+
             if(res.error === 'Unrecognized credentials'){
+            //if(res.status === '400'){
 
                 console.log(res.id);
                 setMessage('Username or Password is incorrect');
@@ -55,6 +58,8 @@ function Login()
                 //setMessage('');
                 //window.location.href = '/notverified';
             }
+
+            /*
             else
             {
                 var user =  
@@ -63,6 +68,7 @@ function Login()
                 setMessage('');
                 window.location.href = '/home';
             }
+            */
         }
         catch(e)
         {
