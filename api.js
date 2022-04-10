@@ -14,6 +14,7 @@ exports.setApp = function (app, client) {
         
             const db = client.db();
             const foundUser = await db.collection('users').findOne({ Username: username, Password: password });
+            console.log(foundUser.FirstName);
 
             let id = '';
             let fn = '';
@@ -133,6 +134,7 @@ exports.setApp = function (app, client) {
         console.log(`email: ${email}`);
 
         //const link = `https://cop4331-g30-large.herokuapp.com/api/verifyaccount/${id}`;
+        //const link = `http://localhost:5000/EmailVerification
 
         // change link to page to then link next api endpoint on that page instead
         const link = `http://localhost:5000/api/verifyaccount/${email}`;
@@ -193,8 +195,8 @@ exports.setApp = function (app, client) {
                 ret = { error: e.message };
             }
 
-            //const link = `https://cop4331-g30-large.herokuapp.com/api/resetpass/${id}/${ret.accessToken}`;
-            const link = `http://localhost:5000/api/resetpass/${email}`;
+            //const link = `https://cop4331-g30-large.herokuapp.com/resetpass/?id=${id}`;
+            const link = `http://localhost:5000/resetpass/?id=${id}`;
             const from = "dailygrind4331@gmail.com";
             const to = email;
             const subject = "Daily Grind Password Reset";
@@ -217,14 +219,14 @@ exports.setApp = function (app, client) {
     });
 
     // reset password endpoint
-    app.post('/api/resetpass/:email', async (req, res, next) => {
-        const userEmail = req.params.email;
+    app.post('/api/resetpass/:id', async (req, res, next) => {
+        const userId = req.query.id;
         const newPassword = req.body.Password;
 
-        let ret = {Email: userEmail};
+        let ret = {_id: userId};
 
         const db = client.db();
-        db.collection('users').updateOne({Email: userEmail}, { $set: { Password : newPassword} });
+        db.collection('users').updateOne({_id: userId}, { $set: { Password : newPassword} });
         res.status(200).json(ret);
     });
 
@@ -244,6 +246,18 @@ exports.setApp = function (app, client) {
         res.status(200).json(ret);
     });
 
-    // TO-DO: 
-    // customize #2: add per productivty and health which activity
+    app.post('/api/updatecustomization/:username', async (req, res, next) => {
+        const username = req.params.username;
+        const { exercise, meal, medication, recreation, sleep, water } = req.body;
+
+        const userHabits = {User: username, Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water};
+
+        let ret = { User: username };
+
+        const db = client.db();
+        db.collection('habits').insertOne(userHabits);
+    });
+
+    // TO-DO:
+    // hash passwords in db?
 }
