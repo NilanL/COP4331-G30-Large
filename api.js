@@ -2,7 +2,7 @@ require('express');
 require('mongodb');
 
 const { ObjectId } = require('mongodb');
-// const sendEmail = require('./sendEmail');
+//const sendEmail = require('./sendEmail');
 
 exports.setApp = function (app, client) {
     // login endpoint
@@ -14,7 +14,7 @@ exports.setApp = function (app, client) {
         
             const db = client.db();
             const foundUser = await db.collection('users').findOne({ Username: username, Password: password });
-            //console.log(foundUser.FirstName);
+            // console.log(foundUser.FirstName);
 
             let id = '';
             let fn = '';
@@ -26,8 +26,8 @@ exports.setApp = function (app, client) {
 
             if (!foundUser) {
                 // no user, return 400 (or 404 not found) code
-                ret = { error: 'Unrecognized credentials'};
-                res.status(400).json(ret)
+                ret = { error: 'Unrecognized credentials' };
+                res.status(400).json(ret);
                 return;
             }
 
@@ -84,7 +84,7 @@ exports.setApp = function (app, client) {
             // check if username already in use
             if (searchUsername)
             {
-                ret = { error: 'Username already exists' }
+                ret = { error: 'Username already exists' };
                 res.status(500).json(ret);
                 return;
             }
@@ -92,7 +92,7 @@ exports.setApp = function (app, client) {
             // check if email already in use
             else if (searchEmail)
             {
-                ret = { error: "Account already registered with this email"}
+                ret = { error: "Account already registered with this email"};
                 res.status(500).json(ret);
                 return;
             }
@@ -120,7 +120,7 @@ exports.setApp = function (app, client) {
         const foundUser = await db.collection('users').findOne({ Email: email });   // finds user with given email
         if (!foundUser) {
             // no user, return 400 (or 404 not found) code
-            ret = { error: 'User not found' }
+            ret = { error: 'User not found' };
             res.status(400).json(ret);
             return;
         }
@@ -178,7 +178,7 @@ exports.setApp = function (app, client) {
 
             if (!foundUser) {
                 // no user, return 400 (or 404 not found) code
-                ret = { error: 'User not found' }
+                ret = { error: 'User not found' };
                 res.status(400).json(ret);
                 return;
             }
@@ -195,8 +195,8 @@ exports.setApp = function (app, client) {
                 ret = { error: e.message };
             }
 
-            //const link = `https://cop4331-g30-large.herokuapp.com/resetpass/?id=${id}`;
-            const link = `http://localhost:5000/resetpass/?id=${id}`;
+            //const link = `https://cop4331-g30-large.herokuapp.com/ResetPassword/?id=${id}`;
+            const link = `http://localhost:5000/ResetPassword/?id=${id}`;
             const from = "dailygrind4331@gmail.com";
             const to = email;
             const subject = "Daily Grind Password Reset";
@@ -220,16 +220,34 @@ exports.setApp = function (app, client) {
 
     // reset password endpoint
     app.post('/api/resetpass', async (req, res, next) => {
+        var ret;
         const userId = req.body.id;
         const newPassword = req.body.password;
-
-        let ret = {_id: userId};
+        // console.log(userId);
+        // console.log(newPassword);
 
         const db = client.db();
-        db.collection('users').updateOne({_id: userId}, { $set: { Password : newPassword} });
+        const foundUser = await db.collection('users').findOne({ _id: ObjectId(userId) });
+        //console.log(foundUser.FirstName);
+        
+        if(!foundUser){
+            ret = { error: 'User not found' };
+            res.status(400).json(ret);
+            return; 
+        }
+        if (foundUser.Password == newPassword)
+        {
+                ret = { error: 'Already used this password' };
+                res.status(500).json(ret);
+                return;
+        }
+        ret = {_id: userId};
+
+        db.collection('users').updateOne({_id: ObjectId(userId)}, { $set: { Password : newPassword} });
+        
         res.status(200).json(ret);
     });
-/*
+
     // customization endpoint
     app.post('/api/customize/:username', async (req, res, next) => {
         const username = req.params.username;
@@ -246,6 +264,7 @@ exports.setApp = function (app, client) {
         res.status(200).json(ret);
     });
 
+    // update customization endpoint
     app.post('/api/updatecustomization/:username', async (req, res, next) => {
         const username = req.params.username;
         const { exercise, meal, medication, recreation, sleep, water } = req.body;
@@ -257,8 +276,7 @@ exports.setApp = function (app, client) {
         const db = client.db();
         db.collection('habits').insertOne(userHabits);
     });
-*/
+
     // TO-DO:
     // hash passwords in db?
-    
 }
