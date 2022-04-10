@@ -220,16 +220,32 @@ exports.setApp = function (app, client) {
 
     // reset password endpoint
     app.post('/api/resetpass', async (req, res, next) => {
+        var ret;
         const userId = req.body.id;
         const newPassword = req.body.password;
-
-        // no user found 
-        // password already taken
-        
-        let ret = {_id: userId};
+        // console.log(userId);
+        // console.log(newPassword);
 
         const db = client.db();
-        db.collection('users').updateOne({_id: userId}, { $set: { Password : newPassword} });
+        const foundUser = await db.collection('users').findOne({ _id: ObjectId(userId) });
+        const foundPass = await db.collection('users').findOne({ Password: newPassword });
+        //console.log(foundUser.FirstName);
+        
+        if(!foundUser){
+            ret = { error: 'User not found' };
+            res.status(400).json(ret);
+            return; 
+        }
+        if (foundPass)
+        {
+                ret = { error: 'Password already exists' };
+                res.status(500).json(ret);
+                return;
+        }
+        ret = {_id: userId};
+
+        db.collection('users').updateOne({_id: ObjectId(userId)}, { $set: { Password : newPassword} });
+        
         res.status(200).json(ret);
     });
 
