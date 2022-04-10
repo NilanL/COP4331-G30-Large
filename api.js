@@ -26,7 +26,7 @@ exports.setApp = function (app, client) {
 
             if (!foundUser) {
                 // no user, return 400 (or 404 not found) code
-                ret = { error: 'Unrecognized credentials' }
+                ret = { error: 'Unrecognized credentials' };
                 res.status(400).json(ret);
                 return;
             }
@@ -84,7 +84,7 @@ exports.setApp = function (app, client) {
             // check if username already in use
             if (searchUsername)
             {
-                ret = { error: 'Username already exists' }
+                ret = { error: 'Username already exists' };
                 res.status(500).json(ret);
                 return;
             }
@@ -92,7 +92,7 @@ exports.setApp = function (app, client) {
             // check if email already in use
             else if (searchEmail)
             {
-                ret = { error: "Account already registered with this email"}
+                ret = { error: "Account already registered with this email"};
                 res.status(500).json(ret);
                 return;
             }
@@ -120,7 +120,7 @@ exports.setApp = function (app, client) {
         const foundUser = await db.collection('users').findOne({ Email: email });   // finds user with given email
         if (!foundUser) {
             // no user, return 400 (or 404 not found) code
-            ret = { error: 'User not found' }
+            ret = { error: 'User not found' };
             res.status(400).json(ret);
             return;
         }
@@ -178,7 +178,7 @@ exports.setApp = function (app, client) {
 
             if (!foundUser) {
                 // no user, return 400 (or 404 not found) code
-                ret = { error: 'User not found' }
+                ret = { error: 'User not found' };
                 res.status(400).json(ret);
                 return;
             }
