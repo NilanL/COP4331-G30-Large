@@ -228,7 +228,6 @@ exports.setApp = function (app, client) {
 
         const db = client.db();
         const foundUser = await db.collection('users').findOne({ _id: ObjectId(userId) });
-        const foundPass = await db.collection('users').findOne({ Password: newPassword });
         //console.log(foundUser.FirstName);
         
         if(!foundUser){
@@ -236,9 +235,9 @@ exports.setApp = function (app, client) {
             res.status(400).json(ret);
             return; 
         }
-        if (foundPass)
+        if (foundUser.Password == newPassword)
         {
-                ret = { error: 'Password already exists' };
+                ret = { error: 'Already used this password' };
                 res.status(500).json(ret);
                 return;
         }
