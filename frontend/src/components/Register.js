@@ -56,31 +56,6 @@ const [message,setMessage] = useState('');
             {
                 console.log('Registered');
                 console.log(js);
-                try
-                {
-        
-                    console.log(js);
-        
-        
-                    const response = await fetch(buildPath('api/emailverify'),
-                    {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-                    var txt = await response.text();
-                    var res = JSON.parse(txt);
-                    if( res.error.length > 0 )
-                    {
-                        alert( "API Error:" + res.error );
-                    }
-                    else
-                    {
-                        console.log('Registered');
-                        console.log(js);
-                        window.location.href = '/login';
-                    }
-                }
-                catch(e)
-                {
-                    setMessage(e.toString());
-                }
                 
             }
         }
@@ -90,7 +65,7 @@ const [message,setMessage] = useState('');
         }
 
         event.preventDefault();
-        var obj =  {email: email.value};
+        var obj =  {email: email};
         var js = JSON.stringify(obj);
         
         
