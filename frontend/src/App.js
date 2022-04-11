@@ -8,7 +8,7 @@ import CustomizePage from './pages/CustomizePage';
 import EmailVerification from './components/EmailVerification';
 import ForgotPassword from './pages/ForgotPassword';
 import PasswordPage from './pages/PasswordPage';
-
+import ResendPage from './pages/ResendPage';
 
 
 function App() {
@@ -32,6 +32,9 @@ function App() {
         </Route>
         <Route path="/retrieveaccount" exact>
           <ForgotPassword />
+        </Route>
+        <Route path="/resend" exact>
+          <ResendPage />
         </Route>
         <Route path="/resetpassword" exact>
           <PasswordPage />

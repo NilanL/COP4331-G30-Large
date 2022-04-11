@@ -47,17 +47,16 @@ function RetrieveAccount()
           }
           else
           {
-            const response = await fetch(buildPath('api/emailverify'),
+            const response = await fetch(buildPath('api/forgotpass'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
             if( res.id <= 0 )
             {
-              alert( "API Error:" + res.error );
+              setMessage('Error: ' + res.error );
             }
             else
             {
-              console.log('Retrieve request sent.');
-              console.log(js);
+              setMessage('Request submitted.');
             }
           }
             

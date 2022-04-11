@@ -131,7 +131,7 @@ exports.setApp = function (app, client) {
         const to = email;
         const subject = "Daily Grind Verification";
 
-        console.log(`id ${foundUser._id}`);
+        //console.log(`id ${foundUser._id}`);
 
         //const link = `https://cop4331-g30-large.herokuapp.com/api/verifyaccount/${id}`;
         //const link = `http://localhost:5000/EmailVerification
@@ -152,26 +152,28 @@ exports.setApp = function (app, client) {
     });
 
     // update account to verified
-    app.get('/api/verifyaccount', async (req, res, next) => {
+    app.post('/api/verifyaccount', async (req, res, next) => {
+        var ret;
         const db = client.db();
         const userId = req.body.id;
-        const user = await db.collection('users').findOne({_id: userId});
-        console.log(userId);
-        db.collection('users').updateOne({_id: userId}, { $set: { Verified: true}});
+        const user = await db.collection('users').findOne({_id: ObjectId(userId)});
+        //console.log(userId);
+        db.collection('users').updateOne({_id: ObjectId(userId)}, { $set: { Verified: true}});
 
         if(!user){
             ret = { error: 'User not found' };
             res.status(400).json(ret);
             return; 
         }     
-        console.log("First Name: ", user.FirstName);
-    
+        //console.log("First Name: ", user.FirstName);
+        
+        ret = {_id: userId};
         res.status(200).json(ret);
     });
 
     // sending reset password link endpoint
     app.post('/api/forgotpass', async (req, res, next) => {
-        let token = require('./createJWT.js');
+        //let token = require('./createJWT.js');
         // have user re-enter email
         const { email } = req.body;
         var ret;
