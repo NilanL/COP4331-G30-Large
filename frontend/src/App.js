@@ -21,7 +21,7 @@ function App() {
         <Route path="/home" exact>
           <HomePage />
           </Route>
-        <Route path='/api/verifyaccount/${id}' exact>
+        <Route path='/emailverification' exact>
           <EmailVerification />
         </Route>
         <Route path="/customize" exact>

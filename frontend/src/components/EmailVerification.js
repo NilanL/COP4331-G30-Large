@@ -7,6 +7,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 function EmailVerification(){
     
 
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var email = urlParams.get('email');
+
+    
     const doVerify = async event => 
     {
             window.location.href = '/login';
@@ -15,9 +20,7 @@ function EmailVerification(){
     }
 
 
-    var loginName;
-    var loginPassword;
-
+    
     return(
 
         <div>
