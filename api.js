@@ -152,12 +152,13 @@ exports.setApp = function (app, client) {
     });
 
     // update account to verified
-    app.get('/api/verifyaccount', async (req, res, next) => {
+    app.post('/api/verifyaccount', async (req, res, next) => {
+        var ret;
         const db = client.db();
         const userId = req.body.id;
-        const user = await db.collection('users').findOne({_id: userId});
+        const user = await db.collection('users').findOne({_id: ObjectId(userId)});
         console.log(userId);
-        db.collection('users').updateOne({_id: userId}, { $set: { Verified: true}});
+        db.collection('users').updateOne({_id: ObjectId(userId)}, { $set: { Verified: true}});
 
         if(!user){
             ret = { error: 'User not found' };
@@ -165,7 +166,8 @@ exports.setApp = function (app, client) {
             return; 
         }     
         console.log("First Name: ", user.FirstName);
-    
+        
+        ret = {_id: userId};
         res.status(200).json(ret);
     });
 
