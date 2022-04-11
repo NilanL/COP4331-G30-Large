@@ -19,7 +19,6 @@ function Register()
         }
         else
         {        
-            console.log('could not connect');
             return 'http://localhost:5000/' + route;
         }
     }
@@ -40,6 +39,8 @@ const [message,setMessage] = useState('');
         event.preventDefault();
         var obj = {firstName: firstName.value, lastName: lastName.value, username: username.value, phone: phone.value, email: email.value, password: loginPassword.value};
         var js = JSON.stringify(obj);
+
+        setMessage("");
         
         try
         {
@@ -48,14 +49,36 @@ const [message,setMessage] = useState('');
             {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var txt = await response.text();
             var res = JSON.parse(txt);
-            if( res.error.length > 0 )
+            if( res.error !== '' )
             {
-                alert( "API Error:" + res.error );
+                setMessage("Error: " + res.error );
             }
             else
             {
-                console.log('Registered');
-                console.log(js);
+                
+                try
+                {
+                    
+                    const response = await fetch(buildPath('api/emailverify'),
+                    {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+                    var txt = await response.text();
+                    var res = JSON.parse(txt);
+
+                    if( res.error === 'User not found' )
+                    {
+                        setMessage("Error: " + res.error );
+                    }
+                    else
+                    {
+                        setMessage('Account created. Please check your email to complete registration.');
+                        
+                    }
+                }
+                catch(e)
+                {
+                    setMessage(e.toString());
+                }
+
                 
             }
         }
@@ -63,16 +86,6 @@ const [message,setMessage] = useState('');
         {
             setMessage(e.toString());
         }
-
-        event.preventDefault();
-        var obj =  {email: email};
-        var js = JSON.stringify(obj);
-        
-        
-
-
-
-
 
     }
 
@@ -98,7 +111,7 @@ const [message,setMessage] = useState('');
 
 
         </form>
-        
+        <span id="resetResult">{message}</span>
         <span></span>
         </Card>
      </div>

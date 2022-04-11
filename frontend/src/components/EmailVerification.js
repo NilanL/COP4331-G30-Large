@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+
 function EmailVerification(){
 
     const app_name = 'cop4331-g30-large'
@@ -18,7 +19,6 @@ function EmailVerification(){
         }
     }
 
-    
 
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
@@ -26,6 +26,7 @@ function EmailVerification(){
 
     
     const [message,setMessage] = useState('');
+
     
     const doVerify = async event => 
     {
@@ -34,7 +35,7 @@ function EmailVerification(){
         event.preventDefault();
         var obj = {id:id};
         var js = JSON.stringify(obj);
-        console.log(obj);
+        //console.log(obj);
         try
         { 
             setMessage('');
@@ -61,6 +62,8 @@ function EmailVerification(){
         }    
     }
 
+
+
     const doLogin = async event => 
     {
         window.location.href = '/login';
@@ -73,12 +76,13 @@ function EmailVerification(){
 
     return(
 
-        <div onload = "doVerify()">
+        <div>
         <Card className = "text-center" style = {{width: '50rem', height : '50rem' }}>
         <form><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
         <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "50px"}}>Email Verification</Card.Text> 
+
+          <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doVerify}>VerifyAccount</Button>   <span></span> 
           <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doLogin}>Login</Button>   <span></span> 
-          <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doRegister}>Register</Button>   <span></span> 
           </form>
           <span id="resetResult">{message}</span>
         <span></span>
