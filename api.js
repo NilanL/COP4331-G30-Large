@@ -48,17 +48,6 @@ exports.setApp = function (app, client) {
             em = foundUser.email;
             ph = foundUser.phone;
 
-           /*
-           jwt token thing
-           try {
-                const token = require("./createJWT.js");
-                ret = token.createToken(id, fn, ln);
-            }
-            catch (e) {
-                ret = { error: e.message };
-            }
-
-            //let ret = { id: id, firstName: fn, lastName: ln, error: '' };*/
             ret = {Username: username, error: error};
             res.status(200).json(ret);
         }
@@ -173,7 +162,6 @@ exports.setApp = function (app, client) {
 
     // sending reset password link endpoint
     app.post('/api/forgotpass', async (req, res, next) => {
-        let token = require('./createJWT.js');
         // have user re-enter email
         const { email } = req.body;
         var ret;
@@ -192,14 +180,6 @@ exports.setApp = function (app, client) {
             const id = foundUser._id;  
             const fn = foundUser.FirstName;
             const ln = foundUser.LastName;
-
-            try {
-                const token = require("./createJWT.js");
-                ret = token.createToken(id, fn, ln);
-            }
-            catch (e) {
-                ret = { error: e.message };
-            }
 
             //const link = `https://cop4331-g30-large.herokuapp.com/ResetPassword/?id=${id}`;
             const link = `http://localhost:5000/ResetPassword/?id=${id}`;
@@ -281,6 +261,7 @@ exports.setApp = function (app, client) {
 
         const db = client.db();
         db.collection('habits').insertOne(userHabits);
+        res.status(200).json(ret);
     });
 
     // TO-DO:
