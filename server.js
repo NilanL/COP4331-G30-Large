@@ -15,14 +15,15 @@ const url2 = process.env.MONGODB_HEALTHDB_URI;
 const MongoClient = require('mongodb').MongoClient;
 const client = new MongoClient(url);
 //const client2 = new MONGO_CLIENT_EVENTS(url2);
+const client2 = new MongoClient(url2);
 client.connect();
-//client2.connect();
+client2.connect();
 
 let api = require('./api.js');
 let api2 = require('./habitsApi.js');
 const { MONGO_CLIENT_EVENTS } = require('mongodb');
 api.setApp( app, client);
-//api2.setApp(app, client2);
+api2.setApp(app, client2);
 
 ///////////////////////////////////////////////////
 // For Heroku deployment

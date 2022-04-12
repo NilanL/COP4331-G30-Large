@@ -28,33 +28,43 @@ exports.setApp = function (app, client2) {
         const username = req.params.username;
 
         const date = req.body.date;
-        const startTimeHour = req.body.startHour;
-        const startTimeMinutes = req.body.startMin;
+        let startHour = req.body.startHour;
+        let startMin = req.body.startMin;
         const startMeridiam = req.body.startMeridiam;
-        const endTimeHour = req.body.endHour;
-        const endTimeMinutes = req.body.endMin;
+        let endHour = req.body.endHour;
+        let endMin = req.body.endMin;
         const endMeridiam = req.body.endMeridiam;
+
+        const db = client2.db();
+        const foundEntry = await db.collection('sleep').findOne({User: username}, {Date: date});
+        if (foundEntry)
+        {
+            let ret = {error: "Sleep hours already recorded for this user and date"};
+            res.status(550).json(ret);
+            return;
+        }
         
         if (startMeridiam === "pm")
         {
-            startTimeHour += 12;
+            startHour += 12;
         }
         if (endMeridiam === "pm")
         {
-            endTimeHour += 12;
+            endHour += 12;
         }
 
-        startTimeMinutes = startTimeMinutes / 60;
-        endTimeMinutes = endTimeMinutes / 60;
-        let startTime = startTimeHour + startTimeMinutes;
-        let endTime = endTimeHour + endTimeMinutes;
+        startMin = startMin / 60;
+        endMin = endMin / 60;
+        let startTime = startHour + startMin;
+        let endTime = endHour + endMin;
 
-        let hoursSlept = endTime - startTime;
+        let hoursSlept = 24 + (endTime - startTime);
         
         const sleepLog = {User: username, Date: date, Hours: hoursSlept}
+        let ret = {User: username, Date: date, Hours: hoursSlept}
 
-        const db = client2.db();
         db.collection('sleep').insertOne(sleepLog);
+        res.status(200).json(ret);
     });
 
     app.post('/api/recreation/:username', async (req, res, next) => {
