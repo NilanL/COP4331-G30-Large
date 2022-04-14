@@ -11,7 +11,7 @@ exports.setApp = function (app, client2) {
         const date = req.body.date;
 
         const db = client2.db();
-        const foundEntry = await db.collection('water').findOne({ User: username }, {Date: date});
+        const foundEntry = await db.collection('water').findOne({ User: username, Date: date});
         let ret;
         
         // if user already has water log for date entered, add ounces entered to existing log
@@ -23,6 +23,7 @@ exports.setApp = function (app, client2) {
         } else {
             const waterLog = {User: username, Date: date, Ounces: ounces};
             db.collection('water').insertOne(waterLog);
+            ret = {User: username, Date: date, TotalOunces: ounces}
         }
     
         res.status(200).json(ret);
@@ -73,9 +74,9 @@ exports.setApp = function (app, client2) {
 
     app.post('/api/recreation/:username', async (req, res, next) => {
         const username = req.params.username;
-        const hours = req.body.hours;
         const date = req.body.date;
         const activity = req.body.activity;    // dropdown on front end: screen time, tv, games, sport, art, chores, work, other
+        const hours = req.body.hours;
 
         const db = client2.db();
         const foundEntry = await db.collection('recreation').findOne({User: username, Date: date});
@@ -84,7 +85,7 @@ exports.setApp = function (app, client2) {
         // if user already has an activity log for date entered, update log with new activity entered
         if (foundEntry){
             const id = foundEntry._id;
-            if (activity === "Screen Time") {
+            if (activity === "ScreenTime") {
                 let updatedHours = foundEntry.ScreenTime;
                 updatedHours += hours;
                 db.collection('recreation').updateOne({ _id: id }, { $set: { ScreenTime: updatedHours }});
@@ -96,11 +97,11 @@ exports.setApp = function (app, client2) {
                 db.collection('recreation').updateOne({ _id: id }, { $set: { Television: updatedHours }});
                 ret = {User: username, Date: date, Television: updatedHours}
             }
-            else if (activity === "Games") {
-                let updatedHours = foundEntry.Games;
+            else if (activity === "Gaming") {
+                let updatedHours = foundEntry.Gaming;
                 updatedHours += hours;
-                db.collection('recreation').updateOne({ _id: id }, { $set: { Games: updatedHours }});
-                ret = {User: username, Date: date, Games: updatedHours}
+                db.collection('recreation').updateOne({ _id: id }, { $set: { Gaming: updatedHours }});
+                ret = {User: username, Date: date, Gaming: updatedHours}
             }
             else if (activity === "Sport") {
                 let updatedHours = foundEntry.Sport;
@@ -136,36 +137,37 @@ exports.setApp = function (app, client2) {
         
         // if user does not have an acitivity log for the date entered, create new activity log
         else {
-            if (activity === "Screen Time") {
-                const recreationLog = {User: username, Date: date, ScreenTime: hours, Television: 0, Games: 0, Sport: 0, Art: 0, Chores: 0, Work: 0, Other: 0};
+            let recreationLog;
+            if (activity === "ScreenTime") {
+                recreationLog = {User: username, Date: date, ScreenTime: hours, Television: 0, Gaming: 0, Sport: 0, Art: 0, Chores: 0, Work: 0, Other: 0};
                 ret = {User: username, Date: date, ScreenTime: hours}
             }
             else if (activity === "Television") {
-                const recreationLog = {User: username, Date: date, ScreenTime: 0, Television: hours, Games: 0, Sport: 0, Art: 0, Chores: 0, Work: 0, Other: 0};
+                recreationLog = {User: username, Date: date, ScreenTime: 0, Television: hours, Gaming: 0, Sport: 0, Art: 0, Chores: 0, Work: 0, Other: 0};
                 ret = {User: username, Date: date, Television: hours}
             }
-            else if (activity === "Games") {
-                const recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Games: hours, Sport: 0, Art: 0, Chores: 0, Work: 0, Other: 0};
-                ret = {User: username, Date: date, Games: hours}
+            else if (activity === "Gaming") {
+                recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Gaming: hours, Sport: 0, Art: 0, Chores: 0, Work: 0, Other: 0};
+                ret = {User: username, Date: date, Gaming: hours}
             }
             else if (activity === "Sport") {
-                const recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Games: 0, Sport: hours, Art: 0, Chores: 0, Work: 0, Other: 0};
+                recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Gaming: 0, Sport: hours, Art: 0, Chores: 0, Work: 0, Other: 0};
                 ret = {User: username, Date: date, Sport: hours}
             }
             else if (activity === "Art") {
-                const recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Games: 0, Sport: 0, Art: hours, Chores: 0, Work: 0, Other: 0};
+                recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Gaming: 0, Sport: 0, Art: hours, Chores: 0, Work: 0, Other: 0};
                 ret = {User: username, Date: date, Art: hours}
             }
             else if (activity === "Chores") {
-                const recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Games: 0, Sport: 0, Art: 0, Chores: hours, Work: 0, Other: 0};
+                recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Gaming: 0, Sport: 0, Art: 0, Chores: hours, Work: 0, Other: 0};
                 ret = {User: username, Date: date, Chores: hours}
             }
             else if (activity === "Work") {
-                const recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Games: 0, Sport: 0, Art: 0, Chores: 0, Work: hours, Other: 0};
+                recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Gaming: 0, Sport: 0, Art: 0, Chores: 0, Work: hours, Other: 0};
                 ret = {User: username, Date: date, Work: hours}
             }
             else if (activity === "Other") {
-                const recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Games: 0, Sport: 0, Art: 0, Chores: 0, Work: 0, Other: hours};
+                recreationLog = {User: username, Date: date, ScreenTime: 0, Television: 0, Gaming: 0, Sport: 0, Art: 0, Chores: 0, Work: 0, Other: hours};
                 ret = {User: username, Date: date, Other: hours}
             }
             db.collection('recreation').insertOne(recreationLog);
@@ -175,15 +177,14 @@ exports.setApp = function (app, client2) {
 
     app.post('/api/exercise/:username', async (req, res, next) => {
         const username = req.params.username;
-        const time = req.body.time;
         const date = req.body.date;
         const exercise = req.body.exercise;
 
         const db = client2.db();
         
-        const exerciseLog = {User: username, Date: date, Time: time, Exercise: exercise};
+        const exerciseLog = {User: username, Date: date, Exercise: exercise};
         db.collection('exercise').insertOne(exerciseLog);
-        let ret = {User: username, Date: date, Time: time, Exercise: exercise};
+        let ret = {User: username, Date: date, Exercise: exercise};
         
         res.status(200).json(ret);
     });
@@ -193,12 +194,13 @@ exports.setApp = function (app, client2) {
         const time = req.body.time;
         const date = req.body.date;
         const meal = req.body.meal;
+        const cals = req.body.cals;
 
         const db = client2.db();
 
-        const mealLog = {User: username, Date: date, Time: time, Meal: meal};
+        const mealLog = {User: username, Date: date, Time: time, Meal: meal, Calories: cals};
         db.collection('meal').insertOne(mealLog);
-        let ret = {User: username, Date: date, Time: time, Meal: meal};
+        let ret = {User: username, Date: date, Time: time, Meal: meal, Calories: cals};
         res.status(200).json(ret);
     });
     
@@ -219,4 +221,5 @@ exports.setApp = function (app, client2) {
     });
     
     // TO:DO app.get() for all habits in order for summary purposes
+    // delete meds
 }
