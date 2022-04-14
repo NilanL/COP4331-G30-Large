@@ -57,7 +57,7 @@ app.post('/api/login', async (req, res, next) => {
     em = results[0].email;
     ph = results[0].phone;
 
-    let ret = { id:id, firstName:fn, lastName:ln, error:''};
+    let ret = { id:id, firstName:fn, lastName:ln, error:'', email:em, phone:ph};
     res.status(200).json(ret);
   }
   catch(e) {
