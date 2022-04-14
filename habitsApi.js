@@ -183,6 +183,7 @@ exports.setApp = function (app, client2) {
         
         const exerciseLog = {User: username, Date: date, Time: time, Exercise: exercise};
         db.collection('exercise').insertOne(exerciseLog);
+        let ret = {User: username, Date: date, Time: time, Exercise: exercise};
         
         res.status(200).json(ret);
     });
@@ -197,7 +198,7 @@ exports.setApp = function (app, client2) {
 
         const mealLog = {User: username, Date: date, Time: time, Meal: meal};
         db.collection('meal').insertOne(mealLog);
-        
+        let ret = {User: username, Date: date, Time: time, Meal: meal};
         res.status(200).json(ret);
     });
     
@@ -213,6 +214,7 @@ exports.setApp = function (app, client2) {
 
         const medicationLog = {User: username, Day: day, Time: time, Medication: medication, Dosage: dosage};
         db.collection('medication').insertOne(medicationLog);
+        let ret = {User: username, Day: day, Time: time, Medication: medication, Dosage: dosage};
         res.status(200).json(ret);
     });
     
