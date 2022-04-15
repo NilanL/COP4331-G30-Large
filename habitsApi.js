@@ -48,25 +48,63 @@ exports.setApp = function (app, client2) {
             res.status(550).json(ret);
             return;
         }
-        
-        if (startMeridiam === "pm")
-        {
-            startHour += 12;
-        }
-        if (endMeridiam === "pm")
-        {
-            endHour += 12;
+
+        let startTime;
+        let endTime;
+        let hoursSlept;
+        let roundedHours;
+
+        // if user sleeps from pm time to am time (<12 hrs)
+        if (startMeridiam === "pm" && endMeridiam === "am") {
+            startMin = startMin / 60;
+            endMin = endMin / 60;
+            startTime = startHour + startMin;
+            endTime = endHour + endMin;
+            hoursSlept = (12 - startTime) + endTime;
+            roundedHours = hoursSlept.toFixed(2);
         }
 
-        startMin = startMin / 60;
-        endMin = endMin / 60;
-        let startTime = startHour + startMin;
-        let endTime = endHour + endMin;
+        // if user sleeps from am time to am time (<12 hrs)
+        else if (startMeridiam === "am" && endMeridiam === "am") {
+            if (startHour == 12) {
+                startHour -= 12;
+            }
+            startMin = startMin / 60;
+            endMin = endMin / 60;
+            startTime = startHour + startMin;
+            endTime = endHour + endMin;
+            hoursSlept = endTime - startTime;
+            roundedHours = hoursSlept.toFixed(2);
+        }
 
-        let hoursSlept = 24 + (endTime - startTime);
-        
-        const sleepLog = {User: username, Date: date, Hours: hoursSlept}
-        let ret = {User: username, Date: date, Hours: hoursSlept}
+        // if user sleeps from am time to pm time (<12 hrs)
+        else if (startMeridiam === "am" && endMeridiam === "pm") {
+            if (endHour != 12) {
+                endHour += 12;
+            }
+            startMin = startMin / 60;
+            endMin = endMin / 60;
+            startTime = startHour + startMin;
+            endTime = endHour + endMin;
+            hoursSlept = endTime - startTime;
+            roundedHours = hoursSlept.toFixed(2);
+        }
+
+        // if user sleeps from pm time to pm time (<12 hrs)
+        else {
+            if (startHour == 12) {
+                startHour -= 12
+            }
+            startMin = startMin / 60;
+            endMin = endMin / 60;
+            startTime = startHour + startMin;
+            endTime = endHour + endMin;
+            hoursSlept = endTime - startTime;
+            roundedHours = hoursSlept.toFixed(2);
+        }
+
+        const sleepLog = {User: username, Date: date, Hours: roundedHours}
+        let ret = {User: username, Date: date, Hours: roundedHours}
 
         db.collection('sleep').insertOne(sleepLog);
         res.status(200).json(ret);
