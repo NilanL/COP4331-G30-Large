@@ -29,6 +29,26 @@ exports.setApp = function (app, client2) {
         res.status(200).json(ret);
     });
 
+    // retrieve water data
+    app.get('/api/getWater/:username', async (req, res, next) => {
+        const date = req.body;
+        const username = req.params.username;
+        
+        const db = client2.db();
+        const foundEntry = await db.collection('water').findOne({Date: date, User: username});
+
+        if (foundEntry){
+            res.send(foundEntry);
+            let ret = {User: foundEntry.User, Date: founEntry.Date, Ounces: foundEntry.Ounces};
+            res.status(200).json(ret);
+        }else {
+            let ret = {error : "Not found"}
+            res.status(400).json(ret);
+        }
+    });
+
+    
+    
     app.post(`/api/sleep/:username`, async (req, res, next) => {
         const username = req.params.username;
 
@@ -108,6 +128,24 @@ exports.setApp = function (app, client2) {
 
         db.collection('sleep').insertOne(sleepLog);
         res.status(200).json(ret);
+    });
+
+    // retrieve sleep data
+    app.get('/api/getSleep', async (req, res, next) => {
+        const date = req.body;
+        const username = req.params.username;
+
+        const db = client2.db();
+        const foundEntry = await db.collection('sleep').findOne({Date: date, User: username});
+
+        if (foundEntry){
+            res.send(foundEntry);
+            let ret = {User: foundEntry.User, Date: founEntry.Date, Hourss: foundEntry.Hours};
+            res.status(200).json(ret);
+        }else {
+            let ret = {error : "Not found"}
+            res.status(400).json(ret);
+        }
     });
 
     app.post('/api/recreation/:username', async (req, res, next) => {
@@ -213,6 +251,27 @@ exports.setApp = function (app, client2) {
         res.status(200).json(ret);
     });
 
+    app.get('/api/getRecreation/:username', async (req, res, next) => {
+        const date = req.body;
+        const username = req.params.username;
+
+        const db = client2.db();
+        const foundEntry = await db.collection('recreation').findOne({Date: date, User: username});
+
+        let ret;
+        if (!foundEntry)
+        {
+            ret = {error: "Not found"};
+            res.status(400).json(ret);
+        }
+        else {
+            res.send(foundEntry);
+            ret = {Date: foundEntry.Date, User: foundEntry.User, ScreenTime: foundEntry.ScreenTime, Television: foundEntry.Television, Gaming: foundEntry.Gaming, 
+                Sport: foundEntry.Sport, Art: foundEntry.Art, Chores: foundEntry.Chores, Work: foundEntry.Work, Chores: foundEntry.Chores};
+            res.status(200).json(ret);
+        }
+    });
+
     app.post('/api/exercise/:username', async (req, res, next) => {
         const username = req.params.username;
         const date = req.body.date;
@@ -225,6 +284,31 @@ exports.setApp = function (app, client2) {
         let ret = {User: username, Date: date, Exercise: exercise};
         
         res.status(200).json(ret);
+    });
+
+    app.get('/api/getExercise/:username', async (req, res, next) => {
+        const date = req.body;
+        const username = req.params.username;
+
+        const db = client2.db();
+        const foundEntries = await db.collection('exercise').find({Date: date, User: username}).toArray();
+
+        let ret;
+        if (foundEntries.length == 0)
+        {
+            ret = {error: "Not found"};
+            res.status(400).json(ret);
+        }
+        else {
+            let i = foundEntries.length;
+            while (i >= 0)
+            {
+                res.send(foundEntries[i]);
+                i--;
+            }
+            ret = {Date: foundEntries[0].Date, User: foundEntries[0].User};
+            res.status(200).json(ret);
+        }
     });
 
     app.post('/api/meal/:username', async (req, res, next) => {
@@ -260,4 +344,9 @@ exports.setApp = function (app, client2) {
     
     // TO:DO app.get() for all habits in order for summary purposes
     // delete meds
+    // app.delete for all habits
+    // app.put for all habits (edit)
+    // minutes issue sleep algorithm
+    // swagger hub
+    // md5 hash
 }

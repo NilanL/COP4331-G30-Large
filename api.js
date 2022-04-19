@@ -88,7 +88,7 @@ exports.setApp = function (app, client) {
 
             // else create new user
             else {
-                const result = await db.collection('users').insertOne(newUser);
+                db.collection('users').insertOne(newUser);
             }
         }
         catch (e) {
