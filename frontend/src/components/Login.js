@@ -61,13 +61,25 @@ function Login()
                 //setMessage('');
                 //window.location.href = '/notverified';
             }
+            else if(res.error === 'User has not customized their account'){
+                var user =  
+                {username: res.Username,firstName:res.FirstName,lastName:res.LastName,id:res.Id, update: false}
+                localStorage.setItem('user_data', JSON.stringify(user));
+                var username = 
+                {Username: res.Username}
+                localStorage.setItem('username', JSON.stringify(username));
+                setMessage('');
+                window.location.href = '/customize';
+            }
             else
             {
                 var user =  
-                {firstName:res.firstName,lastName:res.lastName,id:res.id}
+                {username: res.Username,firstName:res.firstName,lastName:res.lastName,id:res.id, update : true}
+                
                 localStorage.setItem('user_data', JSON.stringify(user));
                 setMessage('');
                 window.location.href = '/home';
+                
             }
         }
         catch(e)
