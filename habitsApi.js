@@ -30,7 +30,22 @@ exports.setApp = function (app, client2) {
     });
 
     // retrieve water data
-    app.get('/api/getWater/:username', async (req, res, next) => {
+    app.post('/api/getWater/:username', async (req, res, next) => {
+        const date = req.body.date;
+        const username = req.params.username;
+        
+        const db = client2.db();
+        const foundEntry = await db.collection('water').findOne({User: username, Date: date});
+
+        if (foundEntry){
+            res.status(200).send(foundEntry);
+        }else {
+            res.status(400).send("Entry for given user and date not found");
+        }
+    });
+
+    // delete water data
+    app.delete('/api/deleteWater/:username', async (req, res, next) => {
         const date = req.body;
         const username = req.params.username;
         
@@ -42,7 +57,7 @@ exports.setApp = function (app, client2) {
             let ret = {User: foundEntry.User, Date: founEntry.Date, Ounces: foundEntry.Ounces};
             res.status(200).json(ret);
         }else {
-            let ret = {error : "Not found"}
+            let ret = {error : 'Not found'}
             res.status(400).json(ret);
         }
     });
@@ -64,7 +79,7 @@ exports.setApp = function (app, client2) {
         const foundEntry = await db.collection('sleep').findOne({User: username, Date: date});
         if (foundEntry)
         {
-            let ret = {error: "Sleep hours already recorded for this user and date"};
+            let ret = {error: 'Sleep hours already recorded for this user and date'};
             res.status(550).json(ret);
             return;
         }
@@ -131,20 +146,17 @@ exports.setApp = function (app, client2) {
     });
 
     // retrieve sleep data
-    app.get('/api/getSleep', async (req, res, next) => {
-        const date = req.body;
+    app.post('/api/getSleep/:username', async (req, res, next) => {
+        const date = req.body.date;
         const username = req.params.username;
 
         const db = client2.db();
         const foundEntry = await db.collection('sleep').findOne({Date: date, User: username});
 
         if (foundEntry){
-            res.send(foundEntry);
-            let ret = {User: foundEntry.User, Date: founEntry.Date, Hourss: foundEntry.Hours};
-            res.status(200).json(ret);
+            res.status(200).send(foundEntry);
         }else {
-            let ret = {error : "Not found"}
-            res.status(400).json(ret);
+            res.status(400).send("Entry for given user and date not found");
         }
     });
 
@@ -251,8 +263,8 @@ exports.setApp = function (app, client2) {
         res.status(200).json(ret);
     });
 
-    app.get('/api/getRecreation/:username', async (req, res, next) => {
-        const date = req.body;
+    app.post('/api/getRecreation/:username', async (req, res, next) => {
+        const date = req.body.date;
         const username = req.params.username;
 
         const db = client2.db();
@@ -261,14 +273,10 @@ exports.setApp = function (app, client2) {
         let ret;
         if (!foundEntry)
         {
-            ret = {error: "Not found"};
-            res.status(400).json(ret);
+            res.status(400).send("Entry for given user and date not found");
         }
         else {
-            res.send(foundEntry);
-            ret = {Date: foundEntry.Date, User: foundEntry.User, ScreenTime: foundEntry.ScreenTime, Television: foundEntry.Television, Gaming: foundEntry.Gaming, 
-                Sport: foundEntry.Sport, Art: foundEntry.Art, Chores: foundEntry.Chores, Work: foundEntry.Work, Chores: foundEntry.Chores};
-            res.status(200).json(ret);
+            res.status(200).send(foundEntry);
         }
     });
 
@@ -286,8 +294,8 @@ exports.setApp = function (app, client2) {
         res.status(200).json(ret);
     });
 
-    app.get('/api/getExercise/:username', async (req, res, next) => {
-        const date = req.body;
+    app.post('/api/getExercise/:username', async (req, res, next) => {
+        const date = req.body.date;
         const username = req.params.username;
 
         const db = client2.db();
@@ -296,18 +304,10 @@ exports.setApp = function (app, client2) {
         let ret;
         if (foundEntries.length == 0)
         {
-            ret = {error: "Not found"};
-            res.status(400).json(ret);
+            res.status(400).send("Entries for given user and date not found");
         }
         else {
-            let i = foundEntries.length;
-            while (i >= 0)
-            {
-                res.send(foundEntries[i]);
-                i--;
-            }
-            ret = {Date: foundEntries[0].Date, User: foundEntries[0].User};
-            res.status(200).json(ret);
+            res.status(200).send(foundEntries);
         }
     });
 
@@ -342,10 +342,9 @@ exports.setApp = function (app, client2) {
         res.status(200).json(ret);
     });
     
-    // TO:DO app.get() for all habits in order for summary purposes
+    // TO:DO
     // delete meds
     // app.delete for all habits
-    // app.put for all habits (edit)
     // minutes issue sleep algorithm
     // swagger hub
     // md5 hash
