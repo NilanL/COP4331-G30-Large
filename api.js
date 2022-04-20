@@ -126,7 +126,7 @@ exports.setApp = function (app, client) {
         //const link = `http://localhost:5000/EmailVerification
 
         // change link to page to then link next api endpoint on that page instead
-        const link = `http://localhost:5000/EmailVerification/?id=${foundUser._id}`;
+        const link = `http://cop4331-g30-large.herokuapp.com/EmailVerification/?id=${foundUser._id}`;
 
         const output = `
     <p>This is to verify your email for DailyGrind!</p>
@@ -182,7 +182,7 @@ exports.setApp = function (app, client) {
             const ln = foundUser.LastName;
 
             //const link = `https://cop4331-g30-large.herokuapp.com/ResetPassword/?id=${id}`;
-            const link = `http://localhost:5000/ResetPassword/?id=${id}`;
+            const link = `http://cop4331-g30-large.herokuapp.com/ResetPassword/?id=${id}`;
             const from = "dailygrind4331@gmail.com";
             const to = email;
             const subject = "Daily Grind Password Reset";
