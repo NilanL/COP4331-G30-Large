@@ -124,7 +124,7 @@ function Login()
     `}
   </style>
 
-  <Card className = "text-center" style = {{width: '50rem', height : '50rem' }}>
+  <Card className = "text-center shadow" style = {{width: '50rem', height : '50rem' }}>
         <form><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
         <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "50px"}}>Login</Card.Text> 
         <input type="text" id="loginName" placeholder="Username" 
