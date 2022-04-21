@@ -260,7 +260,7 @@ exports.setApp = function (app, client) {
         let ret = { User: username };
 
         const db = client.db();
-        db.collection('habits').insertOne(userHabits);
+        db.collection('habits').updateOne({User: username}, userHabits);
         res.status(200).json(ret);
     });
 
