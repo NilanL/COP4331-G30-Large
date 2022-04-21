@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Nav from 'react-bootstrap/Nav';
-import {habbits} from "./Asset/habbits";
+import {habbits} from "../Asset/habbits";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
