@@ -235,6 +235,25 @@ exports.setApp = function (app, client) {
     });
 
     // customization endpoint
+    app.post('/api/customizesearch/:username', async (req, res, next) => {
+        const username = req.params.username;
+
+        const db = client.db();
+        const foundUser = await db.collection('habits').findOne({ User: username });
+
+        let ret = { User: username };
+
+        if (!foundUser) {
+            // no user, return 400 (or 404 not found) code
+            ret = { error: 'User not found' };
+            res.status(400).json(ret);
+            return;
+        }
+        
+        res.status(200).json(ret);
+    });
+    
+    // customization endpoint
     app.post('/api/customize/:username', async (req, res, next) => {
         const username = req.params.username;
 
