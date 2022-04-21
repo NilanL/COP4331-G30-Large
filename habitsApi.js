@@ -4,7 +4,9 @@ require('mongodb');
 const { ObjectId } = require('mongodb');
 
 exports.setApp = function (app, client2) {
-    // framework for habits *in production*
+    
+    /***** WATER *****/
+    // insert water data
     app.post('/api/water/:username', async (req, res, next) => {
         const username = req.params.username;
         const ounces = req.body.ounces;
@@ -46,24 +48,25 @@ exports.setApp = function (app, client2) {
 
     // delete water data
     app.delete('/api/deleteWater/:username', async (req, res, next) => {
-        const date = req.body;
+        const date = req.body.date;
         const username = req.params.username;
         
         const db = client2.db();
         const foundEntry = await db.collection('water').findOne({Date: date, User: username});
 
         if (foundEntry){
-            res.send(foundEntry);
-            let ret = {User: foundEntry.User, Date: founEntry.Date, Ounces: foundEntry.Ounces};
+            let ret = {User: foundEntry.User, Date: foundEntry.Date, Ounces: foundEntry.Ounces};
+            db.collection('water').deleteOne({User: username, Date: date});
             res.status(200).json(ret);
         }else {
-            let ret = {error : 'Not found'}
+            let ret = {error : 'Entry for given user and date not found'};
             res.status(400).json(ret);
         }
     });
 
-    
-    
+
+    /***** SLEEP *****/
+    // insert sleep data
     app.post(`/api/sleep/:username`, async (req, res, next) => {
         const username = req.params.username;
 
@@ -160,6 +163,27 @@ exports.setApp = function (app, client2) {
         }
     });
 
+    // delete sleep data
+    app.delete('/api/deleteSleep/:username', async (req, res, next) => {
+        const date = req.body.date;
+        const username = req.params.username;
+        
+        const db = client2.db();
+        const foundEntry = await db.collection('sleep').findOne({Date: date, User: username});
+
+        if (foundEntry){
+            let ret = {User: foundEntry.User, Date: foundEntry.Date, Hours: foundEntry.Hours};
+            db.collection('sleep').deleteOne({User: username, Date: date});
+            res.status(200).json(ret);
+        }else {
+            let ret = {error : 'Entry for given user and date not found'};
+            res.status(400).json(ret);
+        }
+    });
+
+
+    /***** RECREATION *****/
+    // insert recreation data
     app.post('/api/recreation/:username', async (req, res, next) => {
         const username = req.params.username;
         const date = req.body.date;
@@ -263,6 +287,7 @@ exports.setApp = function (app, client2) {
         res.status(200).json(ret);
     });
 
+    // retrieve recreation data
     app.post('/api/getRecreation/:username', async (req, res, next) => {
         const date = req.body.date;
         const username = req.params.username;
@@ -280,6 +305,27 @@ exports.setApp = function (app, client2) {
         }
     });
 
+    // delete recreation data
+    app.delete('/api/deleteRecreation/:username', async (req, res, next) => {
+        const date = req.body.date;
+        const username = req.params.username;
+        
+        const db = client2.db();
+        const foundEntry = await db.collection('recreation').findOne({Date: date, User: username});
+
+        if (foundEntry){
+            let ret = {User: foundEntry.User, Date: foundEntry.Date};
+            db.collection('recreation').deleteOne({User: username, Date: date});
+            res.status(200).json(ret);
+        }else {
+            let ret = {error : 'Entry for given user and date not found'};
+            res.status(400).json(ret);
+        }
+    });
+
+
+    /***** EXERCISE *****/
+    // insert exercise data
     app.post('/api/exercise/:username', async (req, res, next) => {
         const username = req.params.username;
         const date = req.body.date;
@@ -294,6 +340,7 @@ exports.setApp = function (app, client2) {
         res.status(200).json(ret);
     });
 
+    // retrieve exercise data
     app.post('/api/getExercise/:username', async (req, res, next) => {
         const date = req.body.date;
         const username = req.params.username;
@@ -311,6 +358,27 @@ exports.setApp = function (app, client2) {
         }
     });
 
+    // delete exercise data
+    app.delete('/api/deleteExercise/:username', async (req, res, next) => {
+        const date = req.body.date;
+        const username = req.params.username;
+        
+        const db = client2.db();
+        const foundEntries = await db.collection('exercise').find({Date: date, User: username}).toArray();
+
+        if (foundEntries.length != 0){
+            let ret = {User: foundEntries[0].User, Date: foundEntries[0].Date};
+            db.collection('exercise').deleteMany({User: username, Date: date});
+            res.status(200).json(ret);
+        }else {
+            let ret = {error : 'Entry for given user and date not found'};
+            res.status(400).json(ret);
+        }
+    });
+
+
+    /*
+    /***** MEAL *****//*
     app.post('/api/meal/:username', async (req, res, next) => {
         const username = req.params.username;
         const time = req.body.time;
@@ -341,7 +409,8 @@ exports.setApp = function (app, client2) {
         let ret = {User: username, Day: day, Time: time, Medication: medication, Dosage: dosage};
         res.status(200).json(ret);
     });
-    
+    */
+
     // TO:DO
     // delete meds
     // app.delete for all habits
