@@ -301,12 +301,12 @@ exports.setApp = function (app, client) {
             return;
         }
         
-        exe = foundUser.Exercise;
-        mea = foundUser.Meal;
-        med = foundUser.Medication;
-        rec = foundUser.Recreation;
-        sle = foundUser.Sleep;
-        wat = foundUser.Water;
+        exercise = foundUser.Exercise;
+        meal = foundUser.Meal;
+        medication = foundUser.Medication;
+        recreation = foundUser.Recreation;
+        sleep = foundUser.Sleep;
+        water = foundUser.Water;
 
         ret = {User: username, Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water};
 
