@@ -285,7 +285,7 @@ exports.setApp = function (app, client) {
         res.status(200).json(ret);
     });
     
-    // customization searc endpoint
+    // customization search endpoint
     app.post('/api/customizesearch/:username', async (req, res, next) => {
         const username = req.params.username;
 
@@ -301,6 +301,15 @@ exports.setApp = function (app, client) {
             return;
         }
         
+        exe = foundUser.Exercise;
+        mea = foundUser.Meal;
+        med = foundUser.Medication;
+        rec = foundUser.Recreation;
+        sle = foundUser.Sleep;
+        wat = foundUser.Water;
+
+        ret = {User: username, Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water};
+
         res.status(200).json(ret);
     });
     // TO-DO:
