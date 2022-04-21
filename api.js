@@ -233,23 +233,25 @@ exports.setApp = function (app, client) {
         
         res.status(200).json(ret);
     });
-
-    // customization endpoint
-    app.post('/api/customizesearch/:username', async (req, res, next) => {
+    
+    // Start habits endpoint endpoint
+    app.post('/api/initializehabits/:username', async (req, res, next) => {
         const username = req.params.username;
 
-        const db = client.db();
-        const foundUser = await db.collection('habits').findOne({ User: username });
+        const userHabits = {
+            User: username, 
+            Exercise: false, 
+            Meal: false, 
+            Medication: false, 
+            Recreation: false, 
+            Sleep: false, 
+            Water: false
+        };
 
         let ret = { User: username };
 
-        if (!foundUser) {
-            // no user, return 400 (or 404 not found) code
-            ret = { error: 'User not found' };
-            res.status(400).json(ret);
-            return;
-        }
-        
+        const db = client.db();
+        db.collection('habits').insertOne(userHabits);
         res.status(200).json(ret);
     });
     
@@ -282,7 +284,25 @@ exports.setApp = function (app, client) {
         db.collection('habits').updateOne({User: username}, userHabits);
         res.status(200).json(ret);
     });
+    
+    // customization searc endpoint
+    app.post('/api/customizesearch/:username', async (req, res, next) => {
+        const username = req.params.username;
 
+        const db = client.db();
+        const foundUser = await db.collection('habits').findOne({ User: username });
+
+        let ret = { User: username };
+
+        if (!foundUser) {
+            // no user, return 400 (or 404 not found) code
+            ret = { error: 'User not found' };
+            res.status(400).json(ret);
+            return;
+        }
+        
+        res.status(200).json(ret);
+    });
     // TO-DO:
     // hash passwords in db?
 }
