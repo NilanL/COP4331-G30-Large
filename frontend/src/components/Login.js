@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 //import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login()
 {
@@ -106,7 +106,7 @@ function Login()
     return(
 
         
-      <div id="loginDiv">
+      <div id="loginDiv" class="p-5">
           
             <style type="text/css">
                 {`
@@ -135,8 +135,10 @@ function Login()
 
 
 
-            <Card className = "text-center shadow" style = {{borderRadius: 12}}> 
-                    <Card.Text style = {{color: '#0FA3B1' , fontSize : "50px"}}>Login</Card.Text> 
+            <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '20rem'}}> 
+                    <br /><img src= {require('../Asset/images/dailygrind5.png')} /><br />
+                    <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Login</Card.Text> 
+                    
                     <Card.Body>
                         <form>
                             <input type="text" id="loginName" placeholder="Username" 
