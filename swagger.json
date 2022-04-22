@@ -1,0 +1,553 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "DailyGrind CRUD",
+        "description": "DailyGrind API documentation",
+        "license": {
+            "name": "DailyGrind",
+            "url": "cop4331-g30-large.herokuapp.com"
+        }
+    },
+    "host": "localhost:5000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Users",
+            "description": "API for users in the system"
+        },
+        {
+            "name": "Water",
+            "description": "API calls for user logs of water"
+        },
+        {
+            "name": "Sleep",
+            "description": "API calls for user logs of sleep"
+        },
+        {
+            "name": "Recreation",
+            "description": "API calls for user logs of recreation"
+        },
+        {
+            "name": "Exercise",
+            "description": "API calls for user logs of exercise"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Verifies user login credentials",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Credentials that need to log in the user",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "Id": {
+                                        "type": "String"
+                                    },
+                                    "LastName": {
+                                        "type": "String"
+                                    },
+                                    "Email": {
+                                        "type": "String"
+                                    },
+                                    "PhoneNumber": {
+                                        "type": "String"
+                                    },
+                                    "error": {
+                                        "type": "String"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unrecognized credentials",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "error": {
+                                        "type": "String"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Email is not verified",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "error": {
+                                        "type": "String"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Registers a user in system",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Credentials that need to register the user",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    },
+                    "500": {
+                        "description": "Username exists or Account is already registered",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/emailverify": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Send email to user to verify their account",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Email needed to send email",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    },
+                    "400": {
+                        "description": "Username not found",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/verifyaccount": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Verifies the users account",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Users unique id",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    },
+                    "400": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/forgotpass": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Send email to user when they forget password",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Users email",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    },
+                    "400": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/initialize/:username": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Intialize users habit to false",
+                "parameters": [
+                    {
+                        "in": "params",
+                        "name": "params",
+                        "description": "Username",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/customize/:username": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "User customize their account with habits",
+                "parameters": [
+                    {
+                        "in": "params",
+                        "name": "params",
+                        "description": "Username",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/getCustomization/:username": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Retrieves habits for user",
+                "parameters": [
+                    {
+                        "in": "params",
+                        "name": "params",
+                        "description": "Username",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    },
+                    "400": {
+                        "description": "User needs to customize their account",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            }
+        },
+        
+        "/water/:username": {
+            "post": {
+                "tags": [
+                    "Water"
+                ],
+                "summary": "Inserts a log for water",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for log of water intake",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/WaterLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username for log of water intake",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/WaterLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    },
+                                    "TotalOunces": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getWater/:username": {
+            "post": {
+                "tags": [
+                    "Water"
+                ],
+                "summary": "Gets a water log from database based on user and date",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for log of water intake",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/WaterLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username for log of water intake",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/WaterLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    },
+                                    "TotalOunces": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "entry does not exist",
+                        "properties": {
+                            "Error message": {
+                                "type": "String"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/deleteWater/:username": {
+            "post": {
+                "tags": [
+                    "Water"
+                ],
+                "summary": "deletes a water log from database based on user and date",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for log of water intake",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/WaterLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username for log of water intake",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/WaterLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    },
+                                    "Ounces": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "entry does not exist",
+                        "properties": {
+                            "Error message": {
+                                "type": "String"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "required": [
+                "name",
+                "_id",
+                "companies"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "integer",
+                    "uniqueItems": true
+                },
+                "isPublic": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "books": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                },
+                "companies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "Users": {
+            "type": "array",
+            "$ref": "#/definitions/User"
+        }
+    }
+}

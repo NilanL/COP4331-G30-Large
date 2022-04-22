@@ -45,8 +45,8 @@ exports.setApp = function (app, client) {
             id = foundUser._id.toString();
             fn = foundUser.FirstName;
             ln = foundUser.LastName;
-            em = foundUser.email;
-            ph = foundUser.phone;
+            em = foundUser.Email;
+            ph = foundUser.Phone;
 
             ret = { Id: id, Username: username, FirstName: fn, LastName: ln, Email: em, PhoneNumber: ph, error: error };
             res.status(200).json(ret);
