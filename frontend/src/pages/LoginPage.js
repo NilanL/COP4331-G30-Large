@@ -2,7 +2,7 @@ import React from 'react';
 import PageTitle from '../components/PageTitle';
 import Login from '../components/Login';
 import '../index.css';
-import background from "../Asset/images/backgroundLG.svg";
+import background from "../assets/images/backgroundLG.svg";
 const LoginPage = () =>
 {
     return(

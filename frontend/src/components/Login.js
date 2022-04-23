@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
+import { StyleSheet } from "react-native";
 import styled, { css } from "styled-components";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-//import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function Login()
 {
@@ -106,52 +108,28 @@ function Login()
     return(
 
         
-      <div id="loginDiv" class="p-5">
+      <div id="loginDiv" className="p-5">
           
-            <style type="text/css">
-                {`
-                .btn-flat {
-                background-color: purple;
-                color: black;
-                }
-
-                .bg-custom-button {
-                    background-color: #1F2833;
-                    border-color: #45A293;
-                    border: 3px solid-transparent;
-                    color: #45A293;
-                    border-radius: 100px;
-                }
-
-
-                .btn-xxl {
-                padding: 1rem 1.5rem;
-                font-size: 1.5rem;
-                }
-                `}
-            </style>
-
-            
-
-
-
+    
             <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '20rem'}}> 
-                    <br /><img src= {require('../Asset/images/dailygrind5.png')} /><br />
+                    <br /><img src= {require('../assets/images/dailygrind5.png')} /><br />
                     <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Login</Card.Text> 
                     
                     <Card.Body>
                         <form>
-                            <input type="text" id="loginName" placeholder="Username" 
-                        ref={(c) => loginName = c} /><br /><br />
-                        <input type="password" id="loginPassword" placeholder="Password" 
-                            ref={(c) => loginPassword = c} /><br /><br /> 
-                        <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doLogin}>Login</Button>   <span></span> 
-                        <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doRegister}> Register </Button> 
-                        <br /> <br />
-                        <a href='/RetrieveAccount'>Forgot Password</a><br />
-                        <a href='/resend'>Resend Verification Email</a>
+                            <FontAwesomeIcon icon={solid('user')} style={{color: '#0FA3B1'}} /><input type="text" id="loginName" style={{borderTopWidth: 0,
+                                borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} placeholder="Username" 
+                                ref={(c) => loginName = c} /><br /><br />
+                            <FontAwesomeIcon icon={solid('key')} style={{color: '#0FA3B1'}} /><input type="password" id="loginPassword" style={{borderTopWidth: 0,
+                                borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} placeholder="Password" 
+                                ref={(c) => loginPassword = c} /><br /><br /> 
+                            <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={doLogin}>Login</Button>   <span></span> 
+                            <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doRegister}> Register </Button> 
+                            <br /> <br />
+                            <a href='/RetrieveAccount'>Forgot Password</a><br />
+                            <a href='/resend'>Resend Verification Email</a>
                         </form>
-                        <span id="loginResult">{message}</span>                        
+                        <span id="loginResult">{message}</span>                       
                     </Card.Body>                    
             </Card>
      </div>
@@ -161,6 +139,183 @@ function Login()
 
 
 };
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor:"rgba(255,255,255,1)"
+      },
+      background: {
+        flex: 1,
+        justifyContent: "center",
+        width:"100%",
+        height:"100%"
+      },
+      login_Login: {
+        top: "12.49%",
+        height: "53.31%",
+        position: "absolute",
+        right: 22,
+        left: 22
+      },
+      login_LoginBackground: {
+        top: "0%",
+        left: 0,
+        height: "100%",
+        position: "absolute",
+        backgroundColor: "rgba(255,255,255,1)",
+        borderRadius: 15,
+        shadowColor: "rgba(0,0,0,1)",
+        shadowOffset: {
+          width: 3,
+          height: 3
+        },
+        elevation: 10,
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+        right: 0,
+        borderColor: "rgba(210,210,210,210)",
+        borderWidth: 1
+      },
+      logo: {
+        top: "12.93%",
+        left: 0,
+        height: 52,
+        position: "absolute",
+        width: "100%"
+      },
+      text_Incorrect: {
+        top: "28.5%",
+        left: 0,
+        position: "absolute",
+        fontFamily: "roboto-700",
+        color: "rgba(242, 38, 19, 1)",
+        fontSize: 16,
+        textAlign: "center",
+        right: 0
+      },
+      username: {
+        top: "35.7%",
+        left: "8%",
+        height: 41,
+        position: "absolute",
+        right: "8%"
+      },
+      usernameField1: {
+        position: "absolute",
+        fontFamily: "roboto-regular",
+        color: "#121212",
+        height: 41,
+        borderWidth: 1,
+        borderColor: "#000000",
+        textAlign: "left",
+        backgroundColor: "rgba(255,255,255,1)",
+        fontSize: 16,
+        top: "0%",
+        left: 29,
+        borderTopWidth: 0,
+        borderRightWidth: 0,
+        borderLeftWidth: 0,
+        right: 0
+      },
+      userIcon1: {
+        top: 13,
+        left: 0,
+        position: "absolute",
+        color: "rgba(15,163,177,1)",
+        fontSize: 25
+      },
+      password: {
+        top: "50.83%",
+        left: "8%",
+        height: 41,
+        position: "absolute",
+        right: "8%"
+      },
+      passwordField1: {
+        position: "absolute",
+        fontFamily: "roboto-regular",
+        color: "#121212",
+        height: 41,
+        borderWidth: 1,
+        borderColor: "#000000",
+        textAlign: "left",
+        backgroundColor: "rgba(255,255,255,1)",
+        fontSize: 16,
+        top: "0%",
+        left: 29,
+        borderTopWidth: 0,
+        borderRightWidth: 0,
+        borderLeftWidth: 0,
+        right: 0
+      },
+      passwordIcon1: {
+        top: 14,
+        left: 0,
+        position: "absolute",
+        color: "rgba(15,163,177,1)",
+        fontSize: 20
+      },
+      loginButtonComponent: {
+        position: "absolute",
+        top: "70.97%",
+        left: 56,
+        height: "11.24%",
+        right: 56
+      },
+      forgotPasswordButtonComponent: {
+        position: "absolute",
+        top: "87.14%",
+        left: 0,
+        right: 0,
+        height: 19
+      },
+      login_Register: {
+        top: "75.88%",
+        height: "15.14%",
+        position: "absolute",
+        left: 22,
+        right: 22
+      },
+      login_RegisterBackground: {
+        top: "0%",
+        left: 0,
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        backgroundColor: "rgba(255,255,255,1)",
+        borderRadius: 15,
+        shadowColor: "rgba(0,0,0,1)",
+        shadowOffset: {
+          width: 3,
+          height: 3
+        },
+        elevation: 10,
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+        borderColor: "rgba(210,210,210,210)",
+        borderWidth: 1
+      },
+      text_NotRegistered: {
+        top: "18.74%",
+        left: 0,
+        position: "absolute",
+        fontFamily: "roboto-regular",
+        color: "rgba(0,0,0,1)",
+        fontSize: 16,
+        right: 0,
+        textAlign: "center"
+      },
+      registerButtonComponent: {
+        position: "absolute",
+        top: "42.15%",
+        left: 56,
+        height: "39.64%",
+        right: 56
+      }
+
+});
 
 
 

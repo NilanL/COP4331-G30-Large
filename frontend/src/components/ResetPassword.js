@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 
 
@@ -89,15 +91,17 @@ function ResetPassword()
 
 
   return(
-    <div>
-        <Card className = "text-center" style = {{width: '50rem', height : '50rem' }}>
+    <div className = "p-5">
+        <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '25rem'}}>
+        <br /><img src= {require('../assets/images/dailygrind5.png')} /><br />
       <form>
-        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-        <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "50px"}}>Reset Password</Card.Text> 
-        <input type="text" id="loginPassword" placeholder="Password" ref={(c) => loginPassword= c} /><br /><br />
-        <input type="text" id="duplicatePassword" placeholder="Confirm Password" ref={(c) => duplicatePassword= c} /><br /><br />
-        <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doResetPassword}>Update Password</Button> <span></span>
-        <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doCancel}>Cancel</Button><br /><br />
+        <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "40px"}}>Reset Password</Card.Text> 
+        <FontAwesomeIcon icon={solid('key')} style={{color: '#0FA3B1'}} /><input type="text" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} 
+                    style={{borderTopWidth: 0, borderRightWidth: 0, borderLeftWidth: 0, margin: 4}}/><br /><br />
+        <FontAwesomeIcon icon={solid('key')} style={{color: '#0FA3B1'}} /><input type="text" id="duplicatePassword" placeholder="Confirm Password" ref={(c) => duplicatePassword= c}
+                    style={{borderTopWidth: 0, borderRightWidth: 0, borderLeftWidth: 0, margin: 4}}/><br /><br />            
+        <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doResetPassword}>Update Password</Button> <span></span>
+        <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doCancel}>Cancel</Button><br /><br />
       </form>
       <span id="resetResult">{message}</span>
       </Card>

@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 import validator from 'validator'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 
 
@@ -93,26 +95,29 @@ const [message,setMessage] = useState('');
     {
         window.location.href = '/login';
     };
+
     return(
-      <div>
-           <Card className = "text-center" style = {{width: '50rem', height : '50rem' }}>
-        <form>
-        <br /><br /><br /><br /><br />
-        <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "50px"}}>Register</Card.Text> 
-        <input type="text" id="firstName" placeholder="FirstName" 
-        ref={(c) => firstName = c} /><br /><br />
-        <input type="text" id="lastName" placeholder="LastName" ref={(c) => lastName = c} /><br /><br />
-        <input type="text" id="username" placeholder="Username" ref={(c) => username = c} /><br /><br />
-        <input type="text" id="phone" placeholder="PhoneNumber" ref={(c) => phone = c} /><br /><br />
-        <input type="text" id="email" placeholder="Email" ref={(c) => email = c} /><br /><br />
-        <input type="text" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} /><br /><br />
-        <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doRegister}>Register</Button> <span></span>
-        <Button style={{color:"#000", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)"}} onClick={doCancel}>Cancel</Button>
-
-
-        </form>
+      <div className= "p-5">
+           <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '20rem'}}>
+           <br /><img src= {require('../assets/images/dailygrind5.png')} /><br />
+            <form style={{padding: 10}}>
+                <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "40px"}}>Register</Card.Text> 
+                <FontAwesomeIcon icon={solid('person')} style={{color: '#0FA3B1'}} /><input type="text" id="firstName" placeholder="FirstName" ref={(c) => firstName = c} 
+                    style={{borderTopWidth: 0,borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} /><br /><br />
+                <FontAwesomeIcon icon={solid('person')} style={{color: '#0FA3B1'}} /><input type="text" id="lastName" placeholder="LastName" ref={(c) => lastName = c}
+                    style={{borderTopWidth: 0, borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} /><br /><br />
+                <FontAwesomeIcon icon={solid('phone')} style={{color: '#0FA3B1'}} /><input type="text" id="phone" placeholder="PhoneNumber" ref={(c) => phone = c} 
+                    style={{borderTopWidth: 0, borderRightWidth: 0, borderLeftWidth: 0, margin: 4}}/><br /><br />
+                <FontAwesomeIcon icon={solid('envelope')} style={{color: '#0FA3B1'}} /><input type="text" id="email" placeholder="Email" ref={(c) => email = c} 
+                    style={{borderTopWidth: 0, borderRightWidth: 0, borderLeftWidth: 0, margin: 4}}/><br /><br />
+                <FontAwesomeIcon icon={solid('user')} style={{color: '#0FA3B1'}} /><input type="text" id="username" placeholder="Username" ref={(c) => username = c} 
+                    style={{borderTopWidth: 0, borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} /><br /><br />    
+                <FontAwesomeIcon icon={solid('key')} style={{color: '#0FA3B1'}} /><input type="text" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} 
+                    style={{borderTopWidth: 0, borderRightWidth: 0, borderLeftWidth: 0, margin: 4}}/><br /><br />
+                <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doRegister}>Register</Button> <span></span>
+                <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doCancel}>Cancel</Button>
+            </form>
         <span id="resetResult">{message}</span>
-        <span></span>
         </Card>
      </div>
     );
