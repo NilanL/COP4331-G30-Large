@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { Stylesheet, View, Image } from 'react-native';
 import './App.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -9,6 +10,7 @@ import EmailVerification from './components/EmailVerification';
 import ForgotPassword from './pages/ForgotPassword';
 import PasswordPage from './pages/PasswordPage';
 import ResendPage from './pages/ResendPage';
+
 
 
 function App() {
@@ -44,4 +46,4 @@ function App() {
     </Router>
   );
 }
-export default App;
+//export default App;
