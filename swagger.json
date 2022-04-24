@@ -338,6 +338,7 @@
             }
         },
         
+
         "/water/:username": {
             "post": {
                 "tags": [
@@ -357,7 +358,7 @@
                     {
                         "in": "params",
                         "name": "username",
-                        "description": "username for log of water intake",
+                        "description": "username of user that is entering the log",
                         "required" : true,
                         "schema": {
                             "$ref": "#/definitions/WaterLog"
@@ -407,7 +408,7 @@
                     {
                         "in": "params",
                         "name": "username",
-                        "description": "username for log of water intake",
+                        "description": "the username of user",
                         "required" : true,
                         "schema": {
                             "$ref": "#/definitions/WaterLog"
@@ -447,7 +448,7 @@
             }
         },
         "/deleteWater/:username": {
-            "post": {
+            "delete": {
                 "tags": [
                     "Water"
                 ],
@@ -465,7 +466,7 @@
                     {
                         "in": "params",
                         "name": "username",
-                        "description": "username for log of water intake",
+                        "description": "username of user",
                         "required" : true,
                         "schema": {
                             "$ref": "#/definitions/WaterLog"
@@ -503,51 +504,628 @@
                     }
                 }
             }
+        },
+
+        "/sleep/:username": {
+            "post": {
+                "tags": [
+                    "Sleep"
+                ],
+                "summary": "Inserts a log for sleep hours",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for log of sleep hours",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/SleepLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username of user that is entering the log",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/SleepLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    },
+                                    "Hours": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getSleep/:username": {
+            "post": {
+                "tags": [
+                    "Sleep"
+                ],
+                "summary": "Gets a sleep log from database based on user and date",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for log of sleep hours",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/SleepLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username of user",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/SleepLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    },
+                                    "Hours": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "entry does not exist",
+                        "properties": {
+                            "Error message": {
+                                "type": "String"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/deleteSleep/:username": {
+            "delete": {
+                "tags": [
+                    "Sleep"
+                ],
+                "summary": "deletes a sleep log from database based on user and date",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for log of sleep hours",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitionsSleepLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username of user",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/SleepLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    },
+                                    "Hours": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "entry does not exist",
+                        "properties": {
+                            "Error message": {
+                                "type": "String"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+
+        "/recreation/:username": {
+            "post": {
+                "tags": [
+                    "Recreation"
+                ],
+                "summary": "Inserts a log for hours spent doing different activites in a day",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for log of recreation",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/RecreationLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username of user that is entering the log",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/RecreationLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    },
+                                    "[RecreationEntered]": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getRecreation/:username": {
+            "post": {
+                "tags": [
+                    "Recreation"
+                ],
+                "summary": "Gets a recreation log from database based on user and date",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for log of recreation",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/RecreationLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username of user",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/RecreationLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "ObjectId"
+                                    },
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    },
+                                    "ScreenTime": {
+                                        "type": "number"
+                                    },
+                                    "Television": {
+                                        "type": "number"
+                                    },
+                                    "Gaming": {
+                                        "type": "number"
+                                    },
+                                    "Sport": {
+                                        "type": "number"
+                                    },
+                                    "Art": {
+                                        "type": "number"
+                                    },
+                                    "Chores": {
+                                        "type": "number"
+                                    },
+                                    "Work": {
+                                        "type": "number"
+                                    },
+                                    "Other": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "entry does not exist",
+                        "properties": {
+                            "Error message": {
+                                "type": "String"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/deleteRecreation/:username": {
+            "delete": {
+                "tags": [
+                    "Recreation"
+                ],
+                "summary": "deletes a recreation log from database based on user and date",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for log of recreation",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitionsRecreationLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username of user",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/RecreationLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "entry does not exist",
+                        "properties": {
+                            "Error message": {
+                                "type": "String"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+
+        "/exercise/:username": {
+            "post": {
+                "tags": [
+                    "Exercise"
+                ],
+                "summary": "Inserts a log for exercises done",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for log of exercise",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/ExerciseLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username of user that is entering the log",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/ExerciseLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    },
+                                    "Exercise": {
+                                        "type": "String"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getExercise/:username": {
+            "post": {
+                "tags": [
+                    "Exercise"
+                ],
+                "summary": "Gets all the exercise logs from database based on user and date",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for logs of exercise",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/ExerciseLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username of user",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/ExerciseLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "description": "returns every property for every log with given user and date",
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    },
+                                    "Exercise": {
+                                        "type": "exercise"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "entry does not exist",
+                        "properties": {
+                            "Error message": {
+                                "type": "String"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/deleteExercise/:username": {
+            "delete": {
+                "tags": [
+                    "Exercise"
+                ],
+                "summary": "deletes exercise logs from database based on user and date",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "date",
+                        "description": "date for logs of exercise",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitionsExerciseLog"
+                        }
+                    },
+                    {
+                        "in": "params",
+                        "name": "username",
+                        "description": "username of user",
+                        "required" : true,
+                        "schema": {
+                            "$ref": "#/definitions/ExerciseLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "User": {
+                                        "type": "String"
+                                    },
+                                    "Date": {
+                                        "type": "String"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "entry does not exist",
+                        "properties": {
+                            "Error message": {
+                                "type": "String"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
         "User": {
-            "required": [
-                "name",
-                "_id",
-                "companies"
-            ],
             "properties": {
                 "_id": {
                     "type": "integer",
                     "uniqueItems": true
                 },
-                "isPublic": {
-                    "type": "boolean"
+                "FirstName": {
+                    "type": "String"
                 },
-                "name": {
-                    "type": "string"
+                "LastName": {
+                    "type": "String"
                 },
-                "books": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "name": {
-                                "type": "string"
-                            },
-                            "amount": {
-                                "type": "number"
-                            }
-                        }
-                    }
+                "Username": {
+                    "type": "String",
+                    "uniqueItems": true
                 },
-                "companies": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "Phone": {
+                    "type": "String"
+                },
+                "Email": {
+                    "type": "String",
+                    "uniqueItems": true
                 }
             }
         },
-        "Users": {
-            "type": "array",
-            "$ref": "#/definitions/User"
+        "WaterLog": {
+            "properties": {
+                "User": {
+                    "type": "String"
+                },
+                "Date": {
+                    "type": "String"
+                },
+                "Ounces": {
+                    "type": "number"
+                }
+            }
+        },
+        "SleepLog": {
+            "properties": {
+                "User": {
+                    "type": "String"
+                },
+                "Date": {
+                    "type": "String"
+                },
+                "Hours": {
+                    "type": "number"
+                }
+            }
+        },
+        "RecreationLog": {
+            "properties": {
+                "User": {
+                    "type": "String"
+                },
+                "Date": {
+                    "type": "String"
+                },
+                "ScreenTime": {
+                    "type": "number"
+                },
+                "Television": {
+                    "type": "number"
+                },
+                "Gaming": {
+                    "type": "number"
+                },
+                "Sport": {
+                    "type": "number"
+                },
+                "Art": {
+                    "type": "number"
+                },
+                "Chores": {
+                    "type": "number"
+                },
+                "Work": {
+                    "type": "number"
+                },
+                "Other": {
+                    "type": "number"
+                }
+            }
+        },
+        "ExerciseLog": {
+            "properties": {
+                "User": {
+                    "type": "String"
+                },
+                "Date": {
+                    "type": "String"
+                },
+                "Exercise": {
+                    "type": "String"
+                }
+            }
         }
     }
 }

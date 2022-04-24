@@ -295,7 +295,6 @@ exports.setApp = function (app, client2) {
         const db = client2.db();
         const foundEntry = await db.collection('recreation').findOne({Date: date, User: username});
 
-        let ret;
         if (!foundEntry)
         {
             res.status(400).send("Entry for given user and date not found");
