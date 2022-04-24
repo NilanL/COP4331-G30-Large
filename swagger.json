@@ -1051,6 +1051,12 @@
                 "Email": {
                     "type": "String",
                     "uniqueItems": true
+                },
+                "Verified": {
+                    "type": "boolean"
+                },
+                "Customized": {
+                    "type": "boolean"
                 }
             }
         },
