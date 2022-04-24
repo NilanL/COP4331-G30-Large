@@ -137,7 +137,7 @@ function Customize()
             {habbits.map(({ name }, index) => {
               return (
                 <li class="list-group-item" key={index}>
-                  <div class="d-flex align-times-start" className="habbitsList" >
+                  <div class="d-flex align-items-start" className="habbitsList" >
                     <div>
                       <input type="checkbox"
                       id={`custom-checkbox-${index}`}
