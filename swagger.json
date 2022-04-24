@@ -69,19 +69,19 @@
                                 "type": "object",
                                 "properties": {
                                     "Id": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "LastName": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Email": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "PhoneNumber": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "error": {
-                                        "type": "String"
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -95,7 +95,7 @@
                                 "type": "object",
                                 "properties": {
                                     "error": {
-                                        "type": "String"
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -109,7 +109,7 @@
                                 "type": "object",
                                 "properties": {
                                     "error": {
-                                        "type": "String"
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -374,10 +374,10 @@
                                 "type": "object",
                                 "properties": {
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "TotalOunces": {
                                         "type": "number"
@@ -424,10 +424,10 @@
                                 "type": "object",
                                 "properties": {
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "TotalOunces": {
                                         "type": "number"
@@ -440,7 +440,7 @@
                         "description": "entry does not exist",
                         "properties": {
                             "Error message": {
-                                "type": "String"
+                                "type": "string"
                             }
                         }
                     }
@@ -482,10 +482,10 @@
                                 "type": "object",
                                 "properties": {
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Ounces": {
                                         "type": "number"
@@ -498,7 +498,7 @@
                         "description": "entry does not exist",
                         "properties": {
                             "Error message": {
-                                "type": "String"
+                                "type": "string"
                             }
                         }
                     }
@@ -541,10 +541,10 @@
                                 "type": "object",
                                 "properties": {
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Hours": {
                                         "type": "number"
@@ -591,10 +591,10 @@
                                 "type": "object",
                                 "properties": {
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Hours": {
                                         "type": "number"
@@ -607,7 +607,7 @@
                         "description": "entry does not exist",
                         "properties": {
                             "Error message": {
-                                "type": "String"
+                                "type": "string"
                             }
                         }
                     }
@@ -649,10 +649,10 @@
                                 "type": "object",
                                 "properties": {
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Hours": {
                                         "type": "number"
@@ -665,7 +665,7 @@
                         "description": "entry does not exist",
                         "properties": {
                             "Error message": {
-                                "type": "String"
+                                "type": "string"
                             }
                         }
                     }
@@ -709,10 +709,10 @@
                                 "type": "object",
                                 "properties": {
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "[RecreationEntered]": {
                                         "type": "number"
@@ -762,10 +762,10 @@
                                         "type": "ObjectId"
                                     },
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "ScreenTime": {
                                         "type": "number"
@@ -799,7 +799,7 @@
                         "description": "entry does not exist",
                         "properties": {
                             "Error message": {
-                                "type": "String"
+                                "type": "string"
                             }
                         }
                     }
@@ -841,10 +841,10 @@
                                 "type": "object",
                                 "properties": {
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -854,7 +854,7 @@
                         "description": "entry does not exist",
                         "properties": {
                             "Error message": {
-                                "type": "String"
+                                "type": "string"
                             }
                         }
                     }
@@ -898,13 +898,13 @@
                                 "type": "object",
                                 "properties": {
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Exercise": {
-                                        "type": "String"
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -949,10 +949,10 @@
                                 "properties": {
                                     "description": "returns every property for every log with given user and date",
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Exercise": {
                                         "type": "exercise"
@@ -965,7 +965,7 @@
                         "description": "entry does not exist",
                         "properties": {
                             "Error message": {
-                                "type": "String"
+                                "type": "string"
                             }
                         }
                     }
@@ -1007,10 +1007,10 @@
                                 "type": "object",
                                 "properties": {
                                     "User": {
-                                        "type": "String"
+                                        "type": "string"
                                     },
                                     "Date": {
-                                        "type": "String"
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -1020,7 +1020,7 @@
                         "description": "entry does not exist",
                         "properties": {
                             "Error message": {
-                                "type": "String"
+                                "type": "string"
                             }
                         }
                     }
@@ -1036,20 +1036,20 @@
                     "uniqueItems": true
                 },
                 "FirstName": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "LastName": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "Username": {
-                    "type": "String",
+                    "type": "string",
                     "uniqueItems": true
                 },
                 "Phone": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "Email": {
-                    "type": "String",
+                    "type": "string",
                     "uniqueItems": true
                 },
                 "Verified": {
@@ -1063,10 +1063,10 @@
         "WaterLog": {
             "properties": {
                 "User": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "Date": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "Ounces": {
                     "type": "number"
@@ -1076,10 +1076,10 @@
         "SleepLog": {
             "properties": {
                 "User": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "Date": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "Hours": {
                     "type": "number"
@@ -1089,10 +1089,10 @@
         "RecreationLog": {
             "properties": {
                 "User": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "Date": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "ScreenTime": {
                     "type": "number"
@@ -1123,13 +1123,13 @@
         "ExerciseLog": {
             "properties": {
                 "User": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "Date": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "Exercise": {
-                    "type": "String"
+                    "type": "string"
                 }
             }
         }
