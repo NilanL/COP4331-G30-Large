@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, Image, TextInput, Text, ImageBackground } from "react-native";
 import styled, { css } from "styled-components";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -107,9 +107,7 @@ function Login()
 
     return(
 
-        
       <div id="loginDiv" className="p-5">
-          
     
             <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '20rem'}}> 
                     <br /><img src= {require('../assets/images/dailygrind5.png')} /><br />
@@ -132,7 +130,10 @@ function Login()
                         <span id="loginResult">{message}</span>                       
                     </Card.Body>                    
             </Card>
+     
+
      </div>
+
      
     );
 

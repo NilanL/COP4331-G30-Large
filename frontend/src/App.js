@@ -6,7 +6,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import CustomizePage from './pages/CustomizePage';
-import EmailVerification from './components/EmailVerification';
+import EmailVerificationPage from './pages/EmailVerificationPage';
 import ForgotPassword from './pages/ForgotPassword';
 import PasswordPage from './pages/PasswordPage';
 import ResendPage from './pages/ResendPage';
@@ -24,7 +24,7 @@ function App() {
           <HomePage />
           </Route>
         <Route path='/emailverification' exact>
-          <EmailVerification />
+          <EmailVerificationPage />
         </Route>
         <Route path="/customize" exact>
           <CustomizePage />

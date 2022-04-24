@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 
 function EmailVerification(){
@@ -79,12 +77,14 @@ function EmailVerification(){
     return(
 
         <div className= "p-5">
-           <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '20rem'}}>
+           <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '30rem'}}>
            <br /><img src= {require('../assets/images/dailygrind5.png')} /><br />
             <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "40px"}}>Email Verification</Card.Text> 
+            <p>Please click verify below to complete verification.</p>
             <form style={{padding: 10}}>
-                <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doVerify}>VerifyAccount</Button>   <span></span> 
+                <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doVerify}>Verify</Button>   <span></span> 
                 <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doLogin}>Login</Button>   <span></span> 
+                <br />
                 <span id="resetResult">{message}</span>
             </form>
             </Card>

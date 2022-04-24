@@ -1,21 +1,18 @@
 export const habbits = [
     {
       name: "Exercise",
-      
+      icon: "dumbbell"
     },
     {
-      name: "Meal"
+      name: "Recreation",
+      icon: "umbrella-beach"
     },
     {
-      name: "Medication"
+      name: "Sleep",
+      icon: "bed"
     },
     {
-      name: "Recreation"
-    },
-    {
-      name: "Sleep"
-    },
-    {
-      name: "Water"
+      name: "Water",
+      icon: "glass-water"
     }
   ];
