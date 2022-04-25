@@ -112,7 +112,7 @@ function Login()
                             <FontAwesomeIcon icon={solid('key')} style={{color: '#0FA3B1'}} /><input type="password" id="loginPassword" style={{borderTopWidth: 0,
                                 borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} placeholder="Password" 
                                 ref={(c) => loginPassword = c} /><br /><br /> 
-                            <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={doLogin}>Login</Button>   <span></span> 
+                            <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={doLogin}>Login</Button> 
                             <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doRegister}> Register </Button> 
                             <br /> <br />
                             <a href='/RetrieveAccount'>Forgot Password</a><br />

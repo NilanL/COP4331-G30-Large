@@ -6,14 +6,13 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-require('react-dom');
-window.React2 = require('react');
-console.log(window.React1 === window.React2);
 
 
 function Resend()
 {
 
+  const [message,setMessage] = useState('');
+  
   const app_name = 'cop4331-g30-large'
     function buildPath(route)
     {
@@ -28,8 +27,6 @@ function Resend()
     }
 
     var email = '';
-
-    const [message,setMessage] = useState('');
 
     const doRetrieveAccount = async event => 
     {
