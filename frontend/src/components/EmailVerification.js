@@ -35,7 +35,6 @@ function EmailVerification(){
         event.preventDefault();
         var obj = {id:id};
         var js = JSON.stringify(obj);
-        //console.log(obj);
         
         try
         { 
@@ -44,7 +43,7 @@ function EmailVerification(){
             const response = await fetch(buildPath('api/verifyaccount'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
-            //console.log(res);
+            
             if( res.error === 'User not found'  )
             {
                 setMessage('User not found.');

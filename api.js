@@ -11,7 +11,7 @@ exports.setApp = function (app, client) {
         let error = '';
 
         try {
-        
+
             const db = client.db();
             const foundUser = await db.collection('users').findOne({ Username: username, Password: password });
             // console.log(foundUser.FirstName);
@@ -31,13 +31,13 @@ exports.setApp = function (app, client) {
                 return;
             }
 
-            else if (foundUser.Verified != true){
-                ret = { error: 'Email is not verified can not access login'};
+            else if (foundUser.Verified != true) {
+                ret = { error: 'Email is not verified can not access login' };
                 res.status(500).json(ret);
                 return;
             }
 
-            else if (foundUser.Customized != true){
+            else if (foundUser.Customized != true) {
                 // redirect to customize page
                 error = 'User has not customized their account';
             }
@@ -45,21 +45,10 @@ exports.setApp = function (app, client) {
             id = foundUser._id.toString();
             fn = foundUser.FirstName;
             ln = foundUser.LastName;
-            em = foundUser.email;
-            ph = foundUser.phone;
+            em = foundUser.Email;
+            ph = foundUser.Phone;
 
-           /*
-           jwt token thing
-           try {
-                const token = require("./createJWT.js");
-                ret = token.createToken(id, fn, ln);
-            }
-            catch (e) {
-                ret = { error: e.message };
-            }
-
-            //let ret = { id: id, firstName: fn, lastName: ln, error: '' };*/
-            ret = {Username: username, error: error};
+            ret = { Id: id, Username: username, FirstName: fn, LastName: ln, Email: em, PhoneNumber: ph, error: error };
             res.status(200).json(ret);
         }
         catch (e) {
@@ -72,34 +61,32 @@ exports.setApp = function (app, client) {
     app.post('/api/register', async (req, res, next) => {
         const { firstName, lastName, username, phone, email, password } = req.body;
 
-        const newUser = { FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password, Verified: false, Customized: false};
+        const newUser = { FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password, Verified: false, Customized: false };
         let error = '';
         var ret;
 
         try {
             const db = client.db();
-            const searchUsername = await db.collection('users').findOne({Username: username});
-            const searchEmail = await db.collection('users').findOne({Email: email});
+            const searchUsername = await db.collection('users').findOne({ Username: username });
+            const searchEmail = await db.collection('users').findOne({ Email: email });
 
             // check if username already in use
-            if (searchUsername)
-            {
+            if (searchUsername) {
                 ret = { error: 'Username already exists' };
                 res.status(500).json(ret);
                 return;
             }
 
             // check if email already in use
-            else if (searchEmail)
-            {
-                ret = { error: "Account already registered with this email"};
+            else if (searchEmail) {
+                ret = { error: "Account already registered with this email" };
                 res.status(500).json(ret);
                 return;
             }
 
             // else create new user
             else {
-                const result = await db.collection('users').insertOne(newUser);
+                db.collection('users').insertOne(newUser);
             }
         }
         catch (e) {
@@ -124,14 +111,14 @@ exports.setApp = function (app, client) {
             res.status(400).json(ret);
             return;
         }
-      
-        ret = {Username: foundUser.username, Password: foundUser.password};
+
+        ret = { Username: foundUser.username, Password: foundUser.password };
 
         const from = "dailygrind4331@gmail.com";
         const to = email;
         const subject = "Daily Grind Verification";
 
-        //console.log(`id ${foundUser._id}`);
+        console.log(`id ${foundUser._id}`);
 
         //const link = `https://cop4331-g30-large.herokuapp.com/api/verifyaccount/${id}`;
         //const link = `http://localhost:5000/EmailVerification
@@ -156,24 +143,23 @@ exports.setApp = function (app, client) {
         var ret;
         const db = client.db();
         const userId = req.body.id;
-        const user = await db.collection('users').findOne({_id: ObjectId(userId)});
-        //console.log(userId);
-        db.collection('users').updateOne({_id: ObjectId(userId)}, { $set: { Verified: true}});
+        const user = await db.collection('users').findOne({ _id: ObjectId(userId) });
+        console.log(userId);
+        db.collection('users').updateOne({ _id: ObjectId(userId) }, { $set: { Verified: true } });
 
-        if(!user){
+        if (!user) {
             ret = { error: 'User not found' };
             res.status(400).json(ret);
-            return; 
-        }     
-        //console.log("First Name: ", user.FirstName);
-        
-        ret = {_id: userId};
+            return;
+        }
+        console.log("First Name: ", user.FirstName);
+
+        ret = { _id: userId };
         res.status(200).json(ret);
     });
 
     // sending reset password link endpoint
     app.post('/api/forgotpass', async (req, res, next) => {
-        //let token = require('./createJWT.js');
         // have user re-enter email
         const { email } = req.body;
         var ret;
@@ -189,20 +175,12 @@ exports.setApp = function (app, client) {
                 return;
             }
             // get id, first, and last name
-            const id = foundUser._id;  
+            const id = foundUser._id;
             const fn = foundUser.FirstName;
             const ln = foundUser.LastName;
 
-            try {
-                const token = require("./createJWT.js");
-                ret = token.createToken(id, fn, ln);
-            }
-            catch (e) {
-                ret = { error: e.message };
-            }
-
-            const link = `https://cop4331-g30-large.herokuapp.com/ResetPassword/?id=${id}`;
-            //const link = `http://localhost:5000/ResetPassword/?id=${id}`;
+            //const link = `https://cop4331-g30-large.herokuapp.com/ResetPassword/?id=${id}`;
+            const link = `http://localhost:3000/ResetPassword/?id=${id}`;
             const from = "dailygrind4331@gmail.com";
             const to = email;
             const subject = "Daily Grind Password Reset";
@@ -235,22 +213,31 @@ exports.setApp = function (app, client) {
         const db = client.db();
         const foundUser = await db.collection('users').findOne({ _id: ObjectId(userId) });
         //console.log(foundUser.FirstName);
-        
-        if(!foundUser){
+
+        if (!foundUser) {
             ret = { error: 'User not found' };
             res.status(400).json(ret);
-            return; 
+            return;
         }
-        if (foundUser.Password == newPassword)
-        {
-                ret = { error: 'Already used this password' };
-                res.status(500).json(ret);
-                return;
+        if (foundUser.Password == newPassword) {
+            ret = { error: 'Already used this password' };
+            res.status(500).json(ret);
+            return;
         }
-        ret = {_id: userId};
+        ret = { _id: userId };
 
-        db.collection('users').updateOne({_id: ObjectId(userId)}, { $set: { Password : newPassword} });
-        
+        db.collection('users').updateOne({ _id: ObjectId(userId) }, { $set: { Password: newPassword } });
+
+        res.status(200).json(ret);
+    });
+
+    // customization initialization
+    app.post('/api/initialize/:username', async (req, res, next) => {
+        const username = req.params.username;
+        const initialization = {User: username, Exercise: false, Meal: false, Medication: false, Recreation: false, Sleep: false, Water: false};
+        const db = client.db();
+        db.collection('habits').insertOne(initialization);
+        let ret = {User: username};
         res.status(200).json(ret);
     });
 
@@ -260,17 +247,43 @@ exports.setApp = function (app, client) {
 
         const { exercise, meal, medication, recreation, sleep, water } = req.body;
 
-        const userHabits = {User: username, Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water};
-
-        let ret = { User: username };
-
         const db = client.db();
-        db.collection('habits').insertOne(userHabits);
-        db.collection('users').updateOne({Username: username}, {$set: {Customized : true}}); 
-        res.status(200).json(ret);
+        const foundUser = await db.collection('habits').findOne({ User: username });
+
+        if (foundUser) {
+            db.collection('habits').updateOne({ User: username }, { $set: { Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water } });
+            let ret = { User: username };
+            res.status(200).json(ret);
+        }
+
+        else {
+            const userHabits = { User: username, Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water };
+
+            let ret = { User: username };
+
+            const db = client.db();
+            db.collection('habits').insertOne(userHabits);
+            db.collection('users').updateOne({ Username: username }, { $set: { Customized: true } });
+            res.status(200).json(ret);
+        }
     });
 
-    // update customization endpoint
+    // retrieve customization info
+    app.get('/api/getCustomization/:username',  async (req, res, next) => {
+        const username = req.params.username;
+        const db = client.db();
+        const foundUser = await db.collection('habits').findOne({User: username});
+
+        if (!foundUser)
+        {
+            res.status(400).send("Not found - user needs to customize");
+        }
+        else {
+            res.status(200).send(foundUser);
+        }
+    }); 
+
+    /*// update customization endpoint
     app.post('/api/updatecustomization/:username', async (req, res, next) => {
         const username = req.params.username;
         const { exercise, meal, medication, recreation, sleep, water } = req.body;
@@ -281,8 +294,9 @@ exports.setApp = function (app, client) {
 
         const db = client.db();
         db.collection('habits').insertOne(userHabits);
+        res.status(200).json(ret);
     });
-
+    */
     // TO-DO:
     // hash passwords in db?
 }

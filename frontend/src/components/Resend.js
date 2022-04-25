@@ -27,7 +27,9 @@ function Resend()
 
     var email = '';
 
-    const [message,setMessage] = useState('');
+    const Message= () => {
+      const [message,setMessage] = useState('');
+    }
 
     const doRetrieveAccount = async event => 
     {
@@ -90,7 +92,7 @@ function Resend()
         <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doRetrieveAccount}>Submit</Button> <span></span>
         <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doCancel}>Cancel</Button><br /><br />
       </form>
-      <span id="resetResult">{message}</span>
+      <span id="resetResult">{Message}</span>
       </Card>
     </div>
   );
