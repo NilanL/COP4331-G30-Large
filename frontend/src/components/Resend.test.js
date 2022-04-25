@@ -1,6 +1,6 @@
-import doRetrieveAccount from './Resend';
-import Resend from './Resend';
-const resend = require('./Resend');
+//import doRetrieveAccount from './Resend';
+//import Resend from './Resend';
+const { Resend } = require('./Resend');
 const emailEmpty = "";
 const emptyError = 'Please enter your email address to retrieve your account.';
 const emailInvalid = "fakepass.com";
