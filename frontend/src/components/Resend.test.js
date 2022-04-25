@@ -11,5 +11,5 @@ test('Detects missing email address', () => {
     Resend();
     email = emailEmpty;
     doRetrieveAccount();
-    return expect(Resend.Message).toBe(emptyError);
+    return expect(Resend.Message).toEqual(emptyError);
 });

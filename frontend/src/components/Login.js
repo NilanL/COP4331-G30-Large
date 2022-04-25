@@ -29,9 +29,7 @@ function Login()
     var loginPassword;
     let isVerified = true;
 
-    const Message= () => {
-      const [message,setMessage] = useState('');
-    }
+    const [message,setMessage] = useState('');
     
 
 
@@ -120,7 +118,7 @@ function Login()
                             <a href='/RetrieveAccount'>Forgot Password</a><br />
                             <a href='/resend'>Resend Verification Email</a>
                         </form>
-                        <span id="loginResult">{Message}</span>                       
+                        <span id="loginResult">{message}</span>                       
                     </Card.Body>                    
             </Card>
      
