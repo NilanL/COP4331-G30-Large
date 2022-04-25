@@ -25,10 +25,6 @@ const { MONGO_CLIENT_EVENTS } = require('mongodb');
 api.setApp( app, client);
 api2.setApp(app, client2);
 
-const swaggerUi = require('swagger-ui-express'),
-  swaggerDocument = require('./swagger.json');
-
-
 ///////////////////////////////////////////////////
 // For Heroku deployment
 // Server static assets if in production
@@ -53,12 +49,6 @@ app.use((req, res, next) =>
   );
   next();
 });
-
-app.use(
-  '/api-docs',
-  swaggerUi.serve, 
-  swaggerUi.setup(swaggerDocument)
-);
 
 //app.listen(5000); // start Node + Express server on port 5000
 app.listen(PORT, () => 

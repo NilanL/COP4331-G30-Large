@@ -1,0 +1,715 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: DailyGrind CRUD
+  description: DailyGrind API documentation
+  license:
+    name: DailyGrind
+host: localhost:5000
+basePath: /
+tags:
+  - name: Users
+    description: API for users in the system
+  - name: Water
+    description: API calls for user logs of water
+  - name: Sleep
+    description: API calls for user logs of sleep
+  - name: Recreation
+    description: API calls for user logs of recreation
+  - name: Exercise
+    description: API calls for user logs of exercise
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /login:
+    post:
+      tags:
+        - Users
+      summary: Verifies user login credentials
+      parameters:
+        - in: body
+          name: body
+          description: Credentials that need to log in the user
+          required: true
+          schema:
+            $ref: '#/definitions/UserLogin'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                _id:
+                  type: string
+                FirstName:
+                  type: string
+                LastName:
+                  type: string
+                Email:
+                  type: string
+                Phone:
+                  type: string
+                error:
+                  type: string
+        '400':
+          description: Unrecognized credentials
+          schema:
+            properties:
+              error:
+                type: string
+        '500':
+          description: Email is not verified
+          schema:
+            properties:
+              error:
+                type: string
+  /register:
+    post:
+      tags:
+        - Users
+      summary: Registers a user in system
+      parameters:
+        - in: body
+          name: body
+          description: Credentials that need to register the user
+          required: true
+          schema:
+            $ref: '#/definitions/UserRegister'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UserRegister'
+        '500':
+          description: Username already exists/Email is not verified
+          schema:
+            properties:
+              error:
+                type: string
+  /emailverify:
+    post:
+      tags:
+        - Users
+      summary: Send email to user to verify their account
+      parameters:
+        - in: body
+          name: id
+          description: Email needed to send email
+          required: true
+          schema:
+            $ref: '#/definitions/EmailVerify'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UserLogin'
+        '400':
+          description: Unrecognized credentials
+          schema:
+            properties:
+              error:
+                type: string
+  /verifyaccount:
+    post:
+      tags:
+        - Users
+      summary: Verifies the users account
+      parameters:
+        - in: body
+          name: body
+          description: Users unique id
+          required: true
+          schema:
+            $ref: '#/definitions/VerifyAccount'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/VerifyAccount'
+        '400':
+          description: User not found
+          schema:
+            properties:
+              error:
+                type: string
+  /forgotpass:
+    post:
+      tags:
+        - Users
+      summary: Send email to user when they forget password
+      parameters:
+        - in: body
+          name: body
+          description: Users email
+          required: true
+          schema:
+            $ref: '#/definitions/EmailVerify'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UserReturn'
+        '400':
+          description: User not found
+          schema:
+            properties:
+              error:
+                type: string
+  /initialize/{username}:
+    post:
+      tags:
+        - Users
+      summary: Intialize users habit to false
+      parameters: 
+        - in: path
+          name: username
+          type: string
+          description: Username of user
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Username'
+  /customize/{username}:
+    post:
+      tags:
+        - Users
+      summary: User customize their account with habits
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: Username of user
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Username'
+  /getCustomization/{username}:
+    get:
+      tags:
+        - Users
+      summary: Retrieves habits for user
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: Username of User
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Habits'
+        '400':
+          description: Customization entry not found
+          schema:
+            properties:
+              error:
+                type: string
+  /water/{username}:
+    post:
+      tags:
+        - Water
+      summary: Inserts a log for water
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: username of user that is entering the log
+          required: true
+        - in: body
+          name: body
+          description: date and ounces for water intake log
+          required: true
+          schema:
+            $ref: '#/definitions/WaterLog'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                User:
+                  type: string
+                Date:
+                  type: string
+                TotalOunces:
+                  type: number
+  /getWater/{username}:
+    post:
+      tags:
+        - Water
+      summary: Gets a water log from database based on user and date
+      parameters: 
+        - in: path
+          name: username
+          type: string
+          description: the username of user
+          required: true
+        - in: body
+          name: date
+          description: date for log of water intake
+          required: true
+          schema:
+            $ref: '#/definitions/GetLogs'
+      responses:
+        '200':
+          description: OK
+          schema:
+            properties:
+              id:
+                type: object
+              User:
+                type: string
+              Date:
+                type: string
+              TotalOunces:
+                type: number
+        '400':
+          description: Entry does not exist
+          schema:
+            properties:
+              error:
+                type: string
+  /deleteWater/{username}:
+    delete:
+      tags:
+        - Water
+      summary: deletes a water log from database based on user and date
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: username of user
+          required: true
+        - in: body
+          name: date
+          description: date for log of water intake
+          required: true
+          schema:
+            $ref: '#/definitions/GetLogs'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                User:
+                  type: string
+                Date:
+                  type: string
+                Ounces:
+                  type: number
+        '400':
+          description: Entry does not exist
+          schema:
+            properties:
+              error:
+                type: string
+  /sleep/{username}:
+    post:
+      tags:
+        - Sleep
+      summary: Inserts a log for sleep hours
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: username of user that is entering the log
+          required: true
+        - in: body
+          name: body
+          description: date for log of sleep hours
+          required: true
+          schema:
+            $ref: '#/definitions/SleepLog'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                User:
+                  type: string
+                Date:
+                  type: string
+                Hours:
+                  type: number
+  /getSleep/{username}:
+    post:
+      tags:
+        - Sleep
+      summary: Gets a sleep log from database based on user and date
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: username of user
+          required: true
+        - in: body
+          name: date
+          description: date for log of sleep hours
+          required: true
+          schema:
+            $ref: '#/definitions/GetLogs'
+      responses:
+        '200':
+          description: OK
+          schema:
+            properties:
+              id:
+                type: object
+              User:
+                type: string
+              Date:
+                type: string
+              Hours:
+                type: number
+        '400':
+          description: Entry does not exist
+          schema:
+            properties:
+              error:
+                type: string
+  /deleteSleep/{username}:
+    delete:
+      tags:
+        - Sleep
+      summary: deletes a sleep log from database based on user and date
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: username of user
+          required: true
+        - in: body
+          name: date
+          description: date for log of sleep hours
+          required: true
+          schema:
+            $ref: '#/definitions/GetLogs'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                User:
+                  type: string
+                Date:
+                  type: string
+                Hours:
+                  type: number
+        '400':
+          description: Entry does not exist
+          schema:
+            properties:
+              error:
+                type: string
+  /recreation/{username}:
+    post:
+      tags:
+        - Recreation
+      summary: Inserts a log for hours spent doing different activites in a day
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: username of user that is entering the log
+          required: true
+        - in: body
+          name: body
+          description: date and activity for log of recreation
+          required: true
+          schema:
+            $ref: '#/definitions/EnterRecreation'
+      responses:
+        '200':
+          description: OK
+          schema:
+            properties:
+              User:
+                type: string
+              Date:
+                type: string
+              Activity:
+                type: number
+  /getRecreation/{username}:
+    post:
+      tags:
+        - Recreation
+      summary: Gets a recreation log from database based on user and date
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: username of user
+          required: true
+        - in: body
+          name: date
+          description: date for log of recreation
+          required: true
+          schema:
+            $ref: '#/definitions/GetLogs'
+      responses:
+        '200':
+          description: OK
+          schema:
+            properties:
+              _id:
+                type: object
+              User:
+                type: string
+              Date:
+                type: string
+              ScreenTime:
+                type: number
+              Television:
+                type: number
+              Gaming:
+                type: number
+              Sport:
+                type: number
+              Art:
+                type: number
+              Chores:
+                type: number
+              Work:
+                type: number
+              Other:
+                type: number
+        '400':
+          description: Entry does not exist
+          schema:
+            properties:
+              error:
+                type: string
+  /deleteRecreation/{username}:
+    delete:
+      tags:
+        - Recreation
+      summary: deletes a recreation log from database based on user and date
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: username of user
+          required: true
+        - in: body
+          name: date
+          description: date for log of recreation
+          required: true
+          schema:
+            $ref: '#/definitions/GetLogs'
+      responses:
+        '200':
+          description: OK
+          schema:
+           properties:
+            User:
+              type: string
+            Date:
+              type: string
+        '400':
+          description: Entry does not exist
+          schema:
+            properties:
+              error:
+                type: string
+  /exercise/{username}:
+    post:
+      tags:
+        - Exercise
+      summary: Inserts a log for exercises done
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: username of user that is entering the log
+          required: true
+        - in: body
+          name: body
+          description: date and exercise for log of exercise
+          required: true
+          schema:
+            $ref: '#/definitions/ExerciseLog'
+      responses:
+        '200':
+          description: OK
+          schema:
+            properties:
+              User:
+                type: string
+              Date:
+                type: string
+              Exercise:
+                type: string
+  /getExercise/{username}:
+    post:
+      tags:
+        - Exercise
+      summary: Gets all the exercise logs from database based on user and date
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: username of user
+          required: true
+        - in: body
+          name: date
+          description: date for logs of exercise
+          required: true
+          schema:
+            $ref: '#/definitions/GetLogs'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: object
+                User:
+                  type: string
+                Date:
+                  type: string
+                Exercise:
+                  type: string
+        '400':
+          description: Entry does not exist
+          schema:
+            properties:
+              error:
+                type: string
+  /deleteExercise/{username}:
+    delete:
+      tags:
+        - Exercise
+      summary: deletes exercise logs from database based on user and date
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: username of user
+          required: true
+        - in: body
+          name: date
+          description: date for logs of exercise
+          required: true
+          schema:
+            $ref: '#/definitions/GetLogs'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              properties:
+                User:
+                  type: string
+                Date:
+                  type: string
+        '400':
+          description: Entry does not exist
+          schema:
+            properties:
+              error:
+                type: string
+definitions:
+  UserLogin:
+    properties:
+      Username:
+        type: string
+        uniqueItems: true
+      Password:
+        type: string
+  UserRegister:
+    properties:
+      FirstName:
+        type: string
+      LastName:
+        type: string
+      Username:
+        type: string
+        uniqueItems: true
+      Phone:
+        type: string
+      Email:
+        type: string
+        uniqueItems: true
+      Password:
+        type: string
+  EmailVerify:
+    properties:
+      Email:
+        type: string
+  VerifyAccount:
+    properties:
+      id:
+        type: string
+  UserReturn:
+    properties:
+      FirstName:
+        type: string
+      LastName:
+        type: string
+  Username:
+    properties:
+      Username:
+        type: string
+  Habits:
+    properties:
+      Water:
+        type: boolean
+      Sleep:
+        type: boolean
+      Recreation:
+        type: boolean
+      Exercise:
+        type: boolean
+  WaterLog:
+    properties:
+      Date:
+        type: string
+      Ounces:
+        type: number
+  SleepLog:
+    properties:
+      Date:
+        type: string
+      Hours:
+        type: number
+  EnterRecreation:
+    properties:
+      Date:
+        type: string
+      Activity:
+        type: number
+  ExerciseLog:
+    properties:
+      Date:
+        type: string
+      Exercise:
+        type: string
+  GetLogs:
+    properties:
+      Date:
+        type: string

@@ -3,17 +3,19 @@ require('mongodb');
 
 const { ObjectId } = require('mongodb');
 const sendEmail = require('./sendEmail');
+const hash = require('object-hash');
 
 exports.setApp = function (app, client) {
     // login endpoint
     app.post('/api/login', async (req, res, next) => {
         const { username, password } = req.body;
+        const hashedPass = hash.MD5(password);
         let error = '';
 
         try {
 
             const db = client.db();
-            const foundUser = await db.collection('users').findOne({ Username: username, Password: password });
+            const foundUser = await db.collection('users').findOne({ Username: username, Password: hashedPass });
             // console.log(foundUser.FirstName);
 
             let id = '';
@@ -60,8 +62,9 @@ exports.setApp = function (app, client) {
     // register endpoint
     app.post('/api/register', async (req, res, next) => {
         const { firstName, lastName, username, phone, email, password } = req.body;
+        const hashedPass = hash.MD5(password)
 
-        const newUser = { FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password, Verified: false, Customized: false };
+        const newUser = { FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: hashedPass, Verified: false, Customized: false };
         let error = '';
         var ret;
 
@@ -93,7 +96,7 @@ exports.setApp = function (app, client) {
             error = e.toString();
         }
 
-        ret = { error: error };
+        ret = {FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: hashedPass};
         res.status(200).json(ret);
     });
 
@@ -194,6 +197,7 @@ exports.setApp = function (app, client) {
             `;
 
             sendEmail(to, from, subject, output);
+            ret = {FirstName: fn, LastName: ln}
             res.status(200).json(ret);
         }
         catch (e) {
@@ -207,6 +211,7 @@ exports.setApp = function (app, client) {
         var ret;
         const userId = req.body.id;
         const newPassword = req.body.password;
+        const hashedPass = hash.MD5(newPassword);
         // console.log(userId);
         // console.log(newPassword);
 
@@ -219,14 +224,14 @@ exports.setApp = function (app, client) {
             res.status(400).json(ret);
             return;
         }
-        if (foundUser.Password == newPassword) {
+        if (foundUser.Password == hashedPass) {
             ret = { error: 'Already used this password' };
             res.status(500).json(ret);
             return;
         }
         ret = { _id: userId };
 
-        db.collection('users').updateOne({ _id: ObjectId(userId) }, { $set: { Password: newPassword } });
+        db.collection('users').updateOne({ _id: ObjectId(userId) }, { $set: { Password: hashedPass } });
 
         res.status(200).json(ret);
     });
