@@ -73,10 +73,10 @@ function Customize()
       
       try
       {    
-          const response = await fetch(buildPath('api/customize/'),
+          const response = await fetch(buildPath('api/customize'),
               {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
           var res = JSON.parse(await response.text());
-
+          console.log("test1");
 
       }
       catch(e)
@@ -94,7 +94,7 @@ function Customize()
 
         try
         {    
-            const response = await fetch(buildPath('api/updatecustomization/:' + username),
+            const response = await fetch(buildPath('api/updatecustomization'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
         }
