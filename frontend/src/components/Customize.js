@@ -67,7 +67,7 @@ function Customize()
 
       event.preventDefault();
 
-      var obj = {exercise : checkedState[0], recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3]};
+      var obj = {User: username, exercise : checkedState[0], recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3]};
       var js = JSON.stringify(obj);
       
       try
