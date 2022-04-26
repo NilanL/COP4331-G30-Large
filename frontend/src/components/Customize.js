@@ -65,53 +65,46 @@ function Customize()
 
     if(ud.update == false){
 
-    event.preventDefault();
-    var obj = {exercise : checkedState[0], meal : checkedState[1], medication : checkedState[2], recreation : checkedState[3], sleep : checkedState[4], water : checkedState[5], };
-    var js = JSON.stringify(obj);
-    try
-    {    
-        const response = await fetch(buildPath('api/customize/:' + username),
-            {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-        var res = JSON.parse(await response.text());
-
-
-        //console.log(js);
-        //console.log(res.id);
-        //console.log(res);
-        //console.log(res.error);
-        console.log(res.error);
-    }
-    catch(e)
-    {
-        alert(e.toString());
-        return;
-    }  
-  }
-    else{
       event.preventDefault();
-    var obj = {exercise : checkedState[0], meal : checkedState[1], medication : checkedState[2], recreation : checkedState[3], sleep : checkedState[4], water : checkedState[5], };
-    var js = JSON.stringify(obj);
-    try
-    {    
-        const response = await fetch(buildPath('api/updatecustomization/:' + username),
-            {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-        var res = JSON.parse(await response.text());
+
+      var obj = {exercise : checkedState[0], recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3]};
+      var js = JSON.stringify(obj);
+      
+      try
+      {    
+          const response = await fetch(buildPath('api/customize/:' + username),
+              {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+          var res = JSON.parse(await response.text());
 
 
-        //console.log(js);
-        //console.log(res.id);
-        //console.log(res);
-        //console.log(res.error);
-        console.log(res.error);
+      }
+      catch(e)
+      {
+          alert(e.toString());
+          return;
+      }  
     }
-    catch(e)
-    {
-        alert(e.toString());
-        return;
-    }  
+    else{
+        
+        event.preventDefault();
+
+        var obj = {exercise : checkedState[0], recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3] };
+        var js = JSON.stringify(obj);
+
+        try
+        {    
+            const response = await fetch(buildPath('api/updatecustomization/:' + username),
+                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            var res = JSON.parse(await response.text());
+        }
+        catch(e)
+        {
+            alert(e.toString());
+            return;
+        }  
     }
   }
-  
+      
 
    return(
 

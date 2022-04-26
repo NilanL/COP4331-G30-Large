@@ -1,5 +1,4 @@
 import React from 'react';
-import PageTitle from '../components/PageTitle';
 import Resend from '../components/Resend';
 import background from "../assets/images/backgroundLG.svg";
 

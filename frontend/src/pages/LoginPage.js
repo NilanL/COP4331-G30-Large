@@ -1,5 +1,4 @@
 import React from 'react';
-import PageTitle from '../components/PageTitle';
 import Login from '../components/Login';
 import '../index.css';
 import background from "../assets/images/backgroundLG.svg";

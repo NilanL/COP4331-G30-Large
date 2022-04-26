@@ -1,5 +1,4 @@
 import React from 'react';
-import PageTitle from '../components/PageTitle';
 import EmailVerification from '../components/EmailVerification';
 import background from "../assets/images/backgroundLG.svg";
 

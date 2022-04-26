@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 
-function PageTitle()
+function Home()
 {
    return(
        
@@ -32,4 +32,4 @@ function PageTitle()
 };
 
 
-export default PageTitle;
+export default Home;
