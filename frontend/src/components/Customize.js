@@ -72,7 +72,7 @@ function Customize()
       
       try
       {    
-          const response = await fetch(buildPath('api/customize/:' + username),
+          const response = await fetch(buildPath('api/customize/'),
               {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
           var res = JSON.parse(await response.text());
 
