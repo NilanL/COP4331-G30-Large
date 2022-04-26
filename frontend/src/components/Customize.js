@@ -138,7 +138,7 @@ function Customize()
           <p className="text-center">Select the habits your would like to track.</p>
             <div style={{width: '290px', marginLeft: 50}}>
             <ul className = "list-group mx-5 p-3">
-              <li class="list-group-item">            
+              <li className="list-group-item">            
                 <input type="checkbox"
                         id={`custom-checkbox-0`}
                         name= "exercise"
@@ -149,7 +149,7 @@ function Customize()
                 <label style={{margin: 5}} htmlFor={`custom-checkbox-0`}>Exercise</label>
                 <FontAwesomeIcon icon={solid("dumbbell")} style={{color: '#0FA3B1'}} />
               </li>
-              <li class="list-group-item">
+              <li className="list-group-item">
                 <input type="checkbox"
                         id={`custom-checkbox-1`}
                         name= "recreation"
@@ -160,7 +160,7 @@ function Customize()
                 <label style={{margin: 5}} htmlFor={`custom-checkbox-1`}>Recreation</label>
                 <FontAwesomeIcon icon={solid("umbrella-beach")} style={{color: '#0FA3B1'}} />
               </li>
-              <li class="list-group-item">
+              <li className="list-group-item">
                 <input type="checkbox"
                         id={`custom-checkbox-2`}
                         name= "sleep"
@@ -171,7 +171,7 @@ function Customize()
                 <label style={{margin: 5}} htmlFor={`custom-checkbox-2`}>Sleep</label>
                 <FontAwesomeIcon icon={solid("bed")} style={{color: '#0FA3B1'}} />
               </li>
-              <li class="list-group-item">
+              <li className="list-group-item">
                 <input type="checkbox"
                         id={`custom-checkbox-3`}
                         name= "water"
