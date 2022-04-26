@@ -243,7 +243,7 @@ exports.setApp = function (app, client) {
 
     // customization endpoint
     app.post('/api/customize', async (req, res, next) => {
-        const username = req.body.username;
+        const { username } = req.body.username;
 
         const { exercise, meal, medication, recreation, sleep, water } = req.body;
 
