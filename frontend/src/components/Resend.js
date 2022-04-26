@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import validator from 'validator'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-
+import checkEmail from '../components/checkEmail';
 
 
 function Resend()
@@ -38,15 +37,7 @@ function Resend()
         { 
           setMessage('');
           
-          if(email.value === '')
-          {
-            setMessage('Please enter your email address to retrieve your account.');
-          }
-          else if (!validator.isEmail(email.value))
-          {
-            setMessage('Please enter a valid email address.');
-          }
-          else
+          if (checkEmail(email.value))
           {
             const response = await fetch(buildPath('api/emailverify'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
@@ -59,6 +50,9 @@ function Resend()
             {
               setMessage('Request submitted.');
             }
+          }
+          else {
+            setMessage('Please enter a valid email address.')
           }
             
         }

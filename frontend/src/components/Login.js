@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import validator from 'validator'
 import { StyleSheet, View, Image, TextInput, Text, ImageBackground } from "react-native";
 import styled, { css } from "styled-components";
 import Button from 'react-bootstrap/Button';
@@ -41,43 +42,50 @@ function Login()
         
         try
         {    
-            const response = await fetch(buildPath('api/login'),
-                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-            var res = JSON.parse(await response.text());
 
-            setMessage('');
 
-            console.log(res.error);
+            if (!validator.isEmpty(loginName.value) && !validator.isEmpty(loginPassword.value)) {
 
-            if( res.error === 'Unrecognized credentials' ){
+                const response = await fetch(buildPath('api/login'),
+                    {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+                var res = JSON.parse(await response.text());
 
-                setMessage('Username or Password is incorrect');
-            }
-            else if( res.error === 'Email is not verified can not access login' )
-            {
-                
-                setMessage('Email has not been verified');
-                isVerified = false;
-            }
-            else if(res.error === 'User has not customized their account'){
-                var user =  
-                {username: res.Username,firstName:res.FirstName,lastName:res.LastName,id:res.Id, update: false}
-                localStorage.setItem('user_data', JSON.stringify(user));
-                var username = 
-                {Username: res.Username}
-                localStorage.setItem('username', JSON.stringify(username));
                 setMessage('');
-                window.location.href = '/customize';
-            }
-            else
-            {
-                var user =  
-                {username: res.Username,firstName:res.firstName,lastName:res.lastName,id:res.id, update : true}
-                
-                localStorage.setItem('user_data', JSON.stringify(user));
-                setMessage('');
-                window.location.href = '/home';
-                
+
+                console.log(res.error);
+
+                if( res.error === 'Unrecognized credentials' ){
+
+                    setMessage('Username or Password is incorrect');
+                }
+                else if( res.error === 'Email is not verified can not access login' )
+                {
+                    
+                    setMessage('Email has not been verified');
+                    isVerified = false;
+                }
+                else if(res.error === 'User has not customized their account'){
+                    var user =  
+                    {username: res.Username,firstName:res.FirstName,lastName:res.LastName,id:res.Id, update: false}
+                    localStorage.setItem('user_data', JSON.stringify(user));
+                    var username = 
+                    {Username: res.Username}
+                    localStorage.setItem('username', JSON.stringify(username));
+                    setMessage('');
+                    window.location.href = '/customize';
+                }
+                else
+                {
+                    var user =  
+                    {username: res.Username,firstName:res.firstName,lastName:res.lastName,id:res.id, update : true}
+                    
+                    localStorage.setItem('user_data', JSON.stringify(user));
+                    setMessage('');
+                    window.location.href = '/home';
+                    
+                }
+            } else {
+                setMessage('All fields required.')
             }
         }
         catch(e)
@@ -114,11 +122,11 @@ function Login()
                                 ref={(c) => loginPassword = c} /><br /><br /> 
                             <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={doLogin}>Login</Button> 
                             <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doRegister}> Register </Button> 
-                            <br /> <br />
+                            <br /><span id="loginResult">{message}</span> <br />
                             <a href='/RetrieveAccount'>Forgot Password</a><br />
                             <a href='/resend'>Resend Verification Email</a>
                         </form>
-                        <span id="loginResult">{message}</span>                       
+                                             
                     </Card.Body>                    
             </Card>
      

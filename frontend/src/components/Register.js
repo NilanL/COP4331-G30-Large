@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import validator from 'validator'
+import checkEmail from '../components/checkEmail';
+import checkPhone from '../components/checkPhone';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -44,45 +46,71 @@ const [message,setMessage] = useState('');
 
         setMessage("");
         
+
+
         try
         {
-            
-            const response = await fetch(buildPath('api/register'),
-            {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-            var txt = await response.text();
-            var res = JSON.parse(txt);
-            if( res.error !== '' )
-            {
-                setMessage("Error: " + res.error );
+
+            var validFormat = true;
+
+            if (!checkPhone(phone.value)) {
+                validFormat = false;
+                setMessage('Please enter a valid phone number.')
             }
-            else
-            {
-                
-                try
+
+            if (!checkEmail(email.value)) {
+                validFormat = false;
+                setMessage('Please enter a valid email address.')
+            }
+
+            if (validator.isEmpty(firstName.value) || validator.isEmpty(lastName.value) || validator.isEmpty(username.value) || validator.isEmpty(loginPassword.value)) {
+                validFormat = false;
+                setMessage('All fields are required.')
+            }
+            
+
+
+            if (validFormat) {
+            
+                const response = await fetch(buildPath('api/register'),
+                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+                var txt = await response.text();
+                var res = JSON.parse(txt);
+                if( res.error !== '' )
+                {
+                    setMessage(res.error );
+                }
+                else
                 {
                     
-                    const response = await fetch(buildPath('api/emailverify'),
-                    {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-                    var txt = await response.text();
-                    var res = JSON.parse(txt);
-
-                    if( res.error === 'User not found' )
+                    try
                     {
-                        setMessage("Error: " + res.error );
-                    }
-                    else
-                    {
-                        setMessage('Account created. Please check your email to complete registration.');
                         
+                        const response = await fetch(buildPath('api/emailverify'),
+                        {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+                        var txt = await response.text();
+                        var res = JSON.parse(txt);
+
+                        if( res.error === 'User not found' )
+                        {
+                            setMessage(res.error );
+                        }
+                        else
+                        {
+                            setMessage('Account created. Please check your email.');
+                            
+                        }
                     }
-                }
-                catch(e)
-                {
-                    setMessage(e.toString());
+                    catch(e)
+                    {
+                        setMessage(e.toString());
+                    }
+
+                    
                 }
 
-                
             }
+
         }
         catch(e)
         {
@@ -117,7 +145,7 @@ const [message,setMessage] = useState('');
                 <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doRegister}>Register</Button> <span></span>
                 <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doCancel}>Cancel</Button>
             </form>
-        <span id="resetResult">{message}</span>
+        <span id="resetResult">{message}</span> <br />
         </Card>
      </div>
     );
