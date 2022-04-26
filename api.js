@@ -232,8 +232,8 @@ exports.setApp = function (app, client) {
     });
 
     // customization initialization
-    app.post('/api/initialize', async (req, res, next) => {
-        const { username } = req.body.username;
+    app.post('/api/initialize/', async (req, res, next) => {
+        const username = req.body.username;
         const initialization = {User: username, Exercise: false, Meal: false, Medication: false, Recreation: false, Sleep: false, Water: false};
         const db = client.db();
         db.collection('habits').insertOne(initialization);
@@ -243,7 +243,7 @@ exports.setApp = function (app, client) {
 
     // customization endpoint
     app.post('/api/customize', async (req, res, next) => {
-        const { username } = req.body.username;
+        const username = req.body.username;
 
         const { exercise, meal, medication, recreation, sleep, water } = req.body;
 
