@@ -96,7 +96,7 @@ exports.setApp = function (app, client) {
             error = e.toString();
         }
 
-        ret = {FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: hashedPass};
+        ret = {FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: hashedPass, error: error};
         res.status(200).json(ret);
     });
 
