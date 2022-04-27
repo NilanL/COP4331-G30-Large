@@ -100,7 +100,7 @@ const [message,setMessage] = useState('');
                         {
                             setMessage('Account created. Please check your email.');
 
-                            const response = await fetch(buildPath('api/initialize'),
+                            const response = await fetch(buildPath('api/initialize/' + obj.username),
                                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
                             var txt = await response.text();
                             var res = JSON.parse(txt);
