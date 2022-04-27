@@ -374,46 +374,4 @@ exports.setApp = function (app, client2) {
             res.status(400).json(ret);
         }
     });
-
-
-    /*
-    /***** MEAL *****//*
-    app.post('/api/meal/:username', async (req, res, next) => {
-        const username = req.params.username;
-        const time = req.body.time;
-        const date = req.body.date;
-        const meal = req.body.meal;
-        const cals = req.body.cals;
-
-        const db = client2.db();
-
-        const mealLog = {User: username, Date: date, Time: time, Meal: meal, Calories: cals};
-        db.collection('meal').insertOne(mealLog);
-        let ret = {User: username, Date: date, Time: time, Meal: meal, Calories: cals};
-        res.status(200).json(ret);
-    });
-    
-    // TODO: ask front end what they want to do with this; delete med
-    app.post('/api/medication/:username', async (req, res, next) => {
-        const username = req.params.username;
-        const time = req.body.time;
-        const day = req.body.day;
-        const medication = req.body.medication;
-        const dosage = req.body.dosage;
-
-        const db = client2.db();
-
-        const medicationLog = {User: username, Day: day, Time: time, Medication: medication, Dosage: dosage};
-        db.collection('medication').insertOne(medicationLog);
-        let ret = {User: username, Day: day, Time: time, Medication: medication, Dosage: dosage};
-        res.status(200).json(ret);
-    });
-    */
-
-    // TO:DO
-    // delete meds
-    // app.delete for all habits
-    // minutes issue sleep algorithm
-    // swagger hub
-    // md5 hash
 }

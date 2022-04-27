@@ -16,7 +16,6 @@ exports.setApp = function (app, client) {
 
             const db = client.db();
             const foundUser = await db.collection('users').findOne({ Username: username, Password: hashedPass });
-            // console.log(foundUser.FirstName);
 
             let id = '';
             let fn = '';
@@ -109,7 +108,7 @@ exports.setApp = function (app, client) {
         const db = client.db();
         const foundUser = await db.collection('users').findOne({ Email: email });   // finds user with given email
         if (!foundUser) {
-            // no user, return 400 (or 404 not found) code
+            // no user, return 400 code
             ret = { error: 'User not found' };
             res.status(400).json(ret);
             return;
@@ -123,8 +122,8 @@ exports.setApp = function (app, client) {
 
         console.log(`id ${foundUser._id}`);
 
-        //const link = `https://cop4331-g30-large.herokuapp.com/api/verifyaccount/${id}`;
-        //const link = `http://localhost:5000/EmailVerification
+        //const link = `https://cop4331-g30-large.herokuapp.com/EmailVerification/?id=${foundUser._id}`;
+        //const link = `http://localhost:5000/api/verifyaccount
 
         // change link to page to then link next api endpoint on that page instead
         const link = `http://localhost:5000/EmailVerification/?id=${foundUser._id}`;
@@ -212,12 +211,9 @@ exports.setApp = function (app, client) {
         const userId = req.body.id;
         const newPassword = req.body.password;
         const hashedPass = hash.MD5(newPassword);
-        // console.log(userId);
-        // console.log(newPassword);
 
         const db = client.db();
         const foundUser = await db.collection('users').findOne({ _id: ObjectId(userId) });
-        //console.log(foundUser.FirstName);
 
         if (!foundUser) {
             ret = { error: 'User not found' };
@@ -239,9 +235,10 @@ exports.setApp = function (app, client) {
     // customization initialization
     app.post('/api/initialize/:username', async (req, res, next) => {
         const username = req.params.username;
-        const initialization = {User: username, Exercise: false, Meal: false, Medication: false, Recreation: false, Sleep: false, Water: false};
+        const initialization = {User: username, Exercise: false, Recreation: false, Sleep: false, Water: false};
         const db = client.db();
         db.collection('habits').insertOne(initialization);
+        db.collection('users').updateOne({ Username: username }, { $set: { Customized: true } });
         let ret = {User: username};
         res.status(200).json(ret);
     });
@@ -250,19 +247,19 @@ exports.setApp = function (app, client) {
     app.post('/api/customize/:username', async (req, res, next) => {
         const username = req.params.username;
 
-        const { exercise, meal, medication, recreation, sleep, water } = req.body;
+        const { exercise, recreation, sleep, water } = req.body;
 
         const db = client.db();
         const foundUser = await db.collection('habits').findOne({ User: username });
 
         if (foundUser) {
-            db.collection('habits').updateOne({ User: username }, { $set: { Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water } });
+            db.collection('habits').updateOne({ User: username }, { $set: { Exercise: exercise, Recreation: recreation, Sleep: sleep, Water: water } });
             let ret = { User: username };
             res.status(200).json(ret);
         }
 
         else {
-            const userHabits = { User: username, Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water };
+            const userHabits = { User: username, Exercise: exercise, Recreation: recreation, Sleep: sleep, Water: water };
 
             let ret = { User: username };
 
@@ -287,21 +284,4 @@ exports.setApp = function (app, client) {
             res.status(200).send(foundUser);
         }
     }); 
-
-    /*// update customization endpoint
-    app.post('/api/updatecustomization/:username', async (req, res, next) => {
-        const username = req.params.username;
-        const { exercise, meal, medication, recreation, sleep, water } = req.body;
-
-        const userHabits = {User: username, Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water};
-
-        let ret = { User: username };
-
-        const db = client.db();
-        db.collection('habits').insertOne(userHabits);
-        res.status(200).json(ret);
-    });
-    */
-    // TO-DO:
-    // hash passwords in db?
 }
