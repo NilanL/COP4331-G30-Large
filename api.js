@@ -238,7 +238,7 @@ exports.setApp = function (app, client) {
         const initialization = {User: username, Exercise: false, Recreation: false, Sleep: false, Water: false};
         const db = client.db();
         db.collection('habits').insertOne(initialization);
-        db.collection('users').updateOne({ Username: username }, { $set: { Customized: true } });
+        // db.collection('users').updateOne({ Username: username }, { $set: { Customized: false } });
         let ret = {User: username};
         res.status(200).json(ret);
     });
@@ -254,6 +254,7 @@ exports.setApp = function (app, client) {
 
         if (foundUser) {
             db.collection('habits').updateOne({ User: username }, { $set: { Exercise: exercise, Recreation: recreation, Sleep: sleep, Water: water } });
+            db.collection('users').updateOne({ Username: username }, { $set: { Customized: true } });
             let ret = { User: username };
             res.status(200).json(ret);
         }
