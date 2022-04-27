@@ -238,7 +238,6 @@ exports.setApp = function (app, client) {
         const initialization = {User: username, Exercise: false, Recreation: false, Sleep: false, Water: false};
         const db = client.db();
         db.collection('habits').insertOne(initialization);
-        // db.collection('users').updateOne({ Username: username }, { $set: { Customized: false } });
         let ret = {User: username};
         res.status(200).json(ret);
     });
