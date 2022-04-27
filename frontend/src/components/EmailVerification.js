@@ -33,7 +33,7 @@ function EmailVerification(){
         
     
         event.preventDefault();
-        var obj = {id:id};
+        var obj = {id:id.value};
         var js = JSON.stringify(obj);
         
         try
