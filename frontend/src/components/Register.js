@@ -76,6 +76,7 @@ const [message,setMessage] = useState('');
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
                 var txt = await response.text();
                 var res = JSON.parse(txt);
+                
                 if( res.error !== '' )
                 {
                     setMessage(res.error );
@@ -143,10 +144,10 @@ const [message,setMessage] = useState('');
                     style={{borderTopWidth: 0, borderRightWidth: 0, borderLeftWidth: 0, margin: 4}}/><br /><br />
                 <FontAwesomeIcon icon={solid('user')} style={{color: '#0FA3B1'}} /><input type="text" id="username" placeholder="Username" ref={(c) => username = c} 
                     style={{borderTopWidth: 0, borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} /><br /><br />    
-                <FontAwesomeIcon icon={solid('key')} style={{color: '#0FA3B1'}} /><input type="text" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} 
+                <FontAwesomeIcon icon={solid('key')} style={{color: '#0FA3B1'}} /><input type="password" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} 
                     style={{borderTopWidth: 0, borderRightWidth: 0, borderLeftWidth: 0, margin: 4}}/><br /><br />
                 <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doRegister}>Register</Button> <span></span>
-                <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doCancel}>Cancel</Button>
+                <Button id="cancelButton" style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doCancel}>Cancel</Button>
             </form>
         <span id="resetResult">{message}</span> <br />
         </Card>
