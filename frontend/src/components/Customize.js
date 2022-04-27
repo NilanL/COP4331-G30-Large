@@ -30,8 +30,9 @@ function Customize()
 
     setCheckedState(updatedCheckedState);
     
-
   }
+
+  const [message,setMessage] = useState('');
 
   var _ud = localStorage.getItem('user_data');
   var ud = JSON.parse(_ud);
@@ -56,7 +57,10 @@ function Customize()
       }
   }
 
-
+  const doCancel = async event => 
+  {
+      window.location.href = '/home';
+  };
 
   const updatecheckbox = async => {
 
@@ -76,8 +80,8 @@ function Customize()
           const response = await fetch(buildPath('api/customize/' + username),
               {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
           var res = JSON.parse(await response.text());
-          console.log("test1");
 
+          setMessage("Profile updated. Click home to view your dashboard.");
       }
       catch(e)
       {
@@ -97,6 +101,8 @@ function Customize()
             const response = await fetch(buildPath('api/updatecustomization'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
+
+            setMessage("Profile updated.");
         }
         catch(e)
         {
@@ -181,6 +187,9 @@ function Customize()
             <div className="text-center">
               <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doUpdate}>Update</Button>
             </div>
+            <div className="text-center">
+                <span>{message}</span>
+            </div>            
         </Form>
       <div>
     </div>
