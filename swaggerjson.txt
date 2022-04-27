@@ -41,22 +41,19 @@ paths:
         '200':
           description: OK
           schema:
-            type: array
-            items:
-              type: object
-              properties:
-                _id:
-                  type: string
-                FirstName:
-                  type: string
-                LastName:
-                  type: string
-                Email:
-                  type: string
-                Phone:
-                  type: string
-                error:
-                  type: string
+            properties:
+              _id:
+                type: string
+              FirstName:
+                type: string
+              LastName:
+                type: string
+              Email:
+                type: string
+              Phone:
+                type: string
+              error:
+                type: string
         '400':
           description: Unrecognized credentials
           schema:
@@ -85,7 +82,21 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/UserRegister'
+            properties:
+              FirstName:
+                type: string
+              LastName:
+                type: string
+              Username:
+                type: string
+              Phone:
+                type: string
+              Email:
+                type: string
+              Password:
+                type: string
+              error:
+                type: string
         '500':
           description: Username already exists/Email is not verified
           schema:
@@ -236,16 +247,13 @@ paths:
         '200':
           description: OK
           schema:
-            type: array
-            items:
-              type: object
-              properties:
-                User:
-                  type: string
-                Date:
-                  type: string
-                TotalOunces:
-                  type: number
+            properties:
+              User:
+                type: string
+              Date:
+                type: string
+              TotalOunces:
+                type: number
   /getWater/{username}:
     post:
       tags:
@@ -303,16 +311,13 @@ paths:
         '200':
           description: OK
           schema:
-            type: array
-            items:
-              type: object
-              properties:
-                User:
-                  type: string
-                Date:
-                  type: string
-                Ounces:
-                  type: number
+            properties:
+              User:
+                type: string
+              Date:
+                type: string
+              Ounces:
+                type: number
         '400':
           description: Entry does not exist
           schema:
@@ -340,16 +345,13 @@ paths:
         '200':
           description: OK
           schema:
-            type: array
-            items:
-              type: object
-              properties:
-                User:
-                  type: string
-                Date:
-                  type: string
-                Hours:
-                  type: number
+            properties:
+              User:
+                type: string
+              Date:
+                type: string
+              Hours:
+                type: number
   /getSleep/{username}:
     post:
       tags:
@@ -407,16 +409,13 @@ paths:
         '200':
           description: OK
           schema:
-            type: array
-            items:
-              type: object
-              properties:
-                User:
-                  type: string
-                Date:
-                  type: string
-                Hours:
-                  type: number
+            properties:
+              User:
+                type: string
+              Date:
+                type: string
+              Hours:
+                type: number
         '400':
           description: Entry does not exist
           schema:
@@ -582,17 +581,15 @@ paths:
         '200':
           description: OK
           schema:
-            type: array
-            items:
-              properties:
-                id:
-                  type: object
-                User:
-                  type: string
-                Date:
-                  type: string
-                Exercise:
-                  type: string
+            properties:
+              id:
+                type: object
+              User:
+                type: string
+              Date:
+                type: string
+              Exercise:
+                type: string
         '400':
           description: Entry does not exist
           schema:
@@ -620,13 +617,11 @@ paths:
         '200':
           description: OK
           schema:
-            type: array
-            items:
-              properties:
-                User:
-                  type: string
-                Date:
-                  type: string
+            properties:
+              User:
+                type: string
+              Date:
+                type: string
         '400':
           description: Entry does not exist
           schema:
