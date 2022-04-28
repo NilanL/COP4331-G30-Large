@@ -72,7 +72,7 @@ function Customize()
 
       event.preventDefault();
 
-      var obj = {User: username.value, exercise : checkedState[0], meal: false, medication: false, recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3]};
+      var obj = {User: username.value, exercise : checkedState[0], recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3]};
       var js = JSON.stringify(obj);
       
       try
@@ -80,7 +80,9 @@ function Customize()
           const response = await fetch(buildPath('api/customize/' + username),
               {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
           var res = JSON.parse(await response.text());
-
+          var custom =  
+          {Exercise: res.Exercise,Recreation :res.Recreation ,Sleep :res.Sleep, Water :res.Water}
+          localStorage.setItem('custom_data', JSON.stringify(custom));
           setMessage("Profile updated. Click home to view your dashboard.");
       }
       catch(e)
@@ -92,16 +94,18 @@ function Customize()
     else{
         
         event.preventDefault();
-
-        var obj = {User: username, exercise : checkedState[0], meal: false, medication: false, recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3] };
+        
+        var obj = {User: username, exercise : checkedState[0], recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3] };
         var js = JSON.stringify(obj);
 
         try
         {    
-            const response = await fetch(buildPath('api/updatecustomization'),
+            const response = await fetch(buildPath('api/customize/' + username),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
-
+            var custom =  
+                    {Exercise: res.Exercise,Recreation :res.Recreation ,Sleep :res.Sleep, Water :res.Water}
+                    localStorage.setItem('custom_data', JSON.stringify(custom));
             setMessage("Profile updated.");
         }
         catch(e)

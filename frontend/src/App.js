@@ -10,7 +10,7 @@ import EmailVerificationPage from './pages/EmailVerificationPage';
 import ForgotPassword from './pages/ForgotPassword';
 import PasswordPage from './pages/PasswordPage';
 import ResendPage from './pages/ResendPage';
-
+import RecreationPage from './pages/RecreationPage';
 
 
 function App() {
@@ -40,6 +40,9 @@ function App() {
         </Route>
         <Route path="/resetpassword" exact>
           <PasswordPage />
+          </Route>
+        <Route path="/recreation" exact>
+          <RecreationPage />
         </Route>
         <Redirect to="/login" />
       </Switch>  
