@@ -280,10 +280,10 @@ exports.setApp = function (app, client) {
 
         if (!foundUser)
         {
-            res.status(400).json("Not found - user needs to customize");
+            res.status(400).send("Not found - user needs to customize");
         }
         else {
-            res.status(200).json(foundUser);
+            res.status(200).send(foundUser);
         }
     }); 
     // TO-DO:
