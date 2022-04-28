@@ -8,23 +8,14 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import BarChart from "../assets/Bar Chart";
-
-
-function debounce(fn, ms) {
-    let timer
-    return _ => {
-      clearTimeout(timer)
-      timer = setTimeout(_ => {
-        timer = null
-        fn.apply(this, arguments)
-      }, ms)
-    };
-  }
+import BarChart from "../assets/Bar Chart water";
 
 
 
-function Recreation() {
+
+
+
+function Water() {
 
   var date_rec;
   var _ud = localStorage.getItem('user_data');
@@ -56,47 +47,30 @@ const getInfo= async event => {
     
     try
       {    
-        const response = await fetch(buildPath('api/getRecreation/' + username),
+        const response = await fetch(buildPath('api/getWater/' + username),
         {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
         var res = JSON.parse(await response.text());
       
-      var rec =  
-                    {ScreenTime : res.ScreenTime ,Television :res.Television ,Gaming :res.Gaming, Sport :res.Sport, Art :res.Art, Chores : res.Chores, Work : res.Work, Other : res.Other}
-          localStorage.setItem('recreation_data', JSON.stringify(rec));
-          console.log(rec);
-          window.location.href = '/recreation';
+      var wat =  
+                    {Water : res.Water}
+          localStorage.setItem('water_data', JSON.stringify(wat));
+          console.log(wat);
+          window.location.href = '/water';
       }
       catch(e)
       {
 
-        var rec =  
-        {ScreenTime : 0 ,Television :0 ,Gaming :0, Sport :0, Art :0, Chores : 0, Work : 0, Other : 0}
-        localStorage.setItem('recreation_data', JSON.stringify(rec));
-        window.location.href = '/recreation';
+        var wat =  
+        {Water : 0}
+        localStorage.setItem('water_data', JSON.stringify(wat));
+        window.location.href = '/water';
       }  
       
  
 }
 
-    const [dimensions, setDimensions] = React.useState({ 
-        height: window.innerHeight,
-        width: window.innerWidth
-      })
-      React.useEffect(() => {
-        const debouncedHandleResize = debounce(function handleResize() {
-          setDimensions({
-            height: window.innerHeight,
-            width: window.innerWidth
-          })
-        }, 1000)
-    
-        window.addEventListener('resize', debouncedHandleResize)
-    
-        return _ => {
-          window.removeEventListener('resize', debouncedHandleResize)
-        
-    }
-})
+
+
 
       
 
@@ -138,4 +112,4 @@ const getInfo= async event => {
 
 
 
-export default Recreation;
+export default Water;
