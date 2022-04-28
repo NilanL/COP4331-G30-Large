@@ -234,84 +234,58 @@ exports.setApp = function (app, client) {
         res.status(200).json(ret);
     });
     
-    // Start habits endpoint endpoint
-    app.post('/api/initializehabits/:username', async (req, res, next) => {
+    // customization initialization
+    app.post('/api/initialize/:username', async (req, res, next) => {
         const username = req.params.username;
-
-        const userHabits = {
-            User: username, 
-            Exercise: false, 
-            Meal: false, 
-            Medication: false, 
-            Recreation: false, 
-            Sleep: false, 
-            Water: false
-        };
-
-        let ret = { User: username };
-
+        const initialization = {User: username, Exercise: false, Recreation: false, Sleep: false, Water: false};
         const db = client.db();
-        db.collection('habits').insertOne(userHabits);
+        db.collection('habits').insertOne(initialization);
+        let ret = {User: username};
         res.status(200).json(ret);
     });
-    
+
     // customization endpoint
     app.post('/api/customize/:username', async (req, res, next) => {
         const username = req.params.username;
 
-        const { exercise, meal, medication, recreation, sleep, water } = req.body;
-
-        const userHabits = {User: username, Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water};
-
-        let ret = { User: username };
-
-        const db = client.db();
-        db.collection('habits').insertOne(userHabits);
-        db.collection('users').updateOne({Username: username}, {$set: {Customized : true}}); 
-        res.status(200).json(ret);
-    });
-
-    // update customization endpoint
-    app.post('/api/updatecustomization/:username', async (req, res, next) => {
-        const username = req.params.username;
-        const { exercise, meal, medication, recreation, sleep, water } = req.body;
-
-        const userHabits = {User: username, Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water};
-
-        let ret = { User: username };
-
-        const db = client.db();
-        db.collection('habits').updateOne({User: username}, userHabits);
-        res.status(200).json(ret);
-    });
-    
-    // customization search endpoint
-    app.post('/api/customizesearch/:username', async (req, res, next) => {
-        const username = req.params.username;
+        const { exercise, recreation, sleep, water } = req.body;
 
         const db = client.db();
         const foundUser = await db.collection('habits').findOne({ User: username });
 
-        let ret = { User: username };
-
-        if (!foundUser) {
-            // no user, return 400 (or 404 not found) code
-            ret = { error: 'User not found' };
-            res.status(400).json(ret);
-            return;
+        if (foundUser) {
+            db.collection('habits').updateOne({ User: username }, { $set: { Exercise: exercise, Recreation: recreation, Sleep: sleep, Water: water } });
+            db.collection('users').updateOne({ Username: username }, { $set: { Customized: true } });
+            let ret = { User: username };
+            res.status(200).json(ret);
         }
-        
-        exercise = foundUser.Exercise;
-        meal = foundUser.Meal;
-        medication = foundUser.Medication;
-        recreation = foundUser.Recreation;
-        sleep = foundUser.Sleep;
-        water = foundUser.Water;
 
-        ret = {User: username, Exercise: exercise, Meal: meal, Medication: medication, Recreation: recreation, Sleep: sleep, Water: water};
+        else {
+            const userHabits = { User: username, Exercise: exercise, Recreation: recreation, Sleep: sleep, Water: water };
 
-        res.status(200).json(ret);
+            let ret = { User: username };
+
+            const db = client.db();
+            db.collection('habits').insertOne(userHabits);
+            db.collection('users').updateOne({ Username: username }, { $set: { Customized: true } });
+            res.status(200).json(ret);
+        }
     });
+
+    // retrieve customization info
+    app.get('/api/getCustomization/:username',  async (req, res, next) => {
+        const username = req.params.username;
+        const db = client.db();
+        const foundUser = await db.collection('habits').findOne({User: username});
+
+        if (!foundUser)
+        {
+            res.status(400).send("Not found - user needs to customize");
+        }
+        else {
+            res.status(200).send(foundUser);
+        }
+    }); 
     // TO-DO:
     // hash passwords in db?
 }
