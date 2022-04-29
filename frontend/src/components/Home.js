@@ -77,6 +77,21 @@ function Home()
   checkedState[2] = cus.Sleep;
   checkedState[3] = cus.Water;
 
+        var sle =  
+        {Sleep : 0}
+        localStorage.setItem('sleep_data', JSON.stringify(sle));
+
+
+        var wat =  
+        {Water : 0}
+        localStorage.setItem('water_data', JSON.stringify(wat));
+
+
+        var rec =  
+        {ScreenTime : 0 ,Television :0 ,Gaming :0, Sport :0, Art :0, Chores : 0, Work : 0, Other : 0}
+        localStorage.setItem('recreation_data', JSON.stringify(rec));
+
+
    return(
        
     <div className = "p-5">
@@ -104,10 +119,10 @@ function Home()
 <Card className= "test1" id='test1'><Nav.Link href="/recreation">recreation</Nav.Link></Card>
 }
 {checkedState[2] == true &&
-<Card className= "test1" id='test1'>sleep</Card>
+  <Card className= "test1" id='test1'><Nav.Link href="/sleep">sleep</Nav.Link></Card>
 }
 {checkedState[3] == true &&
-<Card className= "test1" id='test1'>water</Card>
+  <Card className= "test1" id='test1'><Nav.Link href="/water">water</Nav.Link></Card>
 }
 
         </Card.Body>

@@ -11,6 +11,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import PasswordPage from './pages/PasswordPage';
 import ResendPage from './pages/ResendPage';
 import RecreationPage from './pages/RecreationPage';
+import WaterPage from './pages/WaterPage';
+import SleepPage from './pages/SleepPage';
 
 
 function App() {
@@ -43,6 +45,12 @@ function App() {
           </Route>
         <Route path="/recreation" exact>
           <RecreationPage />
+        </Route>
+        <Route path="/water" exact>
+          <WaterPage />
+        </Route>
+        <Route path="/sleep" exact>
+          <SleepPage />
         </Route>
         <Redirect to="/login" />
       </Switch>  
