@@ -30,11 +30,9 @@ function Home()
       }
   }
 
+  //updates from the Server
+  //calls API
   const getCustomize = async event => {
-
-    
-
-      
 
       try
       {    
@@ -53,9 +51,10 @@ function Home()
   }
 
 
+  //Runs after 
   useEffect(() => { 
     let ignore = false;
-
+    console.log('useeffect')
     if(!ignore) getCustomize()
 
 
@@ -91,7 +90,7 @@ function Home()
         {ScreenTime : 0 ,Television :0 ,Gaming :0, Sport :0, Art :0, Chores : 0, Work : 0, Other : 0}
         localStorage.setItem('recreation_data', JSON.stringify(rec));
 
-
+        console.log('render');
    return(
        
     <div className = "p-5">
@@ -112,23 +111,25 @@ function Home()
         <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Dashboard</Card.Text> 
         <Card.Body>
 
-{checkedState[0] == true &&
+{cus.Exercise == true &&
 <Card className= "test" id='test'>excercise</Card>
 } 
-{checkedState[1] == true &&
+{cus.Recreation == true &&
 <Card className= "test1" id='test1'><Nav.Link href="/recreation">recreation</Nav.Link></Card>
 }
-{checkedState[2] == true &&
+{cus.Sleep == true &&
   <Card className= "test1" id='test1'><Nav.Link href="/sleep">sleep</Nav.Link></Card>
 }
-{checkedState[3] == true &&
+{cus.Water == true &&
   <Card className= "test1" id='test1'><Nav.Link href="/water">water</Nav.Link></Card>
 }
 
         </Card.Body>
       </Card>
      </div>
+     
    );
+   
 };
 
 
