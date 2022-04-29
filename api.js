@@ -3,18 +3,19 @@ require('mongodb');
 
 const { ObjectId } = require('mongodb');
 const sendEmail = require('./sendEmail');
+const hash = require('object-hash');
 
 exports.setApp = function (app, client) {
     // login endpoint
     app.post('/api/login', async (req, res, next) => {
         const { username, password } = req.body;
+        const hashedPass = hash.MD5(password);
         let error = '';
 
         try {
-        
+
             const db = client.db();
-            const foundUser = await db.collection('users').findOne({ Username: username, Password: password });
-            // console.log(foundUser.FirstName);
+            const foundUser = await db.collection('users').findOne({ Username: username, Password: hashedPass });
 
             let id = '';
             let fn = '';
@@ -31,13 +32,13 @@ exports.setApp = function (app, client) {
                 return;
             }
 
-            else if (foundUser.Verified != true){
-                ret = { error: 'Email is not verified can not access login'};
+            else if (foundUser.Verified != true) {
+                ret = { error: 'Email is not verified can not access login' };
                 res.status(500).json(ret);
                 return;
             }
 
-            else if (foundUser.Customized != true){
+            else if (foundUser.Customized != true) {
                 // redirect to customize page
                 error = 'User has not customized their account';
             }
@@ -48,7 +49,7 @@ exports.setApp = function (app, client) {
             em = foundUser.Email;
             ph = foundUser.Phone;
 
-            ret = {Id: id, Username: username, FirstName: fn, LastName: ln, Email: em, PhoneNumber: ph, error: error};
+            ret = { Id: id, Username: username, FirstName: fn, LastName: ln, Email: em, PhoneNumber: ph, error: error };
             res.status(200).json(ret);
         }
         catch (e) {
@@ -60,42 +61,41 @@ exports.setApp = function (app, client) {
     // register endpoint
     app.post('/api/register', async (req, res, next) => {
         const { firstName, lastName, username, phone, email, password } = req.body;
+        const hashedPass = hash.MD5(password)
 
-        const newUser = { FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: password, Verified: false, Customized: false};
+        const newUser = { FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: hashedPass, Verified: false, Customized: false };
         let error = '';
         var ret;
 
         try {
             const db = client.db();
-            const searchUsername = await db.collection('users').findOne({Username: username});
-            const searchEmail = await db.collection('users').findOne({Email: email});
+            const searchUsername = await db.collection('users').findOne({ Username: username });
+            const searchEmail = await db.collection('users').findOne({ Email: email });
 
             // check if username already in use
-            if (searchUsername)
-            {
+            if (searchUsername) {
                 ret = { error: 'Username already exists' };
                 res.status(500).json(ret);
                 return;
             }
 
             // check if email already in use
-            else if (searchEmail)
-            {
-                ret = { error: "Account already registered with this email"};
+            else if (searchEmail) {
+                ret = { error: "Account already registered with this email" };
                 res.status(500).json(ret);
                 return;
             }
 
             // else create new user
             else {
-                const result = await db.collection('users').insertOne(newUser);
+                db.collection('users').insertOne(newUser);
             }
         }
         catch (e) {
             error = e.toString();
         }
 
-        ret = { error: error };
+        ret = {FirstName: firstName, LastName: lastName, Username: username, Phone: phone, Email: email, Password: hashedPass, error: error};
         res.status(200).json(ret);
     });
 
@@ -108,13 +108,13 @@ exports.setApp = function (app, client) {
         const db = client.db();
         const foundUser = await db.collection('users').findOne({ Email: email });   // finds user with given email
         if (!foundUser) {
-            // no user, return 400 (or 404 not found) code
+            // no user, return 400 code
             ret = { error: 'User not found' };
             res.status(400).json(ret);
             return;
         }
-      
-        ret = {Username: foundUser.username, Password: foundUser.password};
+
+        ret = { Username: foundUser.username, Password: foundUser.password };
 
         const from = "dailygrind4331@gmail.com";
         const to = email;
@@ -122,11 +122,11 @@ exports.setApp = function (app, client) {
 
         console.log(`id ${foundUser._id}`);
 
-        //const link = `https://cop4331-g30-large.herokuapp.com/api/verifyaccount/${id}`;
-        //const link = `http://localhost:5000/EmailVerification
+        //const link = `https://cop4331-g30-large.herokuapp.com/EmailVerification/?id=${foundUser._id}`;
+        //const link = `http://localhost:5000/api/verifyaccount
 
         // change link to page to then link next api endpoint on that page instead
-        const link = `http://localhost:5000/EmailVerification/?id=${foundUser._id}`;
+        const link = `https://cop4331-g30-large.herokuapp.com/EmailVerification/?id=${foundUser._id}`;
 
         const output = `
     <p>This is to verify your email for DailyGrind!</p>
@@ -145,18 +145,18 @@ exports.setApp = function (app, client) {
         var ret;
         const db = client.db();
         const userId = req.body.id;
-        const user = await db.collection('users').findOne({_id: ObjectId(userId)});
+        const user = await db.collection('users').findOne({ _id: ObjectId(userId) });
         console.log(userId);
-        db.collection('users').updateOne({_id: ObjectId(userId)}, { $set: { Verified: true}});
+        db.collection('users').updateOne({ _id: ObjectId(userId) }, { $set: { Verified: true } });
 
-        if(!user){
+        if (!user) {
             ret = { error: 'User not found' };
             res.status(400).json(ret);
-            return; 
-        }     
+            return;
+        }
         console.log("First Name: ", user.FirstName);
-        
-        ret = {_id: userId};
+
+        ret = { _id: userId };
         res.status(200).json(ret);
     });
 
@@ -177,12 +177,12 @@ exports.setApp = function (app, client) {
                 return;
             }
             // get id, first, and last name
-            const id = foundUser._id;  
+            const id = foundUser._id;
             const fn = foundUser.FirstName;
             const ln = foundUser.LastName;
 
             //const link = `https://cop4331-g30-large.herokuapp.com/ResetPassword/?id=${id}`;
-            const link = `http://localhost:5000/ResetPassword/?id=${id}`;
+            const link = `https://cop4331-g30-large.herokuapp.com/ResetPassword/?id=${id}`;
             const from = "dailygrind4331@gmail.com";
             const to = email;
             const subject = "Daily Grind Password Reset";
@@ -196,6 +196,7 @@ exports.setApp = function (app, client) {
             `;
 
             sendEmail(to, from, subject, output);
+            ret = {FirstName: fn, LastName: ln}
             res.status(200).json(ret);
         }
         catch (e) {
@@ -209,31 +210,28 @@ exports.setApp = function (app, client) {
         var ret;
         const userId = req.body.id;
         const newPassword = req.body.password;
-        // console.log(userId);
-        // console.log(newPassword);
+        const hashedPass = hash.MD5(newPassword);
 
         const db = client.db();
         const foundUser = await db.collection('users').findOne({ _id: ObjectId(userId) });
-        //console.log(foundUser.FirstName);
-        
-        if(!foundUser){
+
+        if (!foundUser) {
             ret = { error: 'User not found' };
             res.status(400).json(ret);
-            return; 
+            return;
         }
-        if (foundUser.Password == newPassword)
-        {
-                ret = { error: 'Already used this password' };
-                res.status(500).json(ret);
-                return;
+        if (foundUser.Password == hashedPass) {
+            ret = { error: 'Already used this password' };
+            res.status(500).json(ret);
+            return;
         }
-        ret = {_id: userId};
+        ret = { _id: userId };
 
-        db.collection('users').updateOne({_id: ObjectId(userId)}, { $set: { Password : newPassword} });
-        
+        db.collection('users').updateOne({ _id: ObjectId(userId) }, { $set: { Password: hashedPass } });
+
         res.status(200).json(ret);
     });
-    
+
     // customization initialization
     app.post('/api/initialize/:username', async (req, res, next) => {
         const username = req.params.username;
@@ -286,6 +284,4 @@ exports.setApp = function (app, client) {
             res.status(200).send(foundUser);
         }
     }); 
-    // TO-DO:
-    // hash passwords in db?
 }

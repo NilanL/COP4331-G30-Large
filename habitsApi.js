@@ -4,7 +4,9 @@ require('mongodb');
 const { ObjectId } = require('mongodb');
 
 exports.setApp = function (app, client2) {
-    // framework for habits *in production*
+    
+    /***** WATER *****/
+    // insert water data
     app.post('/api/water/:username', async (req, res, next) => {
         const username = req.params.username;
         const ounces = req.body.ounces;
@@ -29,6 +31,42 @@ exports.setApp = function (app, client2) {
         res.status(200).json(ret);
     });
 
+    // retrieve water data
+    app.post('/api/getWater/:username', async (req, res, next) => {
+        const date = req.body.date;
+        const username = req.params.username;
+        
+        const db = client2.db();
+        const foundEntry = await db.collection('water').findOne({User: username, Date: date});
+
+        if (foundEntry){
+            res.status(200).send(foundEntry);
+        }else {
+            res.status(400).send("Entry for given user and date not found");
+        }
+    });
+
+    // delete water data
+    app.delete('/api/deleteWater/:username', async (req, res, next) => {
+        const date = req.body.date;
+        const username = req.params.username;
+        
+        const db = client2.db();
+        const foundEntry = await db.collection('water').findOne({Date: date, User: username});
+
+        if (foundEntry){
+            let ret = {User: foundEntry.User, Date: foundEntry.Date, Ounces: foundEntry.Ounces};
+            db.collection('water').deleteOne({User: username, Date: date});
+            res.status(200).json(ret);
+        }else {
+            let ret = {error : 'Entry for given user and date not found'};
+            res.status(400).json(ret);
+        }
+    });
+
+
+    /***** SLEEP *****/
+    // insert sleep data
     app.post(`/api/sleep/:username`, async (req, res, next) => {
         const username = req.params.username;
 
@@ -44,7 +82,7 @@ exports.setApp = function (app, client2) {
         const foundEntry = await db.collection('sleep').findOne({User: username, Date: date});
         if (foundEntry)
         {
-            let ret = {error: "Sleep hours already recorded for this user and date"};
+            let ret = {error: 'Sleep hours already recorded for this user and date'};
             res.status(550).json(ret);
             return;
         }
@@ -110,6 +148,42 @@ exports.setApp = function (app, client2) {
         res.status(200).json(ret);
     });
 
+    // retrieve sleep data
+    app.post('/api/getSleep/:username', async (req, res, next) => {
+        const date = req.body.date;
+        const username = req.params.username;
+
+        const db = client2.db();
+        const foundEntry = await db.collection('sleep').findOne({Date: date, User: username});
+
+        if (foundEntry){
+            res.status(200).send(foundEntry);
+        }else {
+            res.status(400).send("Entry for given user and date not found");
+        }
+    });
+
+    // delete sleep data
+    app.delete('/api/deleteSleep/:username', async (req, res, next) => {
+        const date = req.body.date;
+        const username = req.params.username;
+        
+        const db = client2.db();
+        const foundEntry = await db.collection('sleep').findOne({Date: date, User: username});
+
+        if (foundEntry){
+            let ret = {User: foundEntry.User, Date: foundEntry.Date, Hours: foundEntry.Hours};
+            db.collection('sleep').deleteOne({User: username, Date: date});
+            res.status(200).json(ret);
+        }else {
+            let ret = {error : 'Entry for given user and date not found'};
+            res.status(400).json(ret);
+        }
+    });
+
+
+    /***** RECREATION *****/
+    // insert recreation data
     app.post('/api/recreation/:username', async (req, res, next) => {
         const username = req.params.username;
         const date = req.body.date;
@@ -213,6 +287,44 @@ exports.setApp = function (app, client2) {
         res.status(200).json(ret);
     });
 
+    // retrieve recreation data
+    app.post('/api/getRecreation/:username', async (req, res, next) => {
+        const date = req.body.date;
+        const username = req.params.username;
+
+        const db = client2.db();
+        const foundEntry = await db.collection('recreation').findOne({Date: date, User: username});
+
+        if (!foundEntry)
+        {
+            res.status(400).send("Entry for given user and date not found");
+        }
+        else {
+            res.status(200).send(foundEntry);
+        }
+    });
+
+    // delete recreation data
+    app.delete('/api/deleteRecreation/:username', async (req, res, next) => {
+        const date = req.body.date;
+        const username = req.params.username;
+        
+        const db = client2.db();
+        const foundEntry = await db.collection('recreation').findOne({Date: date, User: username});
+
+        if (foundEntry){
+            let ret = {User: foundEntry.User, Date: foundEntry.Date};
+            db.collection('recreation').deleteOne({User: username, Date: date});
+            res.status(200).json(ret);
+        }else {
+            let ret = {error : 'Entry for given user and date not found'};
+            res.status(400).json(ret);
+        }
+    });
+
+
+    /***** EXERCISE *****/
+    // insert exercise data
     app.post('/api/exercise/:username', async (req, res, next) => {
         const username = req.params.username;
         const date = req.body.date;
@@ -227,37 +339,39 @@ exports.setApp = function (app, client2) {
         res.status(200).json(ret);
     });
 
-    app.post('/api/meal/:username', async (req, res, next) => {
-        const username = req.params.username;
-        const time = req.body.time;
+    // retrieve exercise data
+    app.post('/api/getExercise/:username', async (req, res, next) => {
         const date = req.body.date;
-        const meal = req.body.meal;
-        const cals = req.body.cals;
-
-        const db = client2.db();
-
-        const mealLog = {User: username, Date: date, Time: time, Meal: meal, Calories: cals};
-        db.collection('meal').insertOne(mealLog);
-        let ret = {User: username, Date: date, Time: time, Meal: meal, Calories: cals};
-        res.status(200).json(ret);
-    });
-    
-    // TODO: ask front end what they want to do with this; delete med
-    app.post('/api/medication/:username', async (req, res, next) => {
         const username = req.params.username;
-        const time = req.body.time;
-        const day = req.body.day;
-        const medication = req.body.medication;
-        const dosage = req.body.dosage;
 
         const db = client2.db();
+        const foundEntries = await db.collection('exercise').find({Date: date, User: username}).toArray();
 
-        const medicationLog = {User: username, Day: day, Time: time, Medication: medication, Dosage: dosage};
-        db.collection('medication').insertOne(medicationLog);
-        let ret = {User: username, Day: day, Time: time, Medication: medication, Dosage: dosage};
-        res.status(200).json(ret);
+        let ret;
+        if (foundEntries.length == 0)
+        {
+            res.status(400).send("Entries for given user and date not found");
+        }
+        else {
+            res.status(200).send(foundEntries);
+        }
     });
-    
-    // TO:DO app.get() for all habits in order for summary purposes
-    // delete meds
+
+    // delete exercise data
+    app.delete('/api/deleteExercise/:username', async (req, res, next) => {
+        const date = req.body.date;
+        const username = req.params.username;
+        
+        const db = client2.db();
+        const foundEntries = await db.collection('exercise').find({Date: date, User: username}).toArray();
+
+        if (foundEntries.length != 0){
+            let ret = {User: foundEntries[0].User, Date: foundEntries[0].Date};
+            db.collection('exercise').deleteMany({User: username, Date: date});
+            res.status(200).json(ret);
+        }else {
+            let ret = {error : 'Entry for given user and date not found'};
+            res.status(400).json(ret);
+        }
+    });
 }
