@@ -46,7 +46,7 @@ class BarChart extends Component {
 			data: [{
 				type: "bar",
 				dataPoints: [
-					{ y:  rec.Water, label: "Water" }
+					{ y:  rec.Ounces, label: "Water" }
 				]
 			}]
 		}

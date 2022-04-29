@@ -52,7 +52,7 @@ const getInfo= async event => {
         var res = JSON.parse(await response.text());
       
       var wat =  
-                    {Water : res.Water}
+                    {Ounces : res.Ounces}
           localStorage.setItem('water_data', JSON.stringify(wat));
           console.log(wat);
           window.location.href = '/water';
@@ -61,7 +61,7 @@ const getInfo= async event => {
       {
 
         var wat =  
-        {Water : 0}
+        {Ounces : 0}
         localStorage.setItem('water_data', JSON.stringify(wat));
         window.location.href = '/water';
       }  
@@ -99,9 +99,9 @@ const getInfo= async event => {
  
         </Card>
         <Card>
-        <FontAwesomeIcon  style={{color: '#0FA3B1'}} /><input type="date"  id="date_rec" style={{borderTopWidth: 0,
+        <FontAwesomeIcon  style={{color: '#0FA3B1'}} /><input type="text"  id="date_rec" style={{borderTopWidth: 0,
                                 borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} 
-                                ref={(c) => date_rec = c} />
+                                ref={(c) => date_rec = c} placeholder="MM/DD/YYYY" />
                  <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={getInfo}>choose</Button> 
                  </Card>
          

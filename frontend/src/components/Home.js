@@ -78,12 +78,12 @@ function Home()
   checkedState[3] = cus.Water;
 
         var sle =  
-        {Sleep : 0}
+        {Hours : 0}
         localStorage.setItem('sleep_data', JSON.stringify(sle));
 
 
         var wat =  
-        {Water : 0}
+        {Ounces : 0}
         localStorage.setItem('water_data', JSON.stringify(wat));
 
 

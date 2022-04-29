@@ -46,7 +46,7 @@ class BarChart extends Component {
 			data: [{
 				type: "bar",
 				dataPoints: [
-					{ y:  rec.Sleep, label: "Sleep" }
+					{ y:  rec.Hours, label: "Sleep" }
 				]
 			}]
 		}
