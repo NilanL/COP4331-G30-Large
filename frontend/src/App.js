@@ -13,6 +13,7 @@ import ResendPage from './pages/ResendPage';
 import RecreationPage from './pages/RecreationPage';
 import WaterPage from './pages/WaterPage';
 import SleepPage from './pages/SleepPage';
+import ExercisePage from './pages/ExercisePage';
 
 
 function App() {
@@ -51,6 +52,9 @@ function App() {
         </Route>
         <Route path="/sleep" exact>
           <SleepPage />
+        </Route>
+        <Route path="/exercise" exact>
+          <ExercisePage />
         </Route>
         <Redirect to="/login" />
       </Switch>  

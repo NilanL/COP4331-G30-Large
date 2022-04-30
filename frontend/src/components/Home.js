@@ -4,7 +4,8 @@ import Nav from 'react-bootstrap/Nav';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {habbits} from "../assets/habbits";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 
 function Home()
@@ -109,22 +110,44 @@ function Home()
             </Navbar.Collapse>
         </Navbar>
         <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Dashboard</Card.Text> 
+        <div style={{width: '300px', marginLeft: 50}}>
         <Card.Body>
-
+        <ul className = "list-group mx-5 p-3">
 {cus.Exercise == true &&
-<Card className= "test" id='test'>excercise</Card>
+    <li className="list-group-item">
+    <a href="/exercise">
+      <label style={{margin: 5}} htmlFor={`Excercise`}>Exercise</label>
+      </a>
+      <FontAwesomeIcon icon={solid("dumbbell")} style={{color: '#0FA3B1'}}></FontAwesomeIcon>  
+      </li>
 } 
 {cus.Recreation == true &&
-<Card className= "test1" id='test1'><Nav.Link href="/recreation">recreation</Nav.Link></Card>
+  <li className="list-group-item">
+  <a href="/recreation">
+    <label style={{margin: 5}} htmlFor={`Recreation`}>Recreation</label>
+    </a>
+    <FontAwesomeIcon icon={solid("umbrella-beach")} style={{color: '#0FA3B1'}}></FontAwesomeIcon>  
+    </li>
 }
 {cus.Sleep == true &&
-  <Card className= "test1" id='test1'><Nav.Link href="/sleep">sleep</Nav.Link></Card>
+    <li className="list-group-item">
+    <a href="/sleep">
+      <label style={{margin: 5}} htmlFor={`Sleep`}>Sleep</label>
+      </a>
+      <FontAwesomeIcon icon={solid("bed")} style={{color: '#0FA3B1'}}></FontAwesomeIcon>  
+      </li>
 }
 {cus.Water == true &&
-  <Card className= "test1" id='test1'><Nav.Link href="/water">water</Nav.Link></Card>
+    <li className="list-group-item">
+    <a href="/water">
+      <label style={{margin: 5}} htmlFor={`Water`}>Water</label>
+      </a>
+      <FontAwesomeIcon icon={solid("glass-water")} style={{color: '#0FA3B1'}}></FontAwesomeIcon>  
+      </li>
 }
-
+</ul>
         </Card.Body>
+        </div>
       </Card>
      </div>
      
