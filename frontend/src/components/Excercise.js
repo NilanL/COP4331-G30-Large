@@ -58,14 +58,14 @@ const getInfo= async event => {
 
   event.preventDefault();
  
-    var obj = {date: date_rec.value, User: 'ainsD'};
+    var obj = {date: date_rec.value, User: username};
     var js = JSON.stringify(obj);
     console.log(js);
     
     try
       {    
         var res = null;
-        const response = await fetch(buildPath('api/getExercise/' + 'ainsD'),
+        const response = await fetch(buildPath('api/getExercise/' + username),
         {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
         res = JSON.parse(await response.text());
 
