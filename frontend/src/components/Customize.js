@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar'
 import {habbits} from "../assets/habbits";
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { Container, Row, Col} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card';
@@ -130,9 +130,9 @@ function Customize()
 
 
     <div className = "p-5">
-        <Card className = "shadow" style = {{borderRadius: 12, maxWidth: '30 rem'}}>
+        <Card className = "shadow" style = {{borderRadius: 12}}>
 
-         <Navbar bg="white" expland="md" style={{margin: 6}}>
+         <Navbar className='m-auto' bg="white" expland="md" style={{margin: 6}}>
              <Navbar.Brand href="/home">
                <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} height='30' />
              </Navbar.Brand>
@@ -146,55 +146,73 @@ function Customize()
              </Navbar.Collapse>
          </Navbar>
 
-        <Form style={{padding: 10}}>
+        
+        <Card.Body>
           <p className="text-center">Select the habits your would like to track.</p>
-            <div style={{width: '290px', marginLeft: 50}}>
-            <ul className = "list-group mx-5 p-3">
-              <li className="list-group-item">            
-                <input type="checkbox"
-                        id={`custom-checkbox-0`}
-                        name= "exercise"
-                        value= "exercise"
-                        checked={checkedState[0]}
-                        onChange={() => handleOnChange(0)}
-                        />
-                <label style={{margin: 5}} htmlFor={`custom-checkbox-0`}>Exercise</label>
-                <FontAwesomeIcon icon={solid("dumbbell")} style={{color: '#0FA3B1'}} />
-              </li>
-              <li className="list-group-item">
-                <input type="checkbox"
-                        id={`custom-checkbox-1`}
-                        name= "recreation"
-                        value= "recreation"
-                        checked={checkedState[1]}
-                        onChange={() => handleOnChange(1)}
-                        />
-                <label style={{margin: 5}} htmlFor={`custom-checkbox-1`}>Recreation</label>
-                <FontAwesomeIcon icon={solid("umbrella-beach")} style={{color: '#0FA3B1'}} />
-              </li>
-              <li className="list-group-item">
-                <input type="checkbox"
-                        id={`custom-checkbox-2`}
-                        name= "sleep"
-                        value= "sleep"
-                        checked={checkedState[2]}
-                        onChange={() => handleOnChange(2)}
-                        />
-                <label style={{margin: 5}} htmlFor={`custom-checkbox-2`}>Sleep</label>
-                <FontAwesomeIcon icon={solid("bed")} style={{color: '#0FA3B1'}} />
-              </li>
-              <li className="list-group-item">
-                <input type="checkbox"
-                        id={`custom-checkbox-3`}
-                        name= "water"
-                        value= "water"
-                        checked={checkedState[3]}
-                        onChange={() => handleOnChange(3)}
-                        />
-                <label style={{margin: 5}} htmlFor={`custom-checkbox-3`}>Water</label>
-                <FontAwesomeIcon icon={solid("glass-water")} style={{color: '#0FA3B1'}} />
-              </li>
-            </ul>
+          <Form style={{padding: 10}}>            
+            <div className="text-center" style={{width: '406px'}}>
+              <ul className = "list-group mx-5">
+                <Container fluid>
+                  <Row>
+                    <Col xs lg="6" style={{padding: 5}}>
+                      <li className="list-group-item">  
+                        <FontAwesomeIcon icon={solid("dumbbell")} size="4x" style={{color: '#0FA3B1'}}></FontAwesomeIcon>  
+                        <br />      
+                        <input type="checkbox"
+                                id={`custom-checkbox-0`}
+                                name= "exercise"
+                                value= "exercise"
+                                checked={checkedState[0]}
+                                onChange={() => handleOnChange(0)}
+                                />
+                        <label style={{margin: 5}} htmlFor={`custom-checkbox-0`}>Exercise</label>
+                      </li>
+                    </Col>
+                    <Col xs lg="6" style={{padding: 5}}>
+                      <li className="list-group-item">
+                        <FontAwesomeIcon icon={solid("umbrella-beach")} size="4x" style={{color: '#0FA3B1'}} />
+                        <br />
+                        <input type="checkbox"
+                                id={`custom-checkbox-1`}
+                                name= "recreation"
+                                value= "recreation"
+                                checked={checkedState[1]}
+                                onChange={() => handleOnChange(1)}
+                                />
+                        <label style={{margin: 5}} htmlFor={`custom-checkbox-1`}>Recreation</label> 
+                      </li>
+                    </Col>
+                    <Col xs lg="6" style={{padding: 5}}>
+                      <li className="list-group-item">
+                        <FontAwesomeIcon icon={solid("bed")} size="4x" style={{color: '#0FA3B1'}} />
+                        <br />
+                        <input type="checkbox"
+                                id={`custom-checkbox-2`}
+                                name= "sleep"
+                                value= "sleep"
+                                checked={checkedState[2]}
+                                onChange={() => handleOnChange(2)}
+                                />
+                        <label style={{margin: 5}} htmlFor={`custom-checkbox-2`}>Sleep</label> 
+                      </li>
+                    </Col>
+                    <Col xs lg="6" style={{padding: 5}}>
+                      <li className="list-group-item">
+                        <FontAwesomeIcon icon={solid("glass-water")} size="4x" style={{color: '#0FA3B1'}} />
+                        <br />
+                        <input type="checkbox"
+                                id={`custom-checkbox-3`}
+                                name= "water"
+                                value= "water"
+                                checked={checkedState[3]}
+                                onChange={() => handleOnChange(3)}
+                                />
+                        <label style={{margin: 5}} htmlFor={`custom-checkbox-3`}>Water</label>     
+                      </li>
+                    </Col>
+                  </Row>                
+                </Container>
+              </ul>
             </div>
             <div className="text-center">
               <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doUpdate}>Update</Button>
@@ -202,9 +220,10 @@ function Customize()
             <div className="text-center">
                 <span>{message}</span>
             </div>            
-        </Form>
-      <div>
-    </div>
+          </Form>
+        <div>
+      </div>
+    </Card.Body>
   </Card>
 </div>
 

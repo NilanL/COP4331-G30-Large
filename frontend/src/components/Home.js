@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col} from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form'
 import {habbits} from "../assets/habbits";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -96,8 +97,8 @@ function Home()
    return(
        
     <div className = "p-5">
-      <Card className = "shadow" style = {{borderRadius: 12, maxWidth: '30 rem'}}>
-        <Navbar bg="white" expland="md" style={{margin: 6}}>
+      <Card className = "shadow" style = {{borderRadius: 12}}>
+        <Navbar className='m-auto' bg="white" expland="md" style={{margin: 6}}>
             <Navbar.Brand href="/home">
               <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} height='30' />
             </Navbar.Brand>
@@ -111,21 +112,21 @@ function Home()
             </Navbar.Collapse>
         </Navbar>
 
-        <Card.Text className="text-center" style = {{color: '#0FA3B1' , fontSize : "40px"}}>Dashboard</Card.Text>
-        <p className="text-center">Select the habit you would like to view.</p>
-
+             
         <Card.Body>
-          <form style={{padding: 10}}>
-            <div className="text-center" style={{width: '420px'}}>              
-              <ul className = "list-group mx-5 p-3">
+          <p className="text-center">Select the habit you would like to view.</p>   
+          <Form style={{padding: 10}}>
+            <div className="text-center" style={{width: '406px'}}>              
+              <ul className = "list-group mx-5">
                 <Container fluid>
                   <Row>
-                    <Col style={{padding: 10}}>
+                    <Col xs lg="6" style={{padding: 5}}>
                       {cus.Exercise === true &&
                         <li className="list-group-item">
                           <a href="/exercise">
                             <FontAwesomeIcon icon={solid("dumbbell")} size="4x" style={{color: '#0FA3B1'}}></FontAwesomeIcon>
-                          </a>                      
+                          </a>
+                          <br />                      
                           <label style={{margin: 5}} htmlFor={`Excercise`}>Exercise</label>  
                           </li>
                       }
@@ -136,7 +137,7 @@ function Home()
                         </li>
                       }
                     </Col>
-                    <Col style={{padding: 10}}>
+                    <Col  xs lg="6" style={{padding: 5}}>
                       {cus.Recreation === true &&
                         <li className="list-group-item">
                           <a href="/recreation">
@@ -152,7 +153,7 @@ function Home()
                         </li>
                       }
                     </Col>
-                    <Col style={{padding: 10}}>
+                    <Col xs lg="6" style={{padding: 5}}>
                       {cus.Sleep === true &&
                         <li className="list-group-item">
                           <a href="/sleep">
@@ -170,7 +171,7 @@ function Home()
                         </li>
                       }
                     </Col>
-                    <Col style={{padding: 10}}>
+                    <Col xs lg="6" style={{padding: 5}}>
                       {cus.Water === true &&
                         <li className="list-group-item">
                           <a href="/water">
@@ -192,7 +193,7 @@ function Home()
                 </Container>
                 </ul>
             </div>
-          </form>
+          </Form>
         </Card.Body>
         
       </Card>
