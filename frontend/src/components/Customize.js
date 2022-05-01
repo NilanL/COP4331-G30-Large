@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar'
 import {habbits} from "../assets/habbits";
@@ -41,7 +41,6 @@ function Customize()
   var firstName = ud.firstName;
   var lastName = ud.lastName;
   var username = ud.username;
-
 
 
 
@@ -123,8 +122,9 @@ function Customize()
         
     }
   }
-      
 
+
+      
    return(
 
 
