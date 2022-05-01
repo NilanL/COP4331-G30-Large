@@ -111,9 +111,12 @@ function Home()
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
-
+        </Card> 
+        <br />
              
-        <Card.Body>
+        <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+          <Card.Text className="text-center" style = {{color: '#0FA3B1' , fontSize : "40px"}}>Dashboard</Card.Text>
+          <Card.Body>
           <p className="text-center">Select the habit you would like to view.</p>   
           <Form style={{padding: 10}}>
             <div className="text-center" style={{width: '406px'}}>              

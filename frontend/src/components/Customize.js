@@ -130,7 +130,7 @@ function Customize()
 
 
     <div className = "p-5">
-        <Card className = "shadow" style = {{borderRadius: 12}}>
+      <Card className = "shadow" style = {{borderRadius: 12}}>
 
          <Navbar className='m-auto' bg="white" expland="md" style={{margin: 6}}>
              <Navbar.Brand href="/home">
@@ -145,8 +145,14 @@ function Customize()
                 </Nav>
              </Navbar.Collapse>
          </Navbar>
+      </Card>
 
-        
+      <br />
+
+      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+
+        <Card.Text className="text-center" style = {{color: '#0FA3B1' , fontSize : "40px"}}>Customize</Card.Text> 
+      
         <Card.Body>
           <p className="text-center">Select the habits your would like to track.</p>
           <Form style={{padding: 10}}>            

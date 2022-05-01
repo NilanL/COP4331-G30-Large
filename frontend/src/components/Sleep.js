@@ -77,7 +77,7 @@ const getInfo= async event => {
 
     return (
       <div className = "p-5">
-      <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '30 rem'}}>
+      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
         <Navbar bg="white" expland="md" style={{margin: 6}}>
             <Navbar.Brand href="/home">
               <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} height='30' />
@@ -91,14 +91,16 @@ const getInfo= async event => {
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
-        <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Dashboard</Card.Text> 
       </Card>
-    
-		<Card>
+     <br />
+      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+      <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Sleep</Card.Text> 
         <BarChart />
  
         </Card>
-        <Card>
+
+        <br />
+        <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
         <FontAwesomeIcon  style={{color: '#0FA3B1'}} /><input type="text"  id="date_rec" style={{borderTopWidth: 0,
                                 borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} 
                                 ref={(c) => date_rec = c} placeholder="MM/DD/YYYY" />

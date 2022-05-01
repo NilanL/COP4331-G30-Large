@@ -141,8 +141,8 @@ const getInfo= async event => {
 
     return (
       <div className = "p-5">
-      <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '30 rem'}}>
-        <Navbar bg="white" expland="md" style={{margin: 6}}>
+      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+        <Navbar className='m-auto' bg="white" expland="md" style={{margin: 6}}>
             <Navbar.Brand href="/home">
               <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} height='30' />
             </Navbar.Brand>
@@ -155,28 +155,29 @@ const getInfo= async event => {
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
-        <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Dashboard</Card.Text> 
       </Card>
-    
-		<Card>
-        <span id="resetResult">{message0}</span> <br />
-        <span id="resetResult">{message1}</span> <br />
-        <span id="resetResult">{message2}</span> <br />
-        <span id="resetResult">{message3}</span> <br />
-        <span id="resetResult">{message4}</span> <br />
-        <span id="resetResult">{message5}</span> <br />
-  
-      
- 
-        </Card>
-        <Card>
-        <FontAwesomeIcon  style={{color: '#0FA3B1'}} /><input type="text"  value={date_rec} id="date_rec" style={{borderTopWidth: 0,
-                                borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} 
-                                ref={(c) => date_rec = c} placeholder="MM/DD/YYYY" />
-                 <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={getInfo}>choose</Button> 
-                 </Card>
-         
-        </div>
+
+      <br />
+
+      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+        <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Exercise</Card.Text> 
+          <span id="resetResult">{message0}</span> <br />
+          <span id="resetResult">{message1}</span> <br />
+          <span id="resetResult">{message2}</span> <br />
+          <span id="resetResult">{message3}</span> <br />
+          <span id="resetResult">{message4}</span> <br />
+          <span id="resetResult">{message5}</span> <br /> 
+      </Card>
+
+      <br />
+      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+      <FontAwesomeIcon  style={{color: '#0FA3B1'}} /><input type="text"  value={date_rec} id="date_rec" style={{borderTopWidth: 0,
+                              borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} 
+                              ref={(c) => date_rec = c} placeholder="MM/DD/YYYY" />
+                <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={getInfo}>choose</Button> 
+                </Card>
+        
+      </div>
     );
  
 }
