@@ -13,5 +13,5 @@ function checkSelections (exercise, recreation, sleep, water) {
   };
 
 
-  export default checkEmail;
+  export default checkSelections;
   //module.exports = checkSelections;

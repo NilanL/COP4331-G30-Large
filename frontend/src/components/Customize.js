@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card';
+import checkSelections from '../components/checkSelections';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
@@ -70,26 +71,33 @@ function Customize()
 
     if(ud.update == false){
 
-      event.preventDefault();
-
-      var obj = {User: username.value, exercise : checkedState[0], recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3]};
-      var js = JSON.stringify(obj);
       
-      try
-      {    
-          const response = await fetch(buildPath('api/customize/' + username),
-              {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-          var res = JSON.parse(await response.text());
-          var custom =  
-          {Exercise: res.Exercise,Recreation :res.Recreation ,Sleep :res.Sleep, Water :res.Water}
-          localStorage.setItem('custom_data', JSON.stringify(custom));
-          setMessage("Profile updated. Click home to view your dashboard.");
+      if (checkSelections(checkedState[0], checkedState[1], checkedState[2], checkedState[3])) {
+      
+        event.preventDefault();
+
+        var obj = {User: username.value, exercise : checkedState[0], recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3]};
+        var js = JSON.stringify(obj);
+        
+        try
+        {    
+            const response = await fetch(buildPath('api/customize/' + username),
+                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            var res = JSON.parse(await response.text());
+            var custom =  
+            {Exercise: res.Exercise,Recreation :res.Recreation ,Sleep :res.Sleep, Water :res.Water}
+            localStorage.setItem('custom_data', JSON.stringify(custom));
+            setMessage("Profile updated. Click home to view your dashboard.");
+        }
+        catch(e)
+        {
+            alert(e.toString());
+            return;
+        }  
       }
-      catch(e)
-      {
-          alert(e.toString());
-          return;
-      }  
+      else {
+        setMessage("Please select at least one habit to track.");
+        }
     }
     else{
         
