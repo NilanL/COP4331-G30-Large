@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar'
 import {habbits} from "../assets/habbits";
@@ -41,7 +41,6 @@ function Customize()
   var firstName = ud.firstName;
   var lastName = ud.lastName;
   var username = ud.username;
-
 
 
 
@@ -123,8 +122,58 @@ function Customize()
         
     }
   }
-      
 
+  //updates from the Server
+  //calls API
+  const getCustomize = async event => {
+
+      try
+      {    
+          const response = await fetch(buildPath('api/getCustomization/' + username),
+              {method:'GET',headers:{'Content-Type': 'application/json'}});
+          var res = JSON.parse(await response.text());
+          var custom =  
+                    {Exercise: res.Exercise,Recreation :res.Recreation ,Sleep :res.Sleep, Water :res.Water}
+          localStorage.setItem('custom_data', JSON.stringify(custom));
+  
+          if (custom.Exercise === true) {
+            handleOnChange(0)
+          }
+
+          if (custom.Recreation === true) {
+            handleOnChange(1)
+          }
+
+          if (custom.Sleep === true) {
+            handleOnChange(2)
+          }
+
+          if (custom.Water === true) {
+            handleOnChange(3)
+          }
+          
+      }
+      catch(e)
+      {
+          return;
+      }  
+  }
+
+
+  //Runs after 
+  useEffect(() => { 
+    let ignore = false;
+    console.log('useeffect')
+    if(!ignore) getCustomize()
+
+
+  
+  
+    return () => { ignore = true;    }
+    
+    }, [])
+
+      
    return(
 
 
