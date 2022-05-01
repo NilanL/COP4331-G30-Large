@@ -85,7 +85,7 @@ function Customize()
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             var res = JSON.parse(await response.text());
             var custom =  
-            {Exercise: res.Exercise,Recreation :res.Recreation ,Sleep :res.Sleep, Water :res.Water}
+            {Exercise: checkedState[0],Recreation :checkedState[1] ,Sleep :checkedState[2], Water :checkedState[3]}
             localStorage.setItem('custom_data', JSON.stringify(custom));
             setMessage("Profile updated. Click home to view your dashboard.");
         }
