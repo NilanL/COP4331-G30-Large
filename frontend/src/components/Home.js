@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row, Col } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Card from 'react-bootstrap/Card';
-import 'bootstrap/dist/css/bootstrap.min.css'
 import {habbits} from "../assets/habbits";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -95,10 +96,10 @@ function Home()
    return(
        
     <div className = "p-5">
-      <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '30 rem'}}>
+      <Card className = "shadow" style = {{borderRadius: 12, maxWidth: '30 rem'}}>
         <Navbar bg="white" expland="md" style={{margin: 6}}>
             <Navbar.Brand href="/home">
-              <img src= {require('../assets/images/dailygrind5.png')} height='30' />
+              <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} height='30' />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -109,45 +110,65 @@ function Home()
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
-        <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Dashboard</Card.Text> 
-        <div style={{width: '300px', marginLeft: 50}}>
+
+        <Card.Text className="text-center" style = {{color: '#0FA3B1' , fontSize : "40px"}}>Dashboard</Card.Text>
+        <p className="text-center">Select the habit you would like to view.</p>
+
         <Card.Body>
-        <ul className = "list-group mx-5 p-3">
-{cus.Exercise == true &&
-    <li className="list-group-item">
-    <a href="/exercise">
-      <label style={{margin: 5}} htmlFor={`Excercise`}>Exercise</label>
-      </a>
-      <FontAwesomeIcon icon={solid("dumbbell")} style={{color: '#0FA3B1'}}></FontAwesomeIcon>  
-      </li>
-} 
-{cus.Recreation == true &&
-  <li className="list-group-item">
-  <a href="/recreation">
-    <label style={{margin: 5}} htmlFor={`Recreation`}>Recreation</label>
-    </a>
-    <FontAwesomeIcon icon={solid("umbrella-beach")} style={{color: '#0FA3B1'}}></FontAwesomeIcon>  
-    </li>
-}
-{cus.Sleep == true &&
-    <li className="list-group-item">
-    <a href="/sleep">
-      <label style={{margin: 5}} htmlFor={`Sleep`}>Sleep</label>
-      </a>
-      <FontAwesomeIcon icon={solid("bed")} style={{color: '#0FA3B1'}}></FontAwesomeIcon>  
-      </li>
-}
-{cus.Water == true &&
-    <li className="list-group-item">
-    <a href="/water">
-      <label style={{margin: 5}} htmlFor={`Water`}>Water</label>
-      </a>
-      <FontAwesomeIcon icon={solid("glass-water")} style={{color: '#0FA3B1'}}></FontAwesomeIcon>  
-      </li>
-}
-</ul>
+          <form style={{padding: 10}}>
+            <div className="text-center" style={{width: '300px', marginLeft: 30}}>              
+              <ul className = "list-group mx-5 p-3">
+                <Container>
+                  <Row>
+                    <Col style={{padding: 10}}>
+                      {cus.Exercise === true &&
+                        <li className="list-group-item">
+                          <a href="/exercise">
+                            <FontAwesomeIcon icon={solid("dumbbell")} size="4x" style={{color: '#0FA3B1'}}></FontAwesomeIcon>
+                          </a>                      
+                          <label style={{margin: 5}} htmlFor={`Excercise`}>Exercise</label>  
+                          </li>
+                      } 
+                    </Col>
+                    <Col style={{padding: 10}}>
+                      {cus.Recreation === true &&
+                        <li className="list-group-item">
+                          <a href="/recreation">
+                            <FontAwesomeIcon icon={solid("umbrella-beach")} size="4x" style={{color: '#0FA3B1'}}></FontAwesomeIcon>
+                          </a>                    
+                          <label style={{margin: 5}} htmlFor={`Recreation`}>Recreation</label>  
+                        </li>
+                      }
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col style={{padding: 10}}>
+                      {cus.Sleep === true &&
+                        <li className="list-group-item">
+                          <a href="/sleep">
+                            <FontAwesomeIcon icon={solid("bed")} size="4x" style={{color: '#0FA3B1'}}></FontAwesomeIcon>
+                          </a>
+                          <label style={{margin: 5}} htmlFor={`Sleep`}>Sleep</label> 
+                        </li>
+                      }
+                    </Col>
+                    <Col style={{padding: 10}}>
+                      {cus.Water === true &&
+                        <li className="list-group-item">
+                          <a href="/water">
+                            <FontAwesomeIcon icon={solid("glass-water")} size="4x" style={{color: '#0FA3B1'}}></FontAwesomeIcon>
+                          </a>                    
+                          <label style={{margin: 5}} htmlFor={`Water`}>Water</label>  
+                        </li>
+                      }
+                    </Col>
+                  </Row>
+                </Container>
+                </ul>
+            </div>
+          </form>
         </Card.Body>
-        </div>
+        
       </Card>
      </div>
      

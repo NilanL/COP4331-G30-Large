@@ -110,7 +110,7 @@ const getInfo= async event => {
       <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '30 rem'}}>
         <Navbar bg="white" expland="md" style={{margin: 6}}>
             <Navbar.Brand href="/home">
-              <img src= {require('../assets/images/dailygrind5.png')} height='30' />
+              <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} height='30' />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

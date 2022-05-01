@@ -77,26 +77,26 @@ const getInfo= async event => {
 
           for(var i = 0; i < res.length; i++){
           console.log(res[i].Exercise.length);
-          if(i == 0){
+          if(i === 0){
           setMessage0(res[i].Exercise);
           }
-          if(i == 1){
+          if(i === 1){
             
             setMessage1(res[i].Exercise);
             }
-            if(i == 2){
+            if(i === 2){
                 
                 setMessage2(res[i].Exercise);
                 }
-                if(i == 3){
+                if(i === 3){
                     
                     setMessage3(res[i].Exercise);
                     }
-                    if(i == 4){
+                    if(i === 4){
                         
                         setMessage4(res[i].Exercise);
                         }
-                        if(i == 5){
+                        if(i ===5){
                             
                             setMessage5(res[i].Exercise);
                             }
@@ -144,7 +144,7 @@ const getInfo= async event => {
       <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '30 rem'}}>
         <Navbar bg="white" expland="md" style={{margin: 6}}>
             <Navbar.Brand href="/home">
-              <img src= {require('../assets/images/dailygrind5.png')} height='30' />
+              <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} height='30' />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

@@ -58,18 +58,9 @@ function Customize()
       }
   }
 
-  const doCancel = async event => 
-  {
-      window.location.href = '/home';
-  };
-
-  const updatecheckbox = async => {
-
-  }
-
   const doUpdate = async event => {
 
-    if(ud.update == false){
+    if(ud.update === false){
 
       
       if (checkSelections(checkedState[0], checkedState[1], checkedState[2], checkedState[3])) {
@@ -143,7 +134,7 @@ function Customize()
 
          <Navbar bg="white" expland="md" style={{margin: 6}}>
              <Navbar.Brand href="/home">
-               <img src= {require('../assets/images/dailygrind5.png')} height='30' />
+               <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} height='30' />
              </Navbar.Brand>
              <Navbar.Toggle aria-controls="basic-navbar-nav" />
              <Navbar.Collapse id="basic-navbar-nav">

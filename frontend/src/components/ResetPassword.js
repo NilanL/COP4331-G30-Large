@@ -93,7 +93,7 @@ function ResetPassword()
   return(
     <div className = "p-5">
         <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '25rem'}}>
-        <br /><img src= {require('../assets/images/dailygrind5.png')} /><br />
+        <br /><img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} /><br />
       <form>
         <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "40px"}}>Reset Password</Card.Text> 
         <FontAwesomeIcon icon={solid('key')} style={{color: '#0FA3B1'}} /><input type="text" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} 

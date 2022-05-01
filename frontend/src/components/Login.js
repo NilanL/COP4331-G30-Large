@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import validator from 'validator'
-import { StyleSheet, View, Image, TextInput, Text, ImageBackground } from "react-native";
-import styled, { css } from "styled-components";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -124,7 +122,7 @@ function Login()
       <div id="loginDiv" className="p-5">
     
             <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '20rem'}}> 
-                    <br /><img src= {require('../assets/images/dailygrind5.png')} /><br />
+                    <br /><img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} /><br />
                     <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Login</Card.Text> 
                     
                     <Card.Body>
@@ -156,16 +154,5 @@ function Login()
 };
 
 
-
-
-
-
-const Loginlogo = styled.span`
-font-family: Roboto;
-font-style: normal;
-font-weight: 700;
-color: rgba(15,163,177,1);
-font-size: 36px;
-`;
 
 export default Login;

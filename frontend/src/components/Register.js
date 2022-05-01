@@ -131,7 +131,7 @@ const [message,setMessage] = useState('');
     return(
       <div className= "p-5">
            <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '20rem'}}>
-           <br /><img src= {require('../assets/images/dailygrind5.png')} /><br />
+           <br /><img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} /><br />
             <form style={{padding: 10}}>
                 <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "40px"}}>Register</Card.Text> 
                 <FontAwesomeIcon icon={solid('person')} style={{color: '#0FA3B1'}} /><input type="text" id="firstName" placeholder="FirstName" ref={(c) => firstName = c} 

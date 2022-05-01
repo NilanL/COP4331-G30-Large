@@ -80,7 +80,7 @@ function RetrieveAccount()
   return(
     <div className = "p-5">
         <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '25rem'}}>
-        <br /><img src= {require('../assets/images/dailygrind5.png')} /><br /><br />
+        <br /><img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} /><br /><br />
       <form>
         <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "40px"}}>Forgot Password</Card.Text> <br />
         <p>Please enter your email address.<br />If your account is found, you will recieve an email.</p>

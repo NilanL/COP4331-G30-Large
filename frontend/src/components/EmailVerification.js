@@ -68,16 +68,12 @@ function EmailVerification(){
         window.location.href = '/login';
     };
     
-    const doRegister = async event => 
-    {
-        window.location.href = '/register';
-    };
 
     return(
 
         <div className= "p-5">
            <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '30rem'}}>
-           <br /><img src= {require('../assets/images/dailygrind5.png')} /><br />
+           <br /><img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} /><br />
             <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "40px"}}>Email Verification</Card.Text> 
             <p>Please click verify below to complete verification.</p>
             <form style={{padding: 10}}>
