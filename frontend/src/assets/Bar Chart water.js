@@ -44,7 +44,7 @@ class BarChart extends Component {
 				reversed: true,
 			},
 			data: [{
-				type: "bar",
+				type: "column",
 				dataPoints: [
 					{ y:  rec.Ounces, label: "Water" }
 				]

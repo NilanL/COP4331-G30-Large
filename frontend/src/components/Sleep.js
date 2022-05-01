@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min';
@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import validator from 'validator';
 import BarChart from "../assets/Bar Chart sleep";
 
 
@@ -36,12 +36,79 @@ function Sleep() {
   }
 }
 
+var _rec = localStorage.getItem('sleep_data');
+var rec = JSON.parse(_rec);
+console.log(rec);
+
+const [message,setMessage] = useState(rec.Message);
+const [message2,setMessage2] = useState(rec.Message2);
+
+
 const getInfo= async event => {
 
-	
+
+	var datechange;
+    var slash = '/';
+	var date = date_rec.value
+    console.log(date_rec.value);
+    if(validator.isEmpty(date_rec.value)){
+        var sle =  
+        {Sleep : 0, Message : 'Please choose a date' , Message2 : ''}
+        localStorage.setItem('sleep_data', JSON.stringify(sle));
+        window.location.href = '/sleep';
+    }
+    for(var i = 5; i < 11; i++){
+        if(i == 0){
+            datechange += date[i];
+            
+        }
+        if(i == 1){
+            datechange += date[i];
+            
+        }
+        if(i == 2){
+            datechange += date[i];
+            
+        }
+        if(i == 3){
+            datechange += date[i];
+            
+        }
+        if(i == 4){
+            break;
+        }
+        if(i == 5){
+            datechange = date[i];
+            
+        }
+        if(i == 6){
+            datechange += date[i];
+            
+        }
+        if(i == 7){
+            
+            datechange += slash;
+            
+        }
+        if(i == 8){
+            
+            datechange += date[i];
+            
+        }
+        if(i == 9){
+            
+            datechange += date[i];
+            
+        }
+        if(i == 10){
+            datechange += slash;
+            i = -1;
+        }
+        
+    }
 
   event.preventDefault();
-    var obj = {date: date_rec.value, User: username};
+    var obj = {date: datechange, User: username};
     var js = JSON.stringify(obj);
     console.log(js);
     
@@ -52,7 +119,7 @@ const getInfo= async event => {
         var res = JSON.parse(await response.text());
       
       var sle =  
-                    {Hours : res.Hours}
+                    {Hours : res.Hours, Message : '', Message2 : ''}
           localStorage.setItem('sleep_data', JSON.stringify(sle));
           console.log(sle);
           window.location.href = '/sleep';
@@ -61,7 +128,7 @@ const getInfo= async event => {
       {
 
         var sle =  
-        {Sleep : 0}
+        {Sleep : 0, Message : 'No data recorded.' , Message2 : 'Use the DailyGrind App to get started.'}
         localStorage.setItem('sleep_data', JSON.stringify(sle));
         window.location.href = '/sleep';
       }  
@@ -94,6 +161,8 @@ const getInfo= async event => {
         </Card>
         <br />
         <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 25}}>
+        <span id="resetResult" >{message}</span>
+        <span id="resetResult" >{message2}</span>
           <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Sleep</Card.Text> 
           <div className="text-center" style={{width: '406px'}}>
                 <BarChart />
@@ -104,7 +173,7 @@ const getInfo= async event => {
         <br />
 
         <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
-          <FontAwesomeIcon  style={{color: '#0FA3B1'}} /><input type="text"  id="date_rec" style={{borderTopWidth: 0,
+          <FontAwesomeIcon  style={{color: '#0FA3B1'}} /><input type="date"  id="date_rec" style={{borderTopWidth: 0,
             borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} 
             ref={(c) => date_rec = c} placeholder="MM/DD/YYYY" />
           <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={getInfo}>choose</Button> 

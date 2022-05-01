@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min';
@@ -36,12 +36,72 @@ function Water() {
   }
 }
 
+
+var _rec = localStorage.getItem('water_data');
+var rec = JSON.parse(_rec);
+
+
+const [message,setMessage] = useState(rec.Message);
+const [message2,setMessage2] = useState(rec.Message2);
+
+
 const getInfo= async event => {
 
-	
+	var datechange;
+    var slash = '/';
+	var date = date_rec.value
+    for(var i = 5; i < 11; i++){
+        if(i == 0){
+            datechange += date[i];
+            console.log('0')
+        }
+        if(i == 1){
+            datechange += date[i];
+            console.log('1')
+        }
+        if(i == 2){
+            datechange += date[i];
+            console.log('2')
+        }
+        if(i == 3){
+            datechange += date[i];
+            console.log('3')
+        }
+        if(i == 4){
+            break;
+        }
+        if(i == 5){
+            datechange = date[i];
+            console.log('5')
+        }
+        if(i == 6){
+            datechange += date[i];
+            console.log('6')
+        }
+        if(i == 7){
+            
+            datechange += slash;
+            console.log('7')
+        }
+        if(i == 8){
+            
+            datechange += date[i];
+            console.log('8')
+        }
+        if(i == 9){
+            
+            datechange += date[i];
+            console.log('9')
+        }
+        if(i == 10){
+            datechange += slash;
+            i = -1;
+        }
+        
+    }
 
   event.preventDefault();
-    var obj = {date: date_rec.value, User: username};
+    var obj = {date: datechange, User: username};
     var js = JSON.stringify(obj);
     console.log(js);
     
@@ -52,7 +112,7 @@ const getInfo= async event => {
         var res = JSON.parse(await response.text());
       
       var wat =  
-                    {Ounces : res.Ounces}
+                    {Ounces : res.Ounces, Message : '', Message2 : ''}
           localStorage.setItem('water_data', JSON.stringify(wat));
           console.log(wat);
           window.location.href = '/water';
@@ -61,7 +121,7 @@ const getInfo= async event => {
       {
 
         var wat =  
-        {Ounces : 0}
+        {Ounces : 0, Message : 'No data recorded.' , Message2 : 'Use the DailyGrind App to get started.'}
         localStorage.setItem('water_data', JSON.stringify(wat));
         window.location.href = '/water';
       }  
@@ -96,7 +156,9 @@ const getInfo= async event => {
 
         <br />
 
-        <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 25}}>        
+        <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 25}}>  
+        <span id="resetResult" >{message}</span>   
+        <span id="resetResult" >{message2}</span>   
           <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Water</Card.Text>
           <div className="text-center" style={{width: '406px'}}>
             <BarChart />
@@ -107,7 +169,7 @@ const getInfo= async event => {
         <br />
 
         <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
-          <FontAwesomeIcon  style={{color: '#0FA3B1'}} /><input type="text"  id="date_rec" style={{borderTopWidth: 0,
+          <FontAwesomeIcon  style={{color: '#0FA3B1'}} /><input type="date"  id="date_rec" style={{borderTopWidth: 0,
             borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} 
             ref={(c) => date_rec = c} placeholder="MM/DD/YYYY" />
           <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={getInfo}>choose</Button> 
