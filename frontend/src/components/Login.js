@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import validator from 'validator'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form'
+import Stack from 'react-bootstrap/Stack'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -121,26 +123,33 @@ function Login()
 
       <div id="loginDiv" className="p-5">
     
-            <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '20rem'}}> 
-                    <br /><img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} /><br />
-                    <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Login</Card.Text> 
-                    
-                    <Card.Body>
-                        <form>
-                            <FontAwesomeIcon icon={solid('user')} style={{color: '#0FA3B1'}} /><input type="text" id="loginName" style={{borderTopWidth: 0,
-                                borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} placeholder="Username" 
-                                ref={(c) => loginName = c} /><br /><br />
-                            <FontAwesomeIcon icon={solid('key')} style={{color: '#0FA3B1'}} /><input type="password" id="loginPassword" style={{borderTopWidth: 0,
-                                borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} placeholder="Password" 
-                                ref={(c) => loginPassword = c} /><br /><br /> 
-                            <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={doLogin}>Login</Button> 
-                            <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doRegister}> Register </Button> 
-                            <br /><span id="loginResult">{message}</span> <br />
-                            <a href='/RetrieveAccount'>Forgot Password</a><br />
-                            <a href='/resend'>Resend Verification Email</a>
-                        </form>
-                                             
-                    </Card.Body>                    
+            <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+                <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} style={{maxWidth: 400}} />
+            </Card>
+
+            <br />
+
+            <Card className = "text-center shadow" style = {{borderRadius: 12}}>                
+                <Card.Body>
+                    <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Login</Card.Text>
+                    <Form style={{padding: 10}}>
+                        <FontAwesomeIcon icon={solid('user')} style={{color: '#0FA3B1'}} /><input type="text" id="loginName" style={{borderTopWidth: 0,
+                            borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} placeholder="Username" 
+                            ref={(c) => loginName = c} /><br /><br />
+                        <FontAwesomeIcon icon={solid('key')} style={{color: '#0FA3B1'}} /><input type="password" id="loginPassword" style={{borderTopWidth: 0,
+                            borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} placeholder="Password" 
+                            ref={(c) => loginPassword = c} /><br /><br />
+                        <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={doLogin}>Login</Button> 
+                        <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doRegister}> Register </Button> 
+                        <br /><span id="loginResult">{message}</span> <br />
+                        <Stack>
+                           <a href='/RetrieveAccount'>Forgot Password</a>
+                           <a href='/resend'>Resend Verification Email</a> 
+                        </Stack>
+                        
+                    </Form>
+                                            
+                </Card.Body>                    
             </Card>
      
 

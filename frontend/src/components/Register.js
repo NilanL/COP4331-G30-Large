@@ -4,6 +4,7 @@ import checkEmail from '../components/checkEmail';
 import checkPhone from '../components/checkPhone';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
@@ -130,9 +131,14 @@ const [message,setMessage] = useState('');
 
     return(
       <div className= "p-5">
-           <Card className = "text-center shadow" style = {{borderRadius: 12, maxWidth: '20rem'}}>
-           <br /><img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} /><br />
-            <form style={{padding: 10}}>
+        <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+            <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} style={{maxWidth: 400}} />
+        </Card>
+
+        <br />
+
+        <Card className = "text-center shadow" style = {{borderRadius: 12}}>
+            <Form style={{padding: 10}}>
                 <Card.Text style = {{color: "rgba(15, 163, 177, 100)" , fontSize : "40px"}}>Register</Card.Text> 
                 <FontAwesomeIcon icon={solid('person')} style={{color: '#0FA3B1'}} /><input type="text" id="firstName" placeholder="FirstName" ref={(c) => firstName = c} 
                     style={{borderTopWidth: 0,borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} /><br /><br />
@@ -148,8 +154,8 @@ const [message,setMessage] = useState('');
                     style={{borderTopWidth: 0, borderRightWidth: 0, borderLeftWidth: 0, margin: 4}}/><br /><br />
                 <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doRegister}>Register</Button> <span></span>
                 <Button id="cancelButton" style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4}} onClick={doCancel}>Back</Button>
-            </form>
-        <span id="resetResult">{message}</span> <br />
+            </Form>
+            <span id="resetResult">{message}</span> <br />
         </Card>
      </div>
     );
