@@ -81,6 +81,21 @@ function Login()
                     
                     localStorage.setItem('user_data', JSON.stringify(user));
                     setMessage('');
+                    var username = res.Username;
+                    try
+                    {    
+                        const response = await fetch(buildPath('api/getCustomization/' + username),
+                            {method:'GET',headers:{'Content-Type': 'application/json'}});
+                        var res = JSON.parse(await response.text());
+                        var custom =  
+                                  {Exercise: res.Exercise,Recreation :res.Recreation ,Sleep :res.Sleep, Water :res.Water}
+                        localStorage.setItem('custom_data', JSON.stringify(custom));
+                        
+                    }
+                    catch(e)
+                    {
+                        return;
+                    }  
                     window.location.href = '/home';
                     
                 }

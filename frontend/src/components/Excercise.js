@@ -1,14 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min';
 import Card from 'react-bootstrap/Card';
-import Form from "react-bootstrap/Form";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import BarChart from "../assets/Bar Chart";
 
 
 function debounce(fn, ms) {
@@ -24,7 +21,7 @@ function debounce(fn, ms) {
 
 
 
-function Recreation() {
+function Excercise() {
 
   
   var date_rec;
@@ -46,6 +43,13 @@ function Recreation() {
   }
 }
 
+const [message0,setMessage0] = useState('');
+const [message1,setMessage1] = useState('');
+const [message2,setMessage2] = useState('');
+const [message3,setMessage3] = useState('');
+const [message4,setMessage4] = useState('');
+const [message5,setMessage5] = useState('');
+
 
 
 const getInfo= async event => {
@@ -60,23 +64,53 @@ const getInfo= async event => {
     
     try
       {    
-        const response = await fetch(buildPath('api/getRecreation/' + username),
+        var res = null;
+        const response = await fetch(buildPath('api/getExercise/' + username),
         {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-        var res = JSON.parse(await response.text());
-      
-      var rec =  
-                    {ScreenTime : res.ScreenTime ,Television :res.Television ,Gaming :res.Gaming, Sport :res.Sport, Art :res.Art, Chores : res.Chores, Work : res.Work, Other : res.Other}
-          localStorage.setItem('recreation_data', JSON.stringify(rec));
-          console.log(rec);
-          window.location.href = '/recreation';
+        res = JSON.parse(await response.text());
+
+        localStorage.setItem('exercise_data', JSON.stringify(res));
+
+        var _rec = localStorage.getItem('exercise_data');
+		var rec = JSON.parse(_rec);
+        console.log(rec);
+
+          for(var i = 0; i < res.length; i++){
+          console.log(res[i].Exercise.length);
+          if(i == 0){
+          setMessage0(res[i].Exercise);
+          }
+          if(i == 1){
+            
+            setMessage1(res[i].Exercise);
+            }
+            if(i == 2){
+                
+                setMessage2(res[i].Exercise);
+                }
+                if(i == 3){
+                    
+                    setMessage3(res[i].Exercise);
+                    }
+                    if(i == 4){
+                        
+                        setMessage4(res[i].Exercise);
+                        }
+                        if(i == 5){
+                            
+                            setMessage5(res[i].Exercise);
+                            }
+       
+          //window.location.href = '/exercise';
+                        }
       }
       catch(e)
       {
 
         var rec =  
-        {ScreenTime : 0 ,Television :0 ,Gaming :0, Sport :0, Art :0, Chores : 0, Work : 0, Other : 0}
+        {Exercise : ''}
         localStorage.setItem('recreation_data', JSON.stringify(rec));
-        window.location.href = '/recreation';
+        window.location.href = '/exercise';
       }  
       
  
@@ -125,8 +159,13 @@ const getInfo= async event => {
       </Card>
     
 		<Card>
-
-        <BarChart />
+        <span id="resetResult">{message0}</span> <br />
+        <span id="resetResult">{message1}</span> <br />
+        <span id="resetResult">{message2}</span> <br />
+        <span id="resetResult">{message3}</span> <br />
+        <span id="resetResult">{message4}</span> <br />
+        <span id="resetResult">{message5}</span> <br />
+  
       
  
         </Card>
@@ -144,4 +183,4 @@ const getInfo= async event => {
 
 
 
-export default Recreation;
+export default Excercise;

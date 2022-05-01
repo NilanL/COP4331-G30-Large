@@ -61,7 +61,7 @@ const getInfo= async event => {
       {
 
         var sle =  
-        {Hours : 0}
+        {Sleep : 0}
         localStorage.setItem('sleep_data', JSON.stringify(sle));
         window.location.href = '/sleep';
       }  
