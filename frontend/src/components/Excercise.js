@@ -141,7 +141,7 @@ const getInfo= async event => {
 
     return (
       <div className = "p-5">
-      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+      <Card className = "text-center shadow" style = {{borderRadius: 12}}>
         <Navbar className='m-auto' bg="white" expland="md" style={{margin: 6}}>
             <Navbar.Brand href="/home">
               <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} height='30' />
@@ -159,14 +159,16 @@ const getInfo= async event => {
 
       <br />
 
-      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 25}}>
         <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Exercise</Card.Text> 
+        <div className="text-center" style={{width: '406px'}}>
           <span id="resetResult">{message0}</span> <br />
           <span id="resetResult">{message1}</span> <br />
           <span id="resetResult">{message2}</span> <br />
           <span id="resetResult">{message3}</span> <br />
           <span id="resetResult">{message4}</span> <br />
           <span id="resetResult">{message5}</span> <br /> 
+        </div>
       </Card>
 
       <br />

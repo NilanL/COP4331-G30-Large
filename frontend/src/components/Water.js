@@ -77,37 +77,43 @@ const getInfo= async event => {
 
     return (
       <div className = "p-5">
-      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
-        <Navbar bg="white" expland="md" style={{margin: 6}}>
-            <Navbar.Brand href="/home">
-              <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} height='30' />
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me auto">
-                  <Nav.Link eventKey="1" href="/home">Home</Nav.Link>
-                  <Nav.Link href="/customize">Customize</Nav.Link>
-                  <Nav.Link href="/login">Logout</Nav.Link>
-                </Nav>
-            </Navbar.Collapse>
-        </Navbar>
-      
-      </Card>
-      <br />
-      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
-      <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Water</Card.Text> 
-        <BarChart />
- 
+        <Card className = "text-center shadow" style = {{borderRadius: 12}}>
+          <Navbar className='m-auto' bg="white" expland="md" style={{margin: 6}}>
+              <Navbar.Brand href="/home">
+                <img alt="DailyGrind Logo" src= {require('../assets/images/dailygrind5.png')} height='30' />
+              </Navbar.Brand>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                  <Nav className="me auto">
+                    <Nav.Link eventKey="1" href="/home">Home</Nav.Link>
+                    <Nav.Link href="/customize">Customize</Nav.Link>
+                    <Nav.Link href="/login">Logout</Nav.Link>
+                  </Nav>
+              </Navbar.Collapse>
+          </Navbar>
+        
         </Card>
+
         <br />
+
+        <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 25}}>        
+          <Card.Text style = {{color: '#0FA3B1' , fontSize : "40px"}}>Water</Card.Text>
+          <div className="text-center" style={{width: '406px'}}>
+            <BarChart />
+          </div>  
+          
+        </Card>
+
+        <br />
+
         <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
-        <FontAwesomeIcon  style={{color: '#0FA3B1'}} /><input type="text"  id="date_rec" style={{borderTopWidth: 0,
-                                borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} 
-                                ref={(c) => date_rec = c} placeholder="MM/DD/YYYY" />
-                 <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={getInfo}>choose</Button> 
-                 </Card>
-         
-        </div>
+          <FontAwesomeIcon  style={{color: '#0FA3B1'}} /><input type="text"  id="date_rec" style={{borderTopWidth: 0,
+            borderRightWidth: 0, borderLeftWidth: 0, margin: 4}} 
+            ref={(c) => date_rec = c} placeholder="MM/DD/YYYY" />
+          <Button style={{color:"#FFF", borderColor: '#0FA3B1', backgroundColor: "rgba(15, 163, 177, 100)", borderRadius: 15, margin: 4 }} onClick={getInfo}>choose</Button> 
+        </Card>
+          
+      </div>
     );
  
 }

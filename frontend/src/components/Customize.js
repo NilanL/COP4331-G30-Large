@@ -149,7 +149,7 @@ function Customize()
 
       <br />
 
-      <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+      <Card className = "text-center shadow" style = {{borderRadius: 12}}>
 
         <Card.Text className="text-center" style = {{color: '#0FA3B1' , fontSize : "40px"}}>Customize</Card.Text> 
       

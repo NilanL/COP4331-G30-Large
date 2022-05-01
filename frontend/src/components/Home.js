@@ -114,7 +114,7 @@ function Home()
         </Card> 
         <br />
              
-        <Card className = "text-center shadow" style = {{borderRadius: 12, padding: 10}}>
+        <Card className = "text-center shadow" style = {{borderRadius: 12}}>
           <Card.Text className="text-center" style = {{color: '#0FA3B1' , fontSize : "40px"}}>Dashboard</Card.Text>
           <Card.Body>
           <p className="text-center">Select the habit you would like to view.</p>   
