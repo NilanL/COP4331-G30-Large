@@ -94,26 +94,34 @@ function Customize()
     else{
         
         event.preventDefault();
-        
-        var obj = {User: username, exercise : checkedState[0], recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3] };
-        var js = JSON.stringify(obj);
 
-        try
-        {    
-            const response = await fetch(buildPath('api/customize/' + username),
-                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-            var res = JSON.parse(await response.text());
-            var custom =  
-                    {Exercise: checkedState[0] ,Recreation : checkedState[1],Sleep :checkedState[2], Water :checkedState[3]}
-                    localStorage.setItem('custom_data', JSON.stringify(custom));
-                    console.log(custom);
-            setMessage("Profile updated.");
+        if (checkSelections(checkedState[0], checkedState[1], checkedState[2], checkedState[3])) {
+
+          var obj = {User: username, exercise : checkedState[0], recreation : checkedState[1], sleep : checkedState[2], water : checkedState[3] };
+          var js = JSON.stringify(obj);
+
+          try
+          {    
+              const response = await fetch(buildPath('api/customize/' + username),
+                  {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+              var res = JSON.parse(await response.text());
+              var custom =  
+                      {Exercise: checkedState[0] ,Recreation : checkedState[1],Sleep :checkedState[2], Water :checkedState[3]}
+                      localStorage.setItem('custom_data', JSON.stringify(custom));
+                      console.log(custom);
+              setMessage("Profile updated.");
+          }
+          catch(e)
+          {
+              alert(e.toString());
+              return;
+          } 
         }
-        catch(e)
-        {
-            alert(e.toString());
-            return;
-        }  
+        else {
+          setMessage("Please select at least one habit to track.");
+        }
+        
+        
     }
   }
       
