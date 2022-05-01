@@ -116,9 +116,9 @@ function Home()
 
         <Card.Body>
           <form style={{padding: 10}}>
-            <div className="text-center" style={{width: '300px', marginLeft: 30}}>              
+            <div className="text-center" style={{width: '420px'}}>              
               <ul className = "list-group mx-5 p-3">
-                <Container>
+                <Container fluid>
                   <Row>
                     <Col style={{padding: 10}}>
                       {cus.Exercise === true &&
@@ -128,7 +128,13 @@ function Home()
                           </a>                      
                           <label style={{margin: 5}} htmlFor={`Excercise`}>Exercise</label>  
                           </li>
-                      } 
+                      }
+                      {cus.Exercise === false &&
+                        <li className="list-group-item">
+                          <FontAwesomeIcon icon={solid("dumbbell")} size="4x" style={{color: '#a7b6b8'}}></FontAwesomeIcon>          
+                          <label style={{margin: 5}} htmlFor={`Excercise`}>Exercise</label>  
+                        </li>
+                      }
                     </Col>
                     <Col style={{padding: 10}}>
                       {cus.Recreation === true &&
@@ -139,15 +145,27 @@ function Home()
                           <label style={{margin: 5}} htmlFor={`Recreation`}>Recreation</label>  
                         </li>
                       }
+                      {cus.Recreation === false &&
+                        <li className="list-group-item">                          
+                          <FontAwesomeIcon icon={solid("umbrella-beach")} size="4x" style={{color: '#a7b6b8'}}></FontAwesomeIcon>               
+                        <label style={{margin: 5}} htmlFor={`Recreation`}>Recreation</label>  
+                        </li>
+                      }
                     </Col>
-                  </Row>
-                  <Row>
                     <Col style={{padding: 10}}>
                       {cus.Sleep === true &&
                         <li className="list-group-item">
                           <a href="/sleep">
                             <FontAwesomeIcon icon={solid("bed")} size="4x" style={{color: '#0FA3B1'}}></FontAwesomeIcon>
                           </a>
+                          <br />
+                          <label style={{margin: 5}} htmlFor={`Sleep`}>Sleep</label> 
+                        </li>
+                      }
+                      {cus.Sleep === false &&
+                        <li className="list-group-item">
+                          <FontAwesomeIcon icon={solid("bed")} size="4x" style={{color: '#a7b6b8'}}></FontAwesomeIcon>
+                          <br />
                           <label style={{margin: 5}} htmlFor={`Sleep`}>Sleep</label> 
                         </li>
                       }
@@ -157,7 +175,15 @@ function Home()
                         <li className="list-group-item">
                           <a href="/water">
                             <FontAwesomeIcon icon={solid("glass-water")} size="4x" style={{color: '#0FA3B1'}}></FontAwesomeIcon>
-                          </a>                    
+                          </a>     
+                          <br />               
+                          <label style={{margin: 5}} htmlFor={`Water`}>Water</label>  
+                        </li>
+                      }
+                      {cus.Water === false &&
+                        <li className="list-group-item">
+                          <FontAwesomeIcon icon={solid("glass-water")} size="4x" style={{color: '#a7b6b8'}}></FontAwesomeIcon>  
+                          <br />               
                           <label style={{margin: 5}} htmlFor={`Water`}>Water</label>  
                         </li>
                       }
